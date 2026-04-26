@@ -373,7 +373,7 @@
 
     <section id="recipes-section" class="section hidden">
       <div class="section-head">
-        <h2>Recipes you could make</h2>
+        <h2>Recipes you could make <span id="cuisine-inference" style="text-transform:none;letter-spacing:normal;color:rgba(26,127,55,.85);font-size:.7rem;font-weight:400;margin-left:.5rem;"></span></h2>
       </div>
       <div id="recipes-list"></div>
     </section>
@@ -485,10 +485,9 @@ function pairingsFor(slugs, limit = 60) {
   return results.slice(0, limit);
 }
 
-function matchRecipes(slugs, limit = 4) {
+function matchRecipes(slugs, limit = 20) {
   if (!slugs.length) return [];
   const sel = new Set(slugs);
-  // Threshold scales with selection size — bigger selections require stronger matches.
   const minMatched = slugs.length >= 6 ? 3 : (slugs.length >= 3 ? 2 : 1);
   const scored = [];
   for (const r of RECIPES.recipes) {
@@ -500,18 +499,46 @@ function matchRecipes(slugs, limit = 4) {
     const score = coverage * coverage * matchedRequired.length + 0.15 * matchedOptional.length;
     scored.push({ recipe: r, score, matchedRequired, missingRequired, matchedOptional, coverage });
   }
-  scored.sort((a, b) => {
+  function cmp(a, b) {
     if (b.score !== a.score) return b.score - a.score;
     if (b.coverage !== a.coverage) return b.coverage - a.coverage;
     if (b.matchedRequired.length !== a.matchedRequired.length) {
       return b.matchedRequired.length - a.matchedRequired.length;
     }
-    // curated wins ties
     const aC = (a.recipe.source ?? "curated") === "curated" ? 1 : 0;
     const bC = (b.recipe.source ?? "curated") === "curated" ? 1 : 0;
     return bC - aC;
-  });
+  }
+  scored.sort(cmp);
+  // Diversity pass: penalize duplicate matched-ingredient signatures so the
+  // top-N is genuinely diverse instead of four near-clones.
+  const seen = new Map();
+  for (const s of scored) {
+    const sig = [...s.matchedRequired].sort().join(",");
+    const c = seen.get(sig) || 0;
+    if (c > 0) s.score *= Math.pow(0.7, c);
+    seen.set(sig, c + 1);
+  }
+  scored.sort(cmp);
   return scored.slice(0, limit);
+}
+
+function inferCuisineLabel(matches) {
+  if (!matches.length) return null;
+  const w = new Map();
+  let total = 0;
+  for (const m of matches) {
+    if (!m.recipe.cuisine || m.score <= 0) continue;
+    w.set(m.recipe.cuisine, (w.get(m.recipe.cuisine) || 0) + m.score);
+    total += m.score;
+  }
+  if (total === 0) return null;
+  const sorted = [...w.entries()].map(([c, n]) => [c, n / total]).sort((a, b) => b[1] - a[1]);
+  const [c, share] = sorted[0] || [];
+  if (!c) return null;
+  if (share >= 0.45) return `Mostly ${c[0].toUpperCase() + c.slice(1)}`;
+  if (share >= 0.25) return `Leans ${c[0].toUpperCase() + c.slice(1)}`;
+  return null;
 }
 
 function prettySlug(s) {
@@ -650,6 +677,9 @@ const state = {
   highlight: 0,
   open: false,
   filter: "all",
+  recipeCuisineFilter: "all",
+  recipePantryMode: false,
+  recipeShowAll: false,
   comboModalOpen: false,
 };
 
@@ -830,8 +860,8 @@ function renderRecipes() {
     recipesSectionEl.classList.add("hidden");
     return;
   }
-  const matches = matchRecipes(selectedSlugs(), 4);
-  if (matches.length === 0) {
+  const allMatches = matchRecipes(selectedSlugs(), 20);
+  if (allMatches.length === 0) {
     recipesSectionEl.classList.remove("hidden");
     recipesListEl.innerHTML = `<div class="panel" style="padding:1rem 1.25rem;font-size:.875rem;color:var(--muted);">
       No matching recipes for this selection yet. Try removing one of the ingredients.
@@ -839,7 +869,76 @@ function renderRecipes() {
     return;
   }
   recipesSectionEl.classList.remove("hidden");
-  recipesListEl.innerHTML = matches.map(m => {
+  // Cuisine inference (uses unfiltered matches so the label is a property
+  // of the user's selection, not the active filter).
+  const cuisineLabel = inferCuisineLabel(allMatches);
+  const cuisineEl = document.getElementById("cuisine-inference");
+  if (cuisineEl) cuisineEl.textContent = cuisineLabel || "";
+
+  // Apply filters
+  const filtered = allMatches.filter(m => {
+    if (state.recipePantryMode && m.missingRequired.length > 0) return false;
+    if (state.recipeCuisineFilter !== "all" && m.recipe.cuisine !== state.recipeCuisineFilter) return false;
+    return true;
+  });
+  // Available cuisines (counts derived from pantry-respecting subset)
+  const cuisineCounts = new Map();
+  for (const m of allMatches) {
+    if (state.recipePantryMode && m.missingRequired.length > 0) continue;
+    if (m.recipe.cuisine) cuisineCounts.set(m.recipe.cuisine, (cuisineCounts.get(m.recipe.cuisine) || 0) + 1);
+  }
+  const availableCuisines = [...cuisineCounts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
+  const DEFAULT_VISIBLE = 4;
+  const visibleMatches = state.recipeShowAll ? filtered : filtered.slice(0, DEFAULT_VISIBLE);
+  const hiddenCount = filtered.length - visibleMatches.length;
+
+  // Build top toolbar with pantry toggle
+  const toolbar = `
+    <div style="display:flex;align-items:center;justify-content:flex-end;gap:.5rem;margin-bottom:.5rem;margin-top:-.5rem;">
+      <button id="recipe-pantry-toggle" class="fchip ${state.recipePantryMode ? "active" : ""}" style="display:inline-flex;align-items:center;gap:.375rem;${state.recipePantryMode ? "background:rgba(26,127,55,.1);color:var(--pear);" : ""}"
+              title="Show only recipes you can fully make right now">
+        <span style="display:inline-block;width:.75rem;height:.75rem;border:1px solid currentColor;border-radius:2px;position:relative;">
+          ${state.recipePantryMode ? '<span style="display:block;position:absolute;inset:1px;background:currentColor;border-radius:1px;"></span>' : ""}
+        </span>
+        Pantry mode
+      </button>
+    </div>`;
+
+  // Cuisine filter chips
+  const cuisineBar = (availableCuisines.length > 1 || state.recipeCuisineFilter !== "all") ? `
+    <div class="filterbar" style="margin-bottom:.75rem;">
+      <button class="fchip ${state.recipeCuisineFilter === "all" ? "active" : ""}" data-c="all">
+        all <span style="opacity:.7;font-variant-numeric:tabular-nums;font-size:.62rem;margin-left:.25rem;">${allMatches.filter(m => !state.recipePantryMode || m.missingRequired.length === 0).length}</span>
+      </button>
+      ${availableCuisines.map(([cuisine, count]) => `
+        <button class="fchip ${state.recipeCuisineFilter === cuisine ? "active" : ""}" data-c="${cuisine}">
+          ${escape(cuisine)} <span style="opacity:.7;font-variant-numeric:tabular-nums;font-size:.62rem;margin-left:.25rem;">${count}</span>
+        </button>`).join("")}
+    </div>` : "";
+
+  // Empty after filter
+  if (filtered.length === 0) {
+    recipesListEl.innerHTML = toolbar + cuisineBar + `<div class="panel" style="padding:1rem 1.25rem;font-size:.875rem;color:var(--muted);">${
+      state.recipePantryMode
+        ? "No recipes match all your selected ingredients exactly. Turn off Pantry mode to see partial matches."
+        : `No ${escape(state.recipeCuisineFilter)} recipes for this selection.`
+    }</div>`;
+    document.getElementById("recipe-pantry-toggle").onclick = () => {
+      state.recipePantryMode = !state.recipePantryMode;
+      state.recipeCuisineFilter = "all";
+      state.recipeShowAll = false;
+      renderRecipes();
+    };
+    recipesListEl.querySelectorAll(".fchip").forEach(b => {
+      b.onclick = () => { state.recipeCuisineFilter = b.dataset.c; state.recipeShowAll = false; renderRecipes(); };
+    });
+    return;
+  }
+
+  const matches = visibleMatches;
+  const cardHtml = matches.map(m => {
     const r = m.recipe;
     const meta = [r.cuisine, r.time ? `${r.time} min` : null].filter(Boolean).join(" · ");
     const matchedChips = m.matchedRequired.map(slug => {
@@ -868,6 +967,32 @@ function renderRecipes() {
       <div class="open-hint">Open to view ${r.method ? "method, " : ""}save, or use these ingredients →</div>
     </button>`;
   }).join("");
+
+  const showMoreBtn = hiddenCount > 0
+    ? `<button id="recipe-show-more" style="margin-top:.5rem;width:100%;font-size:.75rem;color:var(--muted);background:none;border:1px solid var(--border);border-radius:.25rem;padding:.5rem;cursor:pointer;transition:color .15s,background .15s;">
+        Show ${hiddenCount} more ${hiddenCount === 1 ? "recipe" : "recipes"} →
+      </button>` : "";
+  const showFewerBtn = (state.recipeShowAll && filtered.length > DEFAULT_VISIBLE)
+    ? `<button id="recipe-show-fewer" style="margin-top:.5rem;width:100%;font-size:.75rem;color:var(--muted);background:none;border:none;border-radius:.25rem;padding:.5rem;cursor:pointer;">
+        Show fewer
+      </button>` : "";
+
+  recipesListEl.innerHTML = toolbar + cuisineBar + cardHtml + showMoreBtn + showFewerBtn;
+
+  document.getElementById("recipe-pantry-toggle").onclick = () => {
+    state.recipePantryMode = !state.recipePantryMode;
+    state.recipeCuisineFilter = "all";
+    state.recipeShowAll = false;
+    renderRecipes();
+  };
+  recipesListEl.querySelectorAll(".filterbar .fchip").forEach(b => {
+    b.onclick = () => { state.recipeCuisineFilter = b.dataset.c; state.recipeShowAll = false; renderRecipes(); };
+  });
+  const sm = document.getElementById("recipe-show-more");
+  if (sm) sm.onclick = () => { state.recipeShowAll = true; renderRecipes(); };
+  const sf = document.getElementById("recipe-show-fewer");
+  if (sf) sf.onclick = () => { state.recipeShowAll = false; renderRecipes(); };
+
   recipesListEl.querySelectorAll(".recipe-card").forEach(card => {
     const id = card.dataset.id;
     const recipe = RECIPES.recipes.find(r => r.id === id);
@@ -1202,11 +1327,16 @@ function add(ing) {
   if (state.selected.some(s => s.slug === ing.slug)) return;
   state.selected.push(ing);
   qEl.value = ""; state.filter = "all"; state.open = true; state.items = [];
+  // Reset recipes filters — context shifted, prior filters stale.
+  state.recipeCuisineFilter = "all";
+  state.recipeShowAll = false;
   renderAll();
   qEl.focus();
 }
 function remove(slug) {
   state.selected = state.selected.filter(s => s.slug !== slug);
+  state.recipeCuisineFilter = "all";
+  state.recipeShowAll = false;
   renderAll();
 }
 function pick(r) { add(r); }

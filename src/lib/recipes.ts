@@ -82,17 +82,90 @@ export function matchRecipes(
     });
   }
 
-  scored.sort((a, b) => {
-    if (b.score !== a.score) return b.score - a.score;
-    if (b.coverage !== a.coverage) return b.coverage - a.coverage;
-    if (b.matchedRequired.length !== a.matchedRequired.length) {
-      return b.matchedRequired.length - a.matchedRequired.length;
-    }
-    // Curated wins ties — prefer our own write-up over an imported one.
-    const aCurated = (a.recipe.source ?? "curated") === "curated" ? 1 : 0;
-    const bCurated = (b.recipe.source ?? "curated") === "curated" ? 1 : 0;
-    return bCurated - aCurated;
-  });
+  scored.sort(compareScored);
+
+  // Diversity pass: penalize recipes whose matched-ingredient signature has
+  // already appeared in the ranking. Without this, a 10-ingredient selection
+  // can return four nearly-identical beef stews. With it, the top-N becomes
+  // a set of distinct "ways to use your ingredients."
+  applyDiversityPenalty(scored);
+  scored.sort(compareScored);
 
   return scored.slice(0, limit);
+}
+
+function compareScored(a: ScoredRecipe, b: ScoredRecipe): number {
+  if (b.score !== a.score) return b.score - a.score;
+  if (b.coverage !== a.coverage) return b.coverage - a.coverage;
+  if (b.matchedRequired.length !== a.matchedRequired.length) {
+    return b.matchedRequired.length - a.matchedRequired.length;
+  }
+  // Curated wins ties — prefer our own write-up over an imported one.
+  const aCurated = (a.recipe.source ?? "curated") === "curated" ? 1 : 0;
+  const bCurated = (b.recipe.source ?? "curated") === "curated" ? 1 : 0;
+  return bCurated - aCurated;
+}
+
+function signatureOf(s: ScoredRecipe): string {
+  return [...s.matchedRequired].sort().join(",");
+}
+
+// 30% penalty per duplicate of a previously-seen matched-ingredient signature.
+// Compounds: a 3rd recipe with the same signature gets 30%×30% = 49% off.
+// Tuned empirically against the 10-ingredient case so distinct dish vectors
+// surface, but a 3-ingredient case (where every match has the same signature)
+// doesn't over-penalize.
+function applyDiversityPenalty(scored: ScoredRecipe[]): void {
+  const seen = new Map<string, number>();
+  for (const s of scored) {
+    const sig = signatureOf(s);
+    const seenCount = seen.get(sig) ?? 0;
+    if (seenCount > 0) {
+      s.score *= Math.pow(0.7, seenCount);
+    }
+    seen.set(sig, seenCount + 1);
+  }
+}
+
+// ----- cuisine inference -----
+
+export interface CuisineSignal {
+  /** dominant cuisine name, lowercase, or null when no clear signal */
+  cuisine: string | null;
+  /** weighted share of the top cuisine, 0..1 */
+  share: number;
+  /** ranked breakdown of all cuisines that appeared */
+  breakdown: Array<{ cuisine: string; share: number }>;
+}
+
+/**
+ * Infer the dominant cuisine of an ingredient selection by weighting each
+ * matched recipe by its score and summing per cuisine. Returns:
+ *   - share >= 0.45 → "mostly"
+ *   - 0.25 <= share < 0.45 → "leans"
+ *   - else null cuisine (no signal strong enough to surface)
+ */
+export function inferCuisine(matches: ScoredRecipe[]): CuisineSignal {
+  if (matches.length === 0) {
+    return { cuisine: null, share: 0, breakdown: [] };
+  }
+  const totals = new Map<string, number>();
+  let total = 0;
+  for (const m of matches) {
+    if (!m.recipe.cuisine || m.score <= 0) continue;
+    totals.set(m.recipe.cuisine, (totals.get(m.recipe.cuisine) ?? 0) + m.score);
+    total += m.score;
+  }
+  if (total === 0) return { cuisine: null, share: 0, breakdown: [] };
+
+  const breakdown = [...totals.entries()]
+    .map(([cuisine, weight]) => ({ cuisine, share: weight / total }))
+    .sort((a, b) => b.share - a.share);
+
+  const top = breakdown[0];
+  // Below 0.25 there's no signal worth surfacing — too even a spread.
+  if (!top || top.share < 0.25) {
+    return { cuisine: null, share: top?.share ?? 0, breakdown };
+  }
+  return { cuisine: top.cuisine, share: top.share, breakdown };
 }

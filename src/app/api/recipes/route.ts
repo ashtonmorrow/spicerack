@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { matchRecipes } from "@/lib/recipes";
 
-// GET /api/recipes?slugs=apple,butter,cheddar&limit=4
+// GET /api/recipes?slugs=apple,butter,cheddar&limit=12
 export async function GET(req: NextRequest) {
   const raw = req.nextUrl.searchParams.get("slugs") ?? "";
-  const limit = Number(req.nextUrl.searchParams.get("limit") ?? 4);
+  const limit = Math.min(30, Number(req.nextUrl.searchParams.get("limit") ?? 12));
 
   const slugs = raw
     .split(",")

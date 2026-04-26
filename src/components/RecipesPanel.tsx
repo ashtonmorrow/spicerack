@@ -28,6 +28,12 @@ async function fetchIngredient(slug: string): Promise<IngredientSummary | null> 
   }
 }
 
+const DEFAULT_VISIBLE = 4;
+
+function cap(s: string): string {
+  return s ? s[0].toUpperCase() + s.slice(1) : s;
+}
+
 export function RecipesPanel({
   selected,
   onUseRecipe,
@@ -41,14 +47,24 @@ export function RecipesPanel({
   >(new Map());
   const [openRecipe, setOpenRecipe] = useState<Recipe | null>(null);
 
+  // Filter state
+  const [cuisineFilter, setCuisineFilter] = useState<string>("all");
+  const [pantryMode, setPantryMode] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+
   useEffect(() => {
     if (selected.length < 1) {
       setMatches([]);
       return;
     }
+    // Reset filters when the selection changes — context shifts, prior filters
+    // become stale.
+    setCuisineFilter("all");
+    setShowAll(false);
+
     const slugs = selected.map((s) => s.slug).join(",");
     setLoading(true);
-    fetch(`/api/recipes?slugs=${encodeURIComponent(slugs)}&limit=4`)
+    fetch(`/api/recipes?slugs=${encodeURIComponent(slugs)}&limit=20`)
       .then((r) => r.json())
       .then(async (d) => {
         const results = d.results as ScoredRecipe[];
@@ -74,6 +90,57 @@ export function RecipesPanel({
 
   if (selected.length === 0) return null;
 
+  const userSlugs = new Set(selected.map((s) => s.slug));
+
+  // Apply filters
+  const filtered = matches.filter((m) => {
+    if (pantryMode && m.missingRequired.length > 0) return false;
+    if (cuisineFilter !== "all" && m.recipe.cuisine !== cuisineFilter) return false;
+    return true;
+  });
+
+  // Available cuisines (sorted by count desc) — derived from the unfiltered
+  // matches so the filter chips don't disappear when you pick one.
+  const cuisineCounts = new Map<string, number>();
+  for (const m of matches) {
+    if (pantryMode && m.missingRequired.length > 0) continue;
+    if (m.recipe.cuisine) {
+      cuisineCounts.set(m.recipe.cuisine, (cuisineCounts.get(m.recipe.cuisine) ?? 0) + 1);
+    }
+  }
+  const availableCuisines = [...cuisineCounts.entries()].sort(
+    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
+  );
+
+  // Cuisine inference: weight by match score so a strong Italian top match
+  // outweighs a long tail of weaker single-cuisine outliers.
+  let totalWeight = 0;
+  const weightedCuisines = new Map<string, number>();
+  for (const m of matches) {
+    if (!m.recipe.cuisine || m.score <= 0) continue;
+    weightedCuisines.set(
+      m.recipe.cuisine,
+      (weightedCuisines.get(m.recipe.cuisine) ?? 0) + m.score
+    );
+    totalWeight += m.score;
+  }
+  let inferenceLabel: string | null = null;
+  if (totalWeight > 0) {
+    const sorted = [...weightedCuisines.entries()]
+      .map(([c, w]) => [c, w / totalWeight] as const)
+      .sort((a, b) => b[1] - a[1]);
+    const [topCuisine, share] = sorted[0] ?? [];
+    if (topCuisine && share >= 0.45) {
+      inferenceLabel = `Mostly ${cap(topCuisine)}`;
+    } else if (topCuisine && share >= 0.25) {
+      inferenceLabel = `Leans ${cap(topCuisine)}`;
+    }
+  }
+
+  const visible = showAll ? filtered : filtered.slice(0, DEFAULT_VISIBLE);
+  const hidden = filtered.length - visible.length;
+
+  // Empty states
   if (matches.length === 0 && !loading) {
     return (
       <section>
@@ -88,29 +155,100 @@ export function RecipesPanel({
     );
   }
 
-  const userSlugs = new Set(selected.map((s) => s.slug));
-
   return (
     <>
       <section>
-        <div className="flex items-center justify-between mb-2">
-          <h2 className="text-[11px] uppercase tracking-wider text-muted">
-            Recipes you could make
+        <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+          <h2 className="text-[11px] uppercase tracking-wider text-muted flex items-baseline gap-2 flex-wrap">
+            <span>Recipes you could make</span>
+            {inferenceLabel && (
+              <span
+                className="normal-case tracking-normal text-[11px] text-pear/80 font-normal"
+                title={`Cuisine inferred from your top recipe matches`}
+              >
+                {inferenceLabel}
+              </span>
+            )}
           </h2>
-          {loading && <span className="text-xs text-muted">…</span>}
+          <div className="flex items-center gap-1">
+            {loading && <span className="text-xs text-muted mr-2">…</span>}
+            <button
+              onClick={() => setPantryMode((p) => !p)}
+              className={`text-[11px] px-2 py-1 rounded transition flex items-center gap-1 ${
+                pantryMode
+                  ? "bg-pear/10 text-pear"
+                  : "text-muted hover:bg-hover hover:text-ink"
+              }`}
+              title="Show only recipes you can fully make right now"
+            >
+              <span className="inline-block w-3 h-3 rounded-sm border border-current">
+                {pantryMode && (
+                  <span className="block w-2 h-2 m-px bg-current rounded-[1px]" />
+                )}
+              </span>
+              Pantry mode
+            </button>
+          </div>
         </div>
-        <div className="space-y-2">
-          {matches.map((m) => (
-            <RecipeCard
-              key={m.recipe.id}
-              match={m}
-              ingredientLookup={ingredientLookup}
-              userSlugs={userSlugs}
-              onOpen={() => setOpenRecipe(m.recipe)}
-              savedVersion={savedVersion}
+
+        {(availableCuisines.length > 1 || cuisineFilter !== "all") && (
+          <div className="flex flex-wrap gap-1 mb-3">
+            <FilterChip
+              label="all"
+              count={matches.filter((m) => !pantryMode || m.missingRequired.length === 0).length}
+              active={cuisineFilter === "all"}
+              onClick={() => setCuisineFilter("all")}
             />
-          ))}
-        </div>
+            {availableCuisines.map(([cuisine, count]) => (
+              <FilterChip
+                key={cuisine}
+                label={cuisine}
+                count={count}
+                active={cuisineFilter === cuisine}
+                onClick={() => setCuisineFilter(cuisine)}
+              />
+            ))}
+          </div>
+        )}
+
+        {filtered.length === 0 ? (
+          <div className="rounded-md border border-border bg-bg p-4 text-sm text-muted">
+            {pantryMode
+              ? "No recipes match all your selected ingredients exactly. Turn off Pantry mode to see partial matches."
+              : `No ${cuisineFilter} recipes for this selection.`}
+          </div>
+        ) : (
+          <>
+            <div className="space-y-2">
+              {visible.map((m) => (
+                <RecipeCard
+                  key={m.recipe.id}
+                  match={m}
+                  ingredientLookup={ingredientLookup}
+                  userSlugs={userSlugs}
+                  onOpen={() => setOpenRecipe(m.recipe)}
+                  savedVersion={savedVersion}
+                />
+              ))}
+            </div>
+            {hidden > 0 && (
+              <button
+                onClick={() => setShowAll(true)}
+                className="mt-2 w-full text-xs text-muted hover:text-ink hover:bg-hover transition py-2 rounded border border-border"
+              >
+                Show {hidden} more {hidden === 1 ? "recipe" : "recipes"} →
+              </button>
+            )}
+            {showAll && filtered.length > DEFAULT_VISIBLE && (
+              <button
+                onClick={() => setShowAll(false)}
+                className="mt-2 w-full text-xs text-muted hover:text-ink hover:bg-hover transition py-2 rounded"
+              >
+                Show fewer
+              </button>
+            )}
+          </>
+        )}
       </section>
 
       {openRecipe && (
@@ -124,6 +262,38 @@ export function RecipesPanel({
         />
       )}
     </>
+  );
+}
+
+function FilterChip({
+  label,
+  count,
+  active,
+  onClick,
+}: {
+  label: string;
+  count?: number;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`text-xs px-2.5 py-1 rounded transition inline-flex items-center gap-1.5 ${
+        active ? "bg-ink text-bg" : "bg-hover text-muted hover:text-ink"
+      }`}
+    >
+      <span>{label}</span>
+      {count !== undefined && (
+        <span
+          className={`text-[10px] tabular-nums ${
+            active ? "text-bg/70" : "text-muted/70"
+          }`}
+        >
+          {count}
+        </span>
+      )}
+    </button>
   );
 }
 
