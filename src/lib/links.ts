@@ -19,5 +19,5 @@ export const SITE_LINKS: SiteLink[] = [
   { href: "https://ski.mike-lee.me", label: "Ski" },
   { href: "https://pounce.mike-lee.me", label: "Pounce" },
   { href: "https://go.mike-lee.me", label: "Go" },
-  { href: "https://www.linkedin.com/in/mike-lee/", label: "Whisker-leaks" },
+  { href: "https://www.linkedin.com/in/mikelee89/", label: "Whisker-leaks" },
 ];
