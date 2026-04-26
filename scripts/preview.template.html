@@ -20,9 +20,10 @@
     -webkit-font-smoothing: antialiased; }
   main { max-width: 48rem; margin: 0 auto; padding: 2.5rem 1.5rem; }
 
-  header { display: flex; align-items: flex-start; gap: .75rem; margin-bottom: 2.5rem; }
-  header svg { flex-shrink: 0; margin-top: 2px; color: var(--pear); }
+  header { margin-bottom: 2.5rem; }
   h1 { font-size: 2.25rem; margin: 0; letter-spacing: -.015em; font-weight: 600; line-height: 1.1; }
+  h1 .pear-letter { color: var(--pear); display: inline-block; vertical-align: -0.06em; margin-inline: 0.02em; }
+  h1 .pear-letter svg { height: 0.85em; width: auto; display: block; }
   .sub { color: var(--muted); margin: .25rem 0 0; font-size: .95rem; }
 
   .search-wrap { position: relative; }
@@ -123,11 +124,54 @@
   .empty-panel .big { font-size: 1rem; color: var(--ink); }
   .empty-panel .small { font-size: .875rem; margin-top: .25rem; }
 
-  .saved-section { margin-top: 2.5rem; }
-  .saved-section h2 {
-    text-transform: uppercase; font-size: .68rem; letter-spacing: .08em;
-    color: var(--muted); margin: 0 0 .5rem; font-weight: 500;
+  .section { margin-top: 2.5rem; }
+  .section .section-head {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem;
   }
+  .section h2 {
+    text-transform: uppercase; font-size: .68rem; letter-spacing: .08em;
+    color: var(--muted); margin: 0; font-weight: 500;
+  }
+  .recipe-card {
+    border: 1px solid var(--border); border-radius: .375rem; padding: .85rem .9rem;
+    margin-bottom: .5rem; transition: background .15s;
+  }
+  .recipe-card:hover { background: rgba(247, 246, 243, 0.5); }
+  .recipe-card .head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: .75rem; flex-wrap: wrap; margin-bottom: .25rem;
+  }
+  .recipe-card .name { font-weight: 500; font-size: .875rem; color: var(--ink); }
+  .recipe-card .meta { font-size: .75rem; color: var(--muted); }
+  .recipe-card .about { font-size: .875rem; color: var(--muted); margin: 0 0 .625rem; line-height: 1.4; }
+  .recipe-card .ing-row { display: flex; flex-wrap: wrap; gap: .25rem; margin-bottom: .75rem; }
+  .recipe-card .ing {
+    font-size: .72rem; padding: .15rem .5rem; border-radius: .25rem;
+    display: inline-flex; gap: .25rem; align-items: center;
+  }
+  .recipe-card .ing.missing {
+    background: var(--hover); color: var(--muted);
+    text-decoration: line-through; text-decoration-color: rgba(120, 119, 116, 0.4);
+  }
+  .recipe-card .ing.opt-missing {
+    background: var(--bg); color: rgba(120, 119, 116, .7);
+    border: 1px dashed var(--border); font-style: italic;
+  }
+  .recipe-card .ing.opt-have {
+    font-style: italic;
+  }
+  .recipe-card .actions { display: flex; gap: .5rem; align-items: center; }
+  .btn {
+    font-size: .75rem; padding: .25rem .625rem; border-radius: .25rem;
+    border: none; cursor: pointer; transition: filter .15s, background .15s, color .15s;
+    font-family: inherit;
+  }
+  .btn-secondary { background: none; color: var(--ink); }
+  .btn-secondary:hover { background: var(--hover); }
+  .btn-primary { background: var(--pear); color: white; font-weight: 500; }
+  .btn-primary:hover { filter: brightness(.95); }
+  .btn-primary:disabled, .btn-secondary:disabled { opacity: .5; cursor: not-allowed; }
+
   .combo-card {
     border: 1px solid var(--border); border-radius: .375rem; padding: .75rem;
     margin-bottom: .5rem; transition: background .15s; position: relative;
@@ -175,16 +219,7 @@
   .modal .ingredients-preview .cat-label { font-size: .68rem; padding: .1rem .4rem; border-radius: .25rem; }
   .modal .field { margin-bottom: .75rem; }
   .modal .actions { display: flex; justify-content: flex-end; gap: .5rem; margin-top: 1rem; }
-  .btn {
-    font-size: .875rem; padding: .375rem .75rem; border-radius: .25rem;
-    border: none; cursor: pointer; transition: filter .15s, background .15s, color .15s;
-    font-family: inherit;
-  }
-  .btn-secondary { background: none; color: var(--muted); }
-  .btn-secondary:hover { background: var(--hover); color: var(--ink); }
-  .btn-primary { background: var(--pear); color: white; font-weight: 500; }
-  .btn-primary:hover { filter: brightness(.95); }
-  .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+  .modal .btn { font-size: .875rem; padding: .375rem .75rem; }
 
   .muted { color: var(--muted); }
   .hidden { display: none; }
@@ -207,19 +242,8 @@
 <body>
 <main>
   <header>
-    <svg viewBox="0 0 64 64" width="40" height="40" fill="none" stroke="currentColor"
-         stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-label="Flavor Pear">
-      <path d="M 32 17 C 28.5 17 27.5 19.5 28 22 C 28.5 24 27.5 25.5 25.5 26.5
-               C 18 30 13 38 14 47 C 15 55 22 60 32 60 C 42 60 49 55 50 47
-               C 51 38 46 30 38.5 26.5 C 36.5 25.5 35.5 24 36 22
-               C 36.5 19.5 35.5 17 32 17 Z" />
-      <path d="M 32 17 L 33 9" />
-      <path d="M 33 11 C 38 7 44 9 43 14 C 38 14 35 13 33 11 Z" />
-    </svg>
-    <div>
-      <h1>Flavor Pear</h1>
-      <p class="sub">Add ingredients. Get suggestions, fast.</p>
-    </div>
+    <h1>Flav<span class="pear-letter" aria-label="o"><svg viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M 32 16 C 35.5 16 36.5 18.5 35.5 21 C 34.5 23.5 35.5 25.5 38 27 C 45 31 50 39 50 47 C 50 56 42 60 32 60 C 22 60 14 56 14 47 C 14 39 19 31 26 27 C 28.5 25.5 29.5 23.5 28.5 21 C 27.5 18.5 28.5 16 32 16 Z"/><path d="M 33 16 C 38 11.5 44.5 13 43.5 18.5 C 38.5 18.5 35 17.5 33 16 Z"/></svg></span>r Pear</h1>
+    <p class="sub">Add ingredients. Get suggestions and recipes, fast.</p>
   </header>
 
   <div class="search-wrap">
@@ -239,9 +263,21 @@
     </div>
   </div>
 
-  <section id="saved-section" class="saved-section hidden">
-    <h2>Your saved combos</h2>
-    <div id="saved-list"></div>
+  <section id="recipes-section" class="section hidden">
+    <div class="section-head">
+      <h2>Recipes you could make</h2>
+    </div>
+    <div id="recipes-list"></div>
+  </section>
+
+  <section id="saved-combos-section" class="section hidden">
+    <div class="section-head"><h2>Your saved combos</h2></div>
+    <div id="saved-combos-list"></div>
+  </section>
+
+  <section id="saved-recipes-section" class="section hidden">
+    <div class="section-head"><h2>Your saved recipes</h2></div>
+    <div id="saved-recipes-list"></div>
   </section>
 
   <footer>Click any suggestion to chain it on. Press Esc to dismiss the dropdown.</footer>
@@ -251,17 +287,17 @@
 
 <script>
 const DATA = /*__INGREDIENTS_JSON__*/null;
+const RECIPES = /*__RECIPES_JSON__*/null;
 
 const STARTER_SLUGS = ["tomato","chicken","garlic","lemon","basil","onion","salmon","apple"];
-const STORAGE_KEY = "flavor-pear:combos";
+const STORAGE_COMBOS = "flavor-pear:combos";
+const STORAGE_RECIPES = "flavor-pear:saved-recipes";
 
-// --- mini repo (mirror of json-repository.ts) ---
 const bySlug = new Map();
 for (const ing of DATA.ingredients) bySlug.set(ing.slug, ing);
 
-function summary(ing) {
-  return { slug: ing.slug, name: ing.name, category: ing.category };
-}
+function summary(ing) { return { slug: ing.slug, name: ing.name, category: ing.category }; }
+
 function search(q, limit = 8) {
   q = q.trim().toLowerCase();
   if (!q) return [];
@@ -281,6 +317,7 @@ function search(q, limit = 8) {
   scored.sort((a, b) => b.s - a.s || a.ing.name.localeCompare(b.ing.name));
   return scored.slice(0, limit).map(x => summary(x.ing));
 }
+
 function pairingsFor(slugs, limit = 60) {
   const sel = slugs.map(s => bySlug.get(s)).filter(Boolean);
   if (!sel.length) return [];
@@ -309,6 +346,28 @@ function pairingsFor(slugs, limit = 60) {
   results.sort((a, b) => b.score - a.score || b.hits - a.hits);
   return results.slice(0, limit);
 }
+
+function matchRecipes(slugs, limit = 4) {
+  if (!slugs.length) return [];
+  const sel = new Set(slugs);
+  const scored = [];
+  for (const r of RECIPES.recipes) {
+    const matchedRequired = r.required.filter(s => sel.has(s));
+    if (!matchedRequired.length) continue;
+    const missingRequired = r.required.filter(s => !sel.has(s));
+    const matchedOptional = (r.optional || []).filter(s => sel.has(s));
+    const coverage = matchedRequired.length / r.required.length;
+    const score = coverage * coverage * matchedRequired.length + 0.15 * matchedOptional.length;
+    scored.push({ recipe: r, score, matchedRequired, missingRequired, matchedOptional, coverage });
+  }
+  scored.sort((a, b) =>
+    b.score !== a.score ? b.score - a.score :
+    b.coverage !== a.coverage ? b.coverage - a.coverage :
+    b.matchedRequired.length - a.matchedRequired.length
+  );
+  return scored.slice(0, limit);
+}
+
 function prettySlug(s) {
   return s.split("-").map(p => p[0].toUpperCase() + p.slice(1)).join(" ");
 }
@@ -318,35 +377,31 @@ function getStarterSummaries(excludedSet) {
 }
 
 // --- combo storage ---
-function loadCombos() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const arr = JSON.parse(raw);
-    return Array.isArray(arr) ? arr : [];
-  } catch { return []; }
-}
+function loadCombos() { try { const r = localStorage.getItem(STORAGE_COMBOS); return r ? (JSON.parse(r) || []) : []; } catch { return []; } }
 function saveComboToStorage(combo) {
   const all = loadCombos();
-  const created = {
-    id: "c_" + Date.now() + "_" + Math.random().toString(36).slice(2,7),
-    createdAt: Date.now(),
-    ...combo,
-  };
+  const created = { id: "c_"+Date.now()+"_"+Math.random().toString(36).slice(2,7), createdAt: Date.now(), ...combo };
   all.unshift(created);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  localStorage.setItem(STORAGE_COMBOS, JSON.stringify(all));
   return created;
 }
-function deleteComboById(id) {
-  const all = loadCombos().filter(c => c.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
-}
+function deleteComboById(id) { localStorage.setItem(STORAGE_COMBOS, JSON.stringify(loadCombos().filter(c => c.id !== id))); }
 function findExactMatch(slugs) {
   const key = [...slugs].sort().join(",");
-  return loadCombos().find(c =>
-    [...c.ingredients.map(i => i.slug)].sort().join(",") === key
-  ) || null;
+  return loadCombos().find(c => [...c.ingredients.map(i => i.slug)].sort().join(",") === key) || null;
 }
+
+// --- saved recipes storage ---
+function loadSavedRecipes() { try { const r = localStorage.getItem(STORAGE_RECIPES); return r ? (JSON.parse(r) || []) : []; } catch { return []; } }
+function saveRecipeToStorage(recipe) {
+  const all = loadSavedRecipes();
+  const created = { id: "sr_"+Date.now()+"_"+Math.random().toString(36).slice(2,7), recipeId: recipe.id, recipe, notes: "", createdAt: Date.now() };
+  all.unshift(created);
+  localStorage.setItem(STORAGE_RECIPES, JSON.stringify(all));
+  return created;
+}
+function deleteSavedRecipeById(id) { localStorage.setItem(STORAGE_RECIPES, JSON.stringify(loadSavedRecipes().filter(r => r.id !== id))); }
+function isRecipeSaved(recipeId) { return loadSavedRecipes().some(r => r.recipeId === recipeId); }
 
 // --- UI state ---
 const state = {
@@ -363,8 +418,12 @@ const qEl = document.getElementById("q");
 const ddEl = document.getElementById("dropdown");
 const selectedEl = document.getElementById("selected");
 const panelEl = document.getElementById("panel");
-const savedSectionEl = document.getElementById("saved-section");
-const savedListEl = document.getElementById("saved-list");
+const recipesSectionEl = document.getElementById("recipes-section");
+const recipesListEl = document.getElementById("recipes-list");
+const savedCombosSectionEl = document.getElementById("saved-combos-section");
+const savedCombosListEl = document.getElementById("saved-combos-list");
+const savedRecipesSectionEl = document.getElementById("saved-recipes-section");
+const savedRecipesListEl = document.getElementById("saved-recipes-list");
 const modalRoot = document.getElementById("modal-root");
 
 function selectedSlugs() { return state.selected.map(s => s.slug); }
@@ -407,8 +466,7 @@ function renderDropdown() {
     : "";
   const items = state.items.map((r, i) => {
     const dots = r.dots !== undefined
-      ? `<span class="dots">${"●".repeat(r.dots) + "○".repeat(3 - r.dots)}</span>`
-      : "";
+      ? `<span class="dots">${"●".repeat(r.dots) + "○".repeat(3 - r.dots)}</span>` : "";
     const multi = (r.hits !== undefined && r.hits > 1)
       ? `<span class="multi">×${r.hits}</span>` : "";
     return `<li class="${i === state.highlight ? "hl" : ""}" data-i="${i}">
@@ -434,19 +492,15 @@ function renderSelected() {
     </button>`).join("");
   const clearBtn = state.selected.length > 1
     ? `<button id="clear" class="clearall">clear all</button>` : "";
-
   let comboAction = "";
   if (state.selected.length >= 2) {
     const existing = findExactMatch(selectedSlugs());
     comboAction = existing
       ? `<span class="saved-as">Saved as <strong>${escape(existing.name)}</strong></span>`
-      : `<button id="save-combo" class="save-combo" title="Save this combination so you can find it again">+ Save as combo</button>`;
+      : `<button id="save-combo" class="save-combo" title="Save this combination">+ Save as combo</button>`;
   }
   selectedEl.innerHTML = chips + clearBtn + comboAction;
-
-  selectedEl.querySelectorAll(".chip").forEach(b => {
-    b.onclick = () => remove(b.dataset.slug);
-  });
+  selectedEl.querySelectorAll(".chip").forEach(b => { b.onclick = () => remove(b.dataset.slug); });
   const clr = document.getElementById("clear");
   if (clr) clr.onclick = () => { state.selected = []; renderAll(); };
   const save = document.getElementById("save-combo");
@@ -472,7 +526,6 @@ function renderPanel() {
     if (!grouped.has(p.ingredient.category)) grouped.set(p.ingredient.category, []);
     grouped.get(p.ingredient.category).push(p);
   }
-
   const multi = state.selected.length > 1;
   const names = state.selected.map(s => s.name).join(" + ");
   const filterBar = present.length > 1
@@ -480,7 +533,6 @@ function renderPanel() {
         <button class="fchip ${state.filter === "all" ? "active" : ""}" data-c="all">all</button>
         ${present.map(c => `<button class="fchip ${state.filter === c ? "active" : ""}" data-c="${c}">${c}</button>`).join("")}
       </div>` : "";
-
   const groups = Array.from(grouped.entries()).map(([cat, items]) => `
     <div class="group">
       <h3>${cat}</h3>
@@ -497,15 +549,12 @@ function renderPanel() {
         }).join("")}
       </div>
     </div>`).join("");
-
   panelEl.innerHTML = `
     <h2>Pairs well with <span class="names">${escape(names)}</span></h2>
     ${filterBar}
     ${all.length ? groups : `<p class="muted" style="font-size:.875rem;">No pairings yet.</p>`}
   `;
-  panelEl.querySelectorAll(".fchip").forEach(b => {
-    b.onclick = () => { state.filter = b.dataset.c; renderPanel(); };
-  });
+  panelEl.querySelectorAll(".fchip").forEach(b => { b.onclick = () => { state.filter = b.dataset.c; renderPanel(); }; });
   panelEl.querySelectorAll(".pchip").forEach(b => {
     b.onclick = () => {
       const ing = bySlug.get(b.dataset.slug);
@@ -514,14 +563,87 @@ function renderPanel() {
   });
 }
 
-function renderSaved() {
-  const combos = loadCombos();
-  if (combos.length === 0) {
-    savedSectionEl.classList.add("hidden");
+function renderRecipes() {
+  if (state.selected.length === 0) {
+    recipesSectionEl.classList.add("hidden");
     return;
   }
-  savedSectionEl.classList.remove("hidden");
-  savedListEl.innerHTML = combos.map(c => `
+  const matches = matchRecipes(selectedSlugs(), 4);
+  if (matches.length === 0) {
+    recipesSectionEl.classList.remove("hidden");
+    recipesListEl.innerHTML = `<div class="panel" style="padding:1rem 1.25rem;font-size:.875rem;color:var(--muted);">
+      No matching recipes for this selection yet. Try removing one of the ingredients.
+    </div>`;
+    return;
+  }
+  recipesSectionEl.classList.remove("hidden");
+  recipesListEl.innerHTML = matches.map(m => {
+    const r = m.recipe;
+    const meta = [r.cuisine, r.time ? `${r.time} min` : null].filter(Boolean).join(" · ");
+    const reqHave = new Set(m.matchedRequired);
+    const optHave = new Set(m.matchedOptional);
+    const requiredChips = r.required.map(slug => {
+      const ing = bySlug.get(slug);
+      const name = ing ? ing.name : prettySlug(slug);
+      const cat = ing ? ing.category : "pantry";
+      const have = reqHave.has(slug);
+      return have
+        ? `<span class="ing cat-${cat}">✓ ${escape(name)}</span>`
+        : `<span class="ing missing">+ ${escape(name)}</span>`;
+    }).join("");
+    const optionalChips = (r.optional || []).map(slug => {
+      const ing = bySlug.get(slug);
+      const name = ing ? ing.name : prettySlug(slug);
+      const cat = ing ? ing.category : "pantry";
+      const have = optHave.has(slug);
+      return have
+        ? `<span class="ing cat-${cat} opt-have">${escape(name)}</span>`
+        : `<span class="ing opt-missing">${escape(name)}</span>`;
+    }).join("");
+    const saved = isRecipeSaved(r.id);
+    return `<article class="recipe-card" data-id="${r.id}">
+      <div class="head">
+        <span class="name">${escape(r.name)}</span>
+        <span class="meta">${m.matchedRequired.length}/${r.required.length} ingredients${meta ? " · " + escape(meta) : ""}</span>
+      </div>
+      ${r.about ? `<p class="about">${escape(r.about)}</p>` : ""}
+      <div class="ing-row">${requiredChips}${optionalChips}</div>
+      <div class="actions">
+        <button class="btn btn-primary" data-act="use">Use this recipe</button>
+        <button class="btn btn-secondary" data-act="save" ${saved ? "disabled" : ""}>${saved ? "✓ Saved" : "Save recipe"}</button>
+      </div>
+    </article>`;
+  }).join("");
+  recipesListEl.querySelectorAll(".recipe-card").forEach(card => {
+    const id = card.dataset.id;
+    const recipe = RECIPES.recipes.find(r => r.id === id);
+    if (!recipe) return;
+    card.querySelector('[data-act="use"]').onclick = () => {
+      state.selected = recipe.required
+        .map(s => bySlug.get(s)).filter(Boolean).map(summary);
+      state.filter = "all";
+      qEl.value = "";
+      state.items = [];
+      renderAll();
+      qEl.focus();
+    };
+    const saveBtn = card.querySelector('[data-act="save"]');
+    saveBtn.onclick = () => {
+      if (saveBtn.disabled) return;
+      saveRecipeToStorage(recipe);
+      renderAll();
+    };
+  });
+}
+
+function renderSavedCombos() {
+  const combos = loadCombos();
+  if (combos.length === 0) {
+    savedCombosSectionEl.classList.add("hidden");
+    return;
+  }
+  savedCombosSectionEl.classList.remove("hidden");
+  savedCombosListEl.innerHTML = combos.map(c => `
     <div class="combo-card" data-id="${c.id}">
       <button class="combo-load" data-id="${c.id}">
         <span class="name">${escape(c.name)}</span>
@@ -534,20 +656,55 @@ function renderSaved() {
         </div>
       </button>
       <button class="delete" data-id="${c.id}">Delete</button>
-    </div>
-  `).join("");
-  savedListEl.querySelectorAll(".combo-load").forEach(b => {
+    </div>`).join("");
+  savedCombosListEl.querySelectorAll(".combo-load").forEach(b => {
     b.onclick = () => {
       const c = loadCombos().find(x => x.id === b.dataset.id);
       if (c) { state.selected = c.ingredients.slice(); state.filter = "all"; renderAll(); }
     };
   });
-  savedListEl.querySelectorAll(".delete").forEach(b => {
-    b.onclick = e => {
-      e.stopPropagation();
-      deleteComboById(b.dataset.id);
+  savedCombosListEl.querySelectorAll(".delete").forEach(b => {
+    b.onclick = e => { e.stopPropagation(); deleteComboById(b.dataset.id); renderAll(); };
+  });
+}
+
+function renderSavedRecipes() {
+  const list = loadSavedRecipes();
+  if (list.length === 0) {
+    savedRecipesSectionEl.classList.add("hidden");
+    return;
+  }
+  savedRecipesSectionEl.classList.remove("hidden");
+  savedRecipesListEl.innerHTML = list.map(sr => {
+    const r = sr.recipe;
+    const chips = r.required.map(slug => {
+      const ing = bySlug.get(slug);
+      const cat = ing ? ing.category : "pantry";
+      const name = ing ? ing.name : prettySlug(slug);
+      return `<span class="cat-label cat-${cat}">${escape(name)}</span>`;
+    }).join("");
+    return `<div class="combo-card" data-id="${sr.id}">
+      <button class="combo-load" data-id="${sr.id}">
+        <span class="name">${escape(r.name)}</span>
+        ${r.cuisine ? `<span class="count">${escape(r.cuisine)}</span>` : ""}
+        ${r.about ? `<p class="about">${escape(r.about)}</p>` : ""}
+        <div class="combo-chips">${chips}</div>
+      </button>
+      <button class="delete" data-id="${sr.id}">Delete</button>
+    </div>`;
+  }).join("");
+  savedRecipesListEl.querySelectorAll(".combo-load").forEach(b => {
+    b.onclick = () => {
+      const sr = loadSavedRecipes().find(x => x.id === b.dataset.id);
+      if (!sr) return;
+      state.selected = sr.recipe.required
+        .map(s => bySlug.get(s)).filter(Boolean).map(summary);
+      state.filter = "all";
       renderAll();
     };
+  });
+  savedRecipesListEl.querySelectorAll(".delete").forEach(b => {
+    b.onclick = e => { e.stopPropagation(); deleteSavedRecipeById(b.dataset.id); renderAll(); };
   });
 }
 
@@ -557,34 +714,24 @@ function openComboModal() {
   const previewChips = state.selected.map(i =>
     `<span class="cat-label cat-${i.category}">${escape(i.name)}</span>`
   ).join("");
-
   const body = existing
     ? `<h2>This combo is already saved</h2>
        <p class="desc">You already saved this exact set as "${escape(existing.name)}".</p>
        <div class="ingredients-preview">${previewChips}</div>
-       <div class="actions">
-         <button class="btn btn-secondary" id="modal-close">Close</button>
-       </div>`
+       <div class="actions"><button class="btn btn-secondary" id="modal-close">Close</button></div>`
     : `<h2>Name this combo</h2>
        <p class="desc">This combination is new to you. Give it a name (and optional notes) so you can find it again.</p>
        <div class="ingredients-preview">${previewChips}</div>
-       <div class="field">
-         <label>Name</label>
-         <input id="combo-name" class="text" placeholder="e.g. Caprese, Apple-pork roast" autocomplete="off" />
-       </div>
-       <div class="field">
-         <label>About <span class="opt">(optional)</span></label>
-         <textarea id="combo-about" class="text" rows="3" placeholder="What is this combo? Why does it work? When do you cook it?"></textarea>
-       </div>
+       <div class="field"><label>Name</label>
+         <input id="combo-name" class="text" placeholder="e.g. Caprese, Apple-pork roast" autocomplete="off" /></div>
+       <div class="field"><label>About <span class="opt">(optional)</span></label>
+         <textarea id="combo-about" class="text" rows="3" placeholder="What is this combo? Why does it work? When do you cook it?"></textarea></div>
        <div class="actions">
          <button class="btn btn-secondary" id="modal-close">Cancel</button>
          <button class="btn btn-primary" id="modal-save" disabled>Save combo</button>
        </div>`;
-
   modalRoot.innerHTML = `<div class="overlay" id="overlay"><div class="modal">${body}</div></div>`;
-  document.getElementById("overlay").onclick = e => {
-    if (e.target.id === "overlay") closeComboModal();
-  };
+  document.getElementById("overlay").onclick = e => { if (e.target.id === "overlay") closeComboModal(); };
   document.getElementById("modal-close").onclick = closeComboModal;
   if (!existing) {
     const nameInput = document.getElementById("combo-name");
@@ -606,20 +753,21 @@ function openComboModal() {
   }
 }
 
-function closeComboModal() {
-  state.comboModalOpen = false;
-  modalRoot.innerHTML = "";
-}
+function closeComboModal() { state.comboModalOpen = false; modalRoot.innerHTML = ""; }
 
-function renderAll() { refreshDropdown(); renderSelected(); renderPanel(); renderSaved(); }
+function renderAll() {
+  refreshDropdown();
+  renderSelected();
+  renderPanel();
+  renderRecipes();
+  renderSavedCombos();
+  renderSavedRecipes();
+}
 
 function add(ing) {
   if (state.selected.some(s => s.slug === ing.slug)) return;
   state.selected.push(ing);
-  qEl.value = "";
-  state.filter = "all";
-  state.open = true;
-  state.items = []; // clear stale items so dropdown doesn't flash old result
+  qEl.value = ""; state.filter = "all"; state.open = true; state.items = [];
   renderAll();
   qEl.focus();
 }
@@ -630,16 +778,11 @@ function remove(slug) {
 function pick(r) { add(r); }
 
 function escape(s) {
-  return String(s).replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
-  }[c]));
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 }
 
 let t = null;
-qEl.addEventListener("input", () => {
-  clearTimeout(t);
-  t = setTimeout(() => { state.open = true; refreshDropdown(); }, 50);
-});
+qEl.addEventListener("input", () => { clearTimeout(t); t = setTimeout(() => { state.open = true; refreshDropdown(); }, 50); });
 qEl.addEventListener("keydown", e => {
   if (e.key === "ArrowDown") {
     e.preventDefault();

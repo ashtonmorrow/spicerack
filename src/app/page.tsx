@@ -4,15 +4,17 @@ import { useState } from "react";
 import { IngredientSearch } from "@/components/IngredientSearch";
 import { SelectedChips } from "@/components/SelectedChips";
 import { PairingsPanel } from "@/components/PairingsPanel";
-import { PearLogo } from "@/components/PearLogo";
+import { PearLetter } from "@/components/PearLetter";
 import { ComboActions } from "@/components/ComboActions";
 import { SavedCombos } from "@/components/SavedCombos";
+import { RecipesPanel } from "@/components/RecipesPanel";
+import { SavedRecipes } from "@/components/SavedRecipes";
 import type { IngredientSummary } from "@/lib/types";
 
 export default function Home() {
   const [selected, setSelected] = useState<IngredientSummary[]>([]);
-  // bumped whenever combos change, so children re-read storage and recheck dedup
   const [combosVersion, setCombosVersion] = useState(0);
+  const [savedRecipesVersion, setSavedRecipesVersion] = useState(0);
 
   function add(ing: IngredientSummary) {
     setSelected((cur) =>
@@ -22,22 +24,19 @@ export default function Home() {
   function remove(slug: string) {
     setSelected((cur) => cur.filter((c) => c.slug !== slug));
   }
-  function loadCombo(ingredients: IngredientSummary[]) {
+  function loadIngredients(ingredients: IngredientSummary[]) {
     setSelected(ingredients);
   }
 
   return (
     <main className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-      <header className="mb-10 flex items-start gap-3">
-        <PearLogo size={40} className="text-pear shrink-0 mt-0.5" />
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-ink">
-            Flavor Pear
-          </h1>
-          <p className="text-muted mt-1 text-sm sm:text-base">
-            Add ingredients. Get suggestions, fast.
-          </p>
-        </div>
+      <header className="mb-10">
+        <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-ink">
+          Flav<span className="text-pear"><PearLetter /></span>r Pear
+        </h1>
+        <p className="text-muted mt-1 text-sm sm:text-base">
+          Add ingredients. Get suggestions and recipes, fast.
+        </p>
       </header>
 
       <div className="mb-4">
@@ -62,10 +61,23 @@ export default function Home() {
 
       <PairingsPanel selected={selected} onAdd={add} />
 
+      <RecipesPanel
+        selected={selected}
+        onUseRecipe={loadIngredients}
+        onSavedChanged={() => setSavedRecipesVersion((v) => v + 1)}
+        savedVersion={savedRecipesVersion}
+      />
+
       <SavedCombos
         refreshKey={combosVersion}
-        onLoad={loadCombo}
+        onLoad={loadIngredients}
         onChanged={() => setCombosVersion((v) => v + 1)}
+      />
+
+      <SavedRecipes
+        refreshKey={savedRecipesVersion}
+        onLoad={loadIngredients}
+        onChanged={() => setSavedRecipesVersion((v) => v + 1)}
       />
 
       <footer className="mt-16 text-xs text-muted text-center">

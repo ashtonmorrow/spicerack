@@ -1,0 +1,346 @@
+{
+  "$schema_version": 1,
+  "notes": "Hand-curated classic dishes used to suggest 'what could I make' from the user's ingredient selection. Descriptions are brief and factual; instructions are intentionally omitted (find a real recipe for those).",
+  "recipes": [
+    {
+      "id": "caprese",
+      "name": "Caprese Salad",
+      "about": "Italian sliced tomato, fresh mozzarella, and basil dressed with olive oil.",
+      "cuisine": "italian",
+      "course": "starter",
+      "time": 5,
+      "required": ["tomato", "mozzarella", "basil", "olive-oil"],
+      "optional": ["balsamic-vinegar", "black-pepper"]
+    },
+    {
+      "id": "tomato-basil-pasta",
+      "name": "Tomato Basil Pasta",
+      "about": "Pasta with a quick tomato-garlic-basil sauce, finished with parmesan.",
+      "cuisine": "italian",
+      "course": "main",
+      "time": 25,
+      "required": ["pasta", "tomato", "basil", "garlic", "olive-oil"],
+      "optional": ["parmesan", "chili", "onion"]
+    },
+    {
+      "id": "pesto-pasta",
+      "name": "Pesto Pasta",
+      "about": "Pasta tossed with basil pesto: pine nuts, parmesan, garlic, and olive oil.",
+      "cuisine": "italian",
+      "course": "main",
+      "time": 20,
+      "required": ["pasta", "basil", "pine-nut", "parmesan", "garlic", "olive-oil"],
+      "optional": []
+    },
+    {
+      "id": "aglio-e-olio",
+      "name": "Aglio e Olio",
+      "about": "Spaghetti with garlic, olive oil, chili flakes, and parsley.",
+      "cuisine": "italian",
+      "course": "main",
+      "time": 15,
+      "required": ["pasta", "garlic", "olive-oil", "chili", "parsley"],
+      "optional": []
+    },
+    {
+      "id": "bruschetta",
+      "name": "Bruschetta",
+      "about": "Toasted bread topped with tomato, basil, garlic, and olive oil.",
+      "cuisine": "italian",
+      "course": "starter",
+      "time": 10,
+      "required": ["bread", "tomato", "basil", "garlic", "olive-oil"],
+      "optional": []
+    },
+    {
+      "id": "mushroom-risotto",
+      "name": "Mushroom Risotto",
+      "about": "Creamy Italian rice with sautéed mushrooms, parmesan, and thyme.",
+      "cuisine": "italian",
+      "course": "main",
+      "time": 40,
+      "required": ["rice", "mushroom", "butter", "parmesan", "thyme"],
+      "optional": ["shallot", "wine-white", "garlic"]
+    },
+    {
+      "id": "butternut-sage-pasta",
+      "name": "Brown-Butter Sage Squash Pasta",
+      "about": "Pasta with roasted butternut squash, brown butter, sage, and parmesan.",
+      "cuisine": "italian",
+      "course": "main",
+      "time": 35,
+      "required": ["pasta", "butternut-squash", "sage", "brown-butter", "parmesan"],
+      "optional": ["nutmeg"]
+    },
+    {
+      "id": "mac-and-cheese",
+      "name": "Mac and Cheese",
+      "about": "Pasta in a cheddar cheese sauce, baked or stovetop.",
+      "cuisine": "american",
+      "course": "main",
+      "time": 30,
+      "required": ["pasta", "cheddar", "butter", "milk"],
+      "optional": ["nutmeg", "black-pepper"]
+    },
+    {
+      "id": "roasted-chicken",
+      "name": "Roasted Chicken",
+      "about": "Whole chicken roasted with lemon, herbs, and garlic.",
+      "cuisine": "french",
+      "course": "main",
+      "time": 75,
+      "required": ["chicken", "lemon", "thyme", "garlic", "butter"],
+      "optional": ["rosemary", "olive-oil"]
+    },
+    {
+      "id": "chicken-piccata",
+      "name": "Chicken Piccata",
+      "about": "Chicken cutlets in a lemon-caper-butter sauce with parsley.",
+      "cuisine": "italian",
+      "course": "main",
+      "time": 25,
+      "required": ["chicken", "lemon", "capers", "butter", "parsley"],
+      "optional": ["wine-white", "shallot"]
+    },
+    {
+      "id": "coq-au-vin",
+      "name": "Coq au Vin",
+      "about": "Chicken braised in red wine with mushrooms, bacon, onions, and thyme.",
+      "cuisine": "french",
+      "course": "main",
+      "time": 90,
+      "required": ["chicken", "wine-red", "mushroom", "bacon", "onion", "thyme"],
+      "optional": ["bay-leaf", "garlic", "carrot"]
+    },
+    {
+      "id": "shrimp-scampi",
+      "name": "Shrimp Scampi",
+      "about": "Shrimp sautéed in garlic butter with lemon, parsley, and a pinch of chili.",
+      "cuisine": "italian",
+      "course": "main",
+      "time": 15,
+      "required": ["shrimp", "garlic", "butter", "lemon", "parsley"],
+      "optional": ["chili", "wine-white", "pasta"]
+    },
+    {
+      "id": "salmon-with-dill",
+      "name": "Salmon with Dill",
+      "about": "Salmon fillets cooked in butter and finished with lemon and dill.",
+      "cuisine": "scandinavian",
+      "course": "main",
+      "time": 20,
+      "required": ["salmon", "dill", "lemon", "butter"],
+      "optional": ["capers", "olive-oil"]
+    },
+    {
+      "id": "miso-glazed-salmon",
+      "name": "Miso-Glazed Salmon",
+      "about": "Salmon glazed with miso and ginger, finished with scallions.",
+      "cuisine": "japanese",
+      "course": "main",
+      "time": 20,
+      "required": ["salmon", "miso", "ginger"],
+      "optional": ["scallion", "sesame-oil", "soy-sauce"]
+    },
+    {
+      "id": "pork-chop-with-apples",
+      "name": "Pork Chops with Apples",
+      "about": "Seared pork chops with apples cooked in butter and sage.",
+      "cuisine": "american",
+      "course": "main",
+      "time": 30,
+      "required": ["pork", "apple", "sage", "butter"],
+      "optional": ["onion", "thyme"]
+    },
+    {
+      "id": "maple-mustard-pork",
+      "name": "Maple-Mustard Pork Tenderloin",
+      "about": "Pork tenderloin glazed with maple syrup and mustard, roasted with garlic and thyme.",
+      "cuisine": "american",
+      "course": "main",
+      "time": 40,
+      "required": ["pork", "maple-syrup", "mustard", "garlic"],
+      "optional": ["thyme", "rosemary"]
+    },
+    {
+      "id": "beef-stew",
+      "name": "Beef Stew",
+      "about": "Beef simmered with onions, carrots, red wine, and herbs until tender.",
+      "cuisine": "french",
+      "course": "main",
+      "time": 150,
+      "required": ["beef", "onion", "carrot", "thyme", "wine-red", "garlic"],
+      "optional": ["bay-leaf", "mushroom", "potato"]
+    },
+    {
+      "id": "lamb-with-rosemary",
+      "name": "Rosemary Garlic Lamb",
+      "about": "Lamb roasted with rosemary, garlic, olive oil, and lemon.",
+      "cuisine": "mediterranean",
+      "course": "main",
+      "time": 90,
+      "required": ["lamb", "rosemary", "garlic", "olive-oil", "lemon"],
+      "optional": ["thyme"]
+    },
+    {
+      "id": "lamb-yogurt-mint",
+      "name": "Lamb with Yogurt and Mint",
+      "about": "Spiced lamb served with a cool yogurt-mint sauce.",
+      "cuisine": "middle-eastern",
+      "course": "main",
+      "time": 45,
+      "required": ["lamb", "mint", "yogurt", "cumin", "garlic"],
+      "optional": ["lemon", "harissa", "pomegranate"]
+    },
+    {
+      "id": "duck-orange",
+      "name": "Duck à l'Orange",
+      "about": "Roast duck with a sweet-tart orange sauce, finished with thyme.",
+      "cuisine": "french",
+      "course": "main",
+      "time": 120,
+      "required": ["duck", "orange", "thyme"],
+      "optional": ["wine-red", "honey"]
+    },
+    {
+      "id": "cobb-salad",
+      "name": "Cobb Salad",
+      "about": "Composed salad with chicken, bacon, avocado, egg, and blue cheese.",
+      "cuisine": "american",
+      "course": "main",
+      "time": 25,
+      "required": ["chicken", "bacon", "avocado", "egg", "blue-cheese"],
+      "optional": ["tomato", "olive-oil"]
+    },
+    {
+      "id": "greek-salad",
+      "name": "Greek Salad",
+      "about": "Tomatoes, cucumbers, feta, olives, and red onion with oregano and olive oil.",
+      "cuisine": "greek",
+      "course": "side",
+      "time": 10,
+      "required": ["tomato", "feta", "cucumber", "olive", "oregano", "olive-oil"],
+      "optional": ["onion"]
+    },
+    {
+      "id": "watermelon-feta",
+      "name": "Watermelon Feta Mint",
+      "about": "Cubed watermelon with feta and torn mint — a summer salad.",
+      "cuisine": "mediterranean",
+      "course": "side",
+      "time": 5,
+      "required": ["watermelon", "feta", "mint"],
+      "optional": ["lime", "olive-oil"]
+    },
+    {
+      "id": "pear-blue-cheese-salad",
+      "name": "Pear Blue Cheese Salad",
+      "about": "Sliced pear with blue cheese, walnuts, and arugula.",
+      "cuisine": "french",
+      "course": "starter",
+      "time": 10,
+      "required": ["pear", "blue-cheese", "walnut", "arugula"],
+      "optional": ["honey", "olive-oil"]
+    },
+    {
+      "id": "tzatziki",
+      "name": "Tzatziki",
+      "about": "Greek yogurt sauce with cucumber, dill, mint, and garlic.",
+      "cuisine": "greek",
+      "course": "sauce",
+      "time": 10,
+      "required": ["cucumber", "yogurt", "dill", "mint", "garlic"],
+      "optional": ["olive-oil", "lemon"]
+    },
+    {
+      "id": "hummus",
+      "name": "Hummus",
+      "about": "Pureed chickpeas with tahini, lemon, garlic, and olive oil.",
+      "cuisine": "middle-eastern",
+      "course": "starter",
+      "time": 10,
+      "required": ["chickpea", "tahini", "lemon", "garlic", "olive-oil"],
+      "optional": ["cumin", "paprika"]
+    },
+    {
+      "id": "baba-ganoush",
+      "name": "Baba Ganoush",
+      "about": "Smoky roasted eggplant with tahini, lemon, garlic, and olive oil.",
+      "cuisine": "middle-eastern",
+      "course": "starter",
+      "time": 50,
+      "required": ["eggplant", "tahini", "lemon", "garlic", "olive-oil"],
+      "optional": ["cumin", "parsley"]
+    },
+    {
+      "id": "tomato-soup",
+      "name": "Tomato Soup",
+      "about": "Tomatoes simmered with onion, butter, and basil; finished with cream.",
+      "cuisine": "american",
+      "course": "main",
+      "time": 35,
+      "required": ["tomato", "onion", "butter", "basil"],
+      "optional": ["cream", "garlic"]
+    },
+    {
+      "id": "apple-pie-filling",
+      "name": "Apple Pie Filling",
+      "about": "Apples cooked with cinnamon, butter, and a touch of nutmeg.",
+      "cuisine": "american",
+      "course": "dessert",
+      "time": 30,
+      "required": ["apple", "cinnamon", "butter"],
+      "optional": ["nutmeg", "sugar", "lemon"]
+    },
+    {
+      "id": "apple-cheddar-grilled-cheese",
+      "name": "Apple Cheddar Grilled Cheese",
+      "about": "Grilled cheese with sharp cheddar and thinly sliced apple on buttered bread.",
+      "cuisine": "american",
+      "course": "main",
+      "time": 10,
+      "required": ["apple", "cheddar", "bread", "butter"],
+      "optional": []
+    },
+    {
+      "id": "caramel-apples",
+      "name": "Caramel Apples",
+      "about": "Apples coated in caramel — a classic fall treat.",
+      "cuisine": "american",
+      "course": "dessert",
+      "time": 20,
+      "required": ["apple", "caramel"],
+      "optional": ["butter", "vanilla"]
+    },
+    {
+      "id": "strawberry-shortcake",
+      "name": "Strawberry Shortcake",
+      "about": "Macerated strawberries with whipped cream over biscuits.",
+      "cuisine": "american",
+      "course": "dessert",
+      "time": 30,
+      "required": ["strawberry", "cream"],
+      "optional": ["vanilla", "sugar"]
+    },
+    {
+      "id": "caesar-dressing",
+      "name": "Caesar Dressing",
+      "about": "Anchovy, garlic, parmesan, lemon, and olive oil — emulsified.",
+      "cuisine": "american",
+      "course": "sauce",
+      "time": 10,
+      "required": ["anchovy", "garlic", "parmesan", "lemon", "olive-oil"],
+      "optional": ["mustard", "egg"]
+    },
+    {
+      "id": "fennel-orange-salad",
+      "name": "Fennel Orange Arugula Salad",
+      "about": "Shaved fennel with orange segments and arugula, dressed with olive oil.",
+      "cuisine": "italian",
+      "course": "starter",
+      "time": 10,
+      "required": ["fennel", "orange", "arugula", "olive-oil"],
+      "optional": ["walnut", "lemon"]
+    }
+  ]
+}

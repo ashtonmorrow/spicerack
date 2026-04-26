@@ -1,8 +1,10 @@
-// Validates ingredients.json:
+// Validates data files:
 //  - every pairing.slug points at a known ingredient
 //  - no duplicate slugs
 //  - reports asymmetric pairings (A→B but not B→A) as warnings
 //  - reports orphan ingredients (no incoming and no outgoing pairings)
+//  - every recipe's required/optional slugs point at known ingredients
+//  - no duplicate recipe ids
 
 import fs from "node:fs";
 import path from "node:path";
@@ -77,4 +79,39 @@ if (asymmetric.length) {
   for (const a of asymmetric.slice(0, 10)) console.warn(`    ${a}`);
 }
 
-process.exit(dupes.length || dangling.length ? 1 : 0);
+// ----- recipes.json -----
+let recipeProblems = 0;
+const recipesPath = path.join(root, "data", "recipes.json");
+if (fs.existsSync(recipesPath)) {
+  const recipesData = JSON.parse(fs.readFileSync(recipesPath, "utf8"));
+  const recipes = recipesData.recipes ?? [];
+  const recipeIds = new Set();
+  const recipeDupes = [];
+  const recipeDangling = [];
+  for (const r of recipes) {
+    if (recipeIds.has(r.id)) recipeDupes.push(r.id);
+    recipeIds.add(r.id);
+    for (const slug of r.required ?? []) {
+      if (!slugs.has(slug)) recipeDangling.push({ recipe: r.id, slug, kind: "required" });
+    }
+    for (const slug of r.optional ?? []) {
+      if (!slugs.has(slug)) recipeDangling.push({ recipe: r.id, slug, kind: "optional" });
+    }
+  }
+  console.log(`\n✓ ${recipes.length} recipes`);
+  if (recipeDupes.length) {
+    console.error(`✗ duplicate recipe ids: ${recipeDupes.join(", ")}`);
+    recipeProblems += recipeDupes.length;
+  }
+  if (recipeDangling.length) {
+    console.error(`✗ ${recipeDangling.length} recipe ingredients reference unknown slugs:`);
+    for (const d of recipeDangling) {
+      console.error(`    ${d.recipe} → ${d.slug} (${d.kind})`);
+    }
+    recipeProblems += recipeDangling.length;
+  } else {
+    console.log("✓ all recipe ingredients are known");
+  }
+}
+
+process.exit(dupes.length || dangling.length || recipeProblems ? 1 : 0);

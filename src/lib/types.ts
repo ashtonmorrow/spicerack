@@ -46,3 +46,27 @@ export interface ScoredPairing {
   hits: number;      // how many of the selected ingredients link to this one
   averageStrength: number;
 }
+
+// ----- Recipes -----
+
+export interface Recipe {
+  id: string;
+  name: string;
+  about: string;
+  cuisine?: string;
+  course?: "starter" | "main" | "side" | "dessert" | "sauce";
+  time?: number; // rough total minutes
+  required: string[]; // ingredient slugs that define the dish
+  optional?: string[]; // ingredient slugs that are common but not essential
+}
+
+// What /api/recipes returns: the recipe plus how it scored against the user's
+// current ingredient selection.
+export interface ScoredRecipe {
+  recipe: Recipe;
+  score: number;          // ranking score (coverage * matches + optional bonus)
+  matchedRequired: string[];  // slugs from `required` that the user already has
+  missingRequired: string[];  // slugs from `required` that they don't yet
+  matchedOptional: string[];
+  coverage: number;       // matchedRequired.length / required.length
+}
