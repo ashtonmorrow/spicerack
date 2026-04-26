@@ -79,13 +79,16 @@ if (asymmetric.length) {
   for (const a of asymmetric.slice(0, 10)) console.warn(`    ${a}`);
 }
 
-// ----- recipes.json -----
+// ----- recipe files -----
 let recipeProblems = 0;
-const recipesPath = path.join(root, "data", "recipes.json");
-if (fs.existsSync(recipesPath)) {
+const recipeFiles = ["recipes.json", "recipes-themealdb.json"];
+const recipeIds = new Set();
+let totalRecipes = 0;
+for (const fname of recipeFiles) {
+  const recipesPath = path.join(root, "data", fname);
+  if (!fs.existsSync(recipesPath)) continue;
   const recipesData = JSON.parse(fs.readFileSync(recipesPath, "utf8"));
   const recipes = recipesData.recipes ?? [];
-  const recipeIds = new Set();
   const recipeDupes = [];
   const recipeDangling = [];
   for (const r of recipes) {
@@ -98,20 +101,23 @@ if (fs.existsSync(recipesPath)) {
       if (!slugs.has(slug)) recipeDangling.push({ recipe: r.id, slug, kind: "optional" });
     }
   }
-  console.log(`\n✓ ${recipes.length} recipes`);
+  totalRecipes += recipes.length;
+  console.log(`\n✓ ${fname}: ${recipes.length} recipes`);
   if (recipeDupes.length) {
-    console.error(`✗ duplicate recipe ids: ${recipeDupes.join(", ")}`);
+    console.error(`✗ duplicate recipe ids in ${fname}: ${recipeDupes.join(", ")}`);
     recipeProblems += recipeDupes.length;
   }
   if (recipeDangling.length) {
-    console.error(`✗ ${recipeDangling.length} recipe ingredients reference unknown slugs:`);
-    for (const d of recipeDangling) {
+    console.error(`✗ ${recipeDangling.length} ingredients in ${fname} reference unknown slugs:`);
+    for (const d of recipeDangling.slice(0, 10)) {
       console.error(`    ${d.recipe} → ${d.slug} (${d.kind})`);
     }
+    if (recipeDangling.length > 10) console.error(`    … and ${recipeDangling.length - 10} more`);
     recipeProblems += recipeDangling.length;
   } else {
-    console.log("✓ all recipe ingredients are known");
+    console.log(`✓ all ingredients in ${fname} are known`);
   }
 }
+console.log(`\nTotal recipes across files: ${totalRecipes}`);
 
 process.exit(dupes.length || dangling.length || recipeProblems ? 1 : 0);

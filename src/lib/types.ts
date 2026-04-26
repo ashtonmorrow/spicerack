@@ -49,6 +49,8 @@ export interface ScoredPairing {
 
 // ----- Recipes -----
 
+export type RecipeSource = "curated" | "themealdb";
+
 export interface Recipe {
   id: string;
   name: string;
@@ -61,6 +63,8 @@ export interface Recipe {
   optional?: string[];    // ingredient slugs that are common but not essential
   method?: string;        // brief generic technique (1–3 sentences)
   tips?: string;          // optional pointer; surfaced subtly in the modal
+  source?: RecipeSource;  // where this recipe came from (curated vs imported)
+  sourceUrl?: string;     // upstream link for "find recipe online"
 }
 
 // What /api/recipes returns: the recipe plus how it scored against the user's

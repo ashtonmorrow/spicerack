@@ -15,7 +15,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "validate": "node scripts/validate.mjs",
-    "preview": "node scripts/build-preview.mjs"
+    "preview": "node scripts/build-preview.mjs",
+    "fetch:themealdb": "node scripts/fetch-themealdb.mjs"
   },
   "dependencies": {
     "next": "14.2.5",

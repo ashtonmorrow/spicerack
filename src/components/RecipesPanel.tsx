@@ -153,11 +153,19 @@ function RecipeCard({
       className="block w-full text-left border border-border rounded-md p-3.5 hover:bg-hover/50 hover:border-border transition"
     >
       <header className="flex items-baseline justify-between gap-3 flex-wrap mb-1">
-        <h3 className="font-medium text-sm text-ink flex items-center gap-2">
+        <h3 className="font-medium text-sm text-ink flex items-center gap-2 flex-wrap">
           {r.name}
           {saved && (
             <span className="text-[10px] font-normal text-pear/80 bg-pear/10 px-1.5 py-0.5 rounded">
               ✓ saved
+            </span>
+          )}
+          {r.source === "themealdb" && (
+            <span
+              className="text-[10px] font-normal text-muted bg-hover px-1.5 py-0.5 rounded"
+              title="Imported from TheMealDB"
+            >
+              TheMealDB
             </span>
           )}
         </h3>
@@ -171,27 +179,43 @@ function RecipeCard({
         <p className="text-sm text-muted leading-snug mb-2.5">{r.about}</p>
       )}
 
-      <div className="flex flex-wrap gap-1">
-        {r.required.map((slug) => {
-          const ing = ingredientLookup.get(slug);
-          const have = userSlugs.has(slug);
-          if (!ing) return null;
-          return (
-            <span
-              key={slug}
-              className={`text-xs px-2 py-0.5 rounded inline-flex items-center gap-1 ${
-                have
-                  ? `cat-${ing.category}`
-                  : "bg-hover text-muted line-through decoration-muted/40"
-              }`}
-            >
-              {have ? "✓" : "+"} {ing.name}
-            </span>
-          );
-        })}
-      </div>
+      {match.matchedRequired.length > 0 && (
+        <div className="flex flex-wrap gap-1 mb-1">
+          {match.matchedRequired.map((slug) => {
+            const ing = ingredientLookup.get(slug);
+            if (!ing) return null;
+            return (
+              <span
+                key={slug}
+                className={`text-xs px-2 py-0.5 rounded inline-flex items-center gap-1 cat-${ing.category}`}
+              >
+                ✓ {ing.name}
+              </span>
+            );
+          })}
+        </div>
+      )}
+      {match.missingRequired.length > 0 && (
+        <div className="flex flex-wrap gap-1 items-center">
+          <span className="text-[10px] uppercase tracking-wider text-muted/70 mr-1">
+            still need:
+          </span>
+          {match.missingRequired.map((slug) => {
+            const ing = ingredientLookup.get(slug);
+            if (!ing) return null;
+            return (
+              <span
+                key={slug}
+                className="text-xs px-2 py-0.5 rounded bg-hover text-muted"
+              >
+                + {ing.name}
+              </span>
+            );
+          })}
+        </div>
+      )}
       <div className="text-xs text-muted/80 mt-2.5">
-        Open to view method, save, or use these ingredients →
+        Open to view{r.method ? " method," : ""} save, or use these ingredients →
       </div>
     </button>
   );

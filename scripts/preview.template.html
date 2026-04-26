@@ -416,7 +416,15 @@
 
 <script>
 const DATA = /*__INGREDIENTS_JSON__*/null;
-const RECIPES = /*__RECIPES_JSON__*/null;
+const RECIPES_CURATED = /*__RECIPES_JSON__*/null;
+const RECIPES_IMPORTED = /*__RECIPES_IMPORTED_JSON__*/null;
+// Merge: curated comes first; both sets coexist by id.
+const RECIPES = {
+  recipes: [
+    ...(RECIPES_CURATED.recipes || []).map(r => ({ ...r, source: r.source || "curated" })),
+    ...(RECIPES_IMPORTED.recipes || []).map(r => ({ ...r, source: r.source || "themealdb" })),
+  ],
+};
 
 const STARTER_SLUGS = ["tomato","chicken","garlic","lemon","basil","onion","salmon","apple"];
 const STORAGE_COMBOS = "flavor-pear:combos";
@@ -479,21 +487,29 @@ function pairingsFor(slugs, limit = 60) {
 function matchRecipes(slugs, limit = 4) {
   if (!slugs.length) return [];
   const sel = new Set(slugs);
+  // Threshold scales with selection size — bigger selections require stronger matches.
+  const minMatched = slugs.length >= 6 ? 3 : (slugs.length >= 3 ? 2 : 1);
   const scored = [];
   for (const r of RECIPES.recipes) {
     const matchedRequired = r.required.filter(s => sel.has(s));
-    if (!matchedRequired.length) continue;
+    if (matchedRequired.length < minMatched) continue;
     const missingRequired = r.required.filter(s => !sel.has(s));
     const matchedOptional = (r.optional || []).filter(s => sel.has(s));
     const coverage = matchedRequired.length / r.required.length;
     const score = coverage * coverage * matchedRequired.length + 0.15 * matchedOptional.length;
     scored.push({ recipe: r, score, matchedRequired, missingRequired, matchedOptional, coverage });
   }
-  scored.sort((a, b) =>
-    b.score !== a.score ? b.score - a.score :
-    b.coverage !== a.coverage ? b.coverage - a.coverage :
-    b.matchedRequired.length - a.matchedRequired.length
-  );
+  scored.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    if (b.coverage !== a.coverage) return b.coverage - a.coverage;
+    if (b.matchedRequired.length !== a.matchedRequired.length) {
+      return b.matchedRequired.length - a.matchedRequired.length;
+    }
+    // curated wins ties
+    const aC = (a.recipe.source ?? "curated") === "curated" ? 1 : 0;
+    const bC = (b.recipe.source ?? "curated") === "curated" ? 1 : 0;
+    return bC - aC;
+  });
   return scored.slice(0, limit);
 }
 
@@ -757,25 +773,30 @@ function renderRecipes() {
   recipesListEl.innerHTML = matches.map(m => {
     const r = m.recipe;
     const meta = [r.cuisine, r.time ? `${r.time} min` : null].filter(Boolean).join(" · ");
-    const reqHave = new Set(m.matchedRequired);
-    const requiredChips = r.required.map(slug => {
+    const matchedChips = m.matchedRequired.map(slug => {
       const ing = bySlug.get(slug);
       const name = ing ? ing.name : prettySlug(slug);
       const cat = ing ? ing.category : "pantry";
-      const have = reqHave.has(slug);
-      return have
-        ? `<span class="ing cat-${cat}">✓ ${escape(name)}</span>`
-        : `<span class="ing missing">+ ${escape(name)}</span>`;
+      return `<span class="ing cat-${cat}">✓ ${escape(name)}</span>`;
+    }).join("");
+    const missingChips = m.missingRequired.map(slug => {
+      const ing = bySlug.get(slug);
+      const name = ing ? ing.name : prettySlug(slug);
+      return `<span class="ing missing">+ ${escape(name)}</span>`;
     }).join("");
     const saved = isRecipeSaved(r.id);
+    const sourcePill = r.source === "themealdb"
+      ? ' <span class="saved-pill" style="background:var(--hover);color:var(--muted);">TheMealDB</span>'
+      : '';
     return `<button class="recipe-card" data-id="${r.id}">
       <div class="head">
-        <span class="name">${escape(r.name)}${saved ? ' <span class="saved-pill">✓ saved</span>' : ''}</span>
+        <span class="name">${escape(r.name)}${saved ? ' <span class="saved-pill">✓ saved</span>' : ''}${sourcePill}</span>
         <span class="meta">${m.matchedRequired.length}/${r.required.length} ingredients${meta ? " · " + escape(meta) : ""}</span>
       </div>
       ${r.about ? `<p class="about">${escape(r.about)}</p>` : ""}
-      <div class="ing-row">${requiredChips}</div>
-      <div class="open-hint">Open to view method, save, or use these ingredients →</div>
+      ${matchedChips ? `<div class="ing-row" style="margin-bottom:.25rem;">${matchedChips}</div>` : ""}
+      ${missingChips ? `<div class="ing-row" style="align-items:center;"><span style="font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(120,119,116,.7);margin-right:.25rem;">still need:</span>${missingChips}</div>` : ""}
+      <div class="open-hint">Open to view ${r.method ? "method, " : ""}save, or use these ingredients →</div>
     </button>`;
   }).join("");
   recipesListEl.querySelectorAll(".recipe-card").forEach(card => {
@@ -884,7 +905,10 @@ function openRecipeModal(recipe) {
     recipe.servings ? `serves ${recipe.servings}` : null,
   ].filter(Boolean).join(" · ");
 
-  const findUrl = "https://www.google.com/search?q=" + encodeURIComponent(recipe.name + " recipe");
+  const findUrl = recipe.sourceUrl
+    ? recipe.sourceUrl
+    : "https://www.google.com/search?q=" + encodeURIComponent(recipe.name + " recipe");
+  const findLabel = recipe.source === "themealdb" ? "View on TheMealDB" : "Find recipe online";
 
   function chip(slug, cat, name, kind) {
     if (kind === "have") return `<span class="ing cat-${cat}">✓ ${escape(name)}</span>`;
@@ -945,7 +969,7 @@ function openRecipeModal(recipe) {
       <div class="footer-actions">
         <button class="btn btn-primary" id="modal-use">Use this recipe</button>
         <button class="btn btn-outline" id="modal-save" ${saveDisabled}>${saveLabel}</button>
-        <a href="${findUrl}" target="_blank" rel="noopener noreferrer">Find recipe online ↗</a>
+        <a href="${findUrl}" target="_blank" rel="noopener noreferrer">${findLabel} ↗</a>
         ${saved ? `<button id="modal-pin" class="pin-action ${saved.pinned ? "pinned" : ""}" title="${saved.pinned ? "Unpin from top" : "Pin to top of saved"}">
           ${pinSvg(Boolean(saved.pinned))}<span>${saved.pinned ? "Pinned" : "Pin"}</span>
         </button>` : ""}

@@ -105,9 +105,14 @@ export function RecipeModal({
     .filter(Boolean)
     .join(" · ");
 
-  const findUrl = `https://www.google.com/search?q=${encodeURIComponent(
-    recipe.name + " recipe"
-  )}`;
+  // For TheMealDB-sourced recipes, link directly to the source page so the
+  // user gets the actual recipe instead of a generic Google search.
+  const findUrl = recipe.sourceUrl
+    ? recipe.sourceUrl
+    : `https://www.google.com/search?q=${encodeURIComponent(
+        recipe.name + " recipe"
+      )}`;
+  const findLabel = recipe.source === "themealdb" ? "View on TheMealDB" : "Find recipe online";
 
   return (
     <div
@@ -140,6 +145,13 @@ export function RecipeModal({
             </button>
           </div>
           {meta && <p className="text-xs text-muted">{meta}</p>}
+          {recipe.source === "themealdb" && (
+            <p className="text-[11px] text-muted/80 mt-1">
+              Imported from TheMealDB · click{" "}
+              <span className="italic">View on TheMealDB</span> below for the
+              full method.
+            </p>
+          )}
         </header>
 
         {recipe.about && (
@@ -254,9 +266,11 @@ export function RecipeModal({
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm px-3 py-1.5 rounded text-muted hover:text-ink hover:bg-hover transition"
-            title="Search the web for a full recipe"
+            title={recipe.source === "themealdb"
+              ? "Open the original recipe on TheMealDB"
+              : "Search the web for a full recipe"}
           >
-            Find recipe online ↗
+            {findLabel} ↗
           </a>
 
           {saved && (
