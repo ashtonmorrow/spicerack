@@ -6,9 +6,11 @@ import {
   deleteSavedRecipe,
   findSavedByRecipeId,
   saveRecipe,
+  togglePinnedRecipe,
   updateRecipeNotes,
   type SavedRecipe,
 } from "@/lib/saved-recipes";
+import { PinIcon } from "./PinIcon";
 
 interface Props {
   recipe: Recipe;
@@ -76,6 +78,13 @@ export function RecipeModal({
     setSaved(null);
     setNotes("");
     setNotesDirty(false);
+    onChanged();
+  }
+
+  function handleTogglePin() {
+    if (!saved) return;
+    const next = togglePinnedRecipe(saved.id);
+    setSaved({ ...saved, pinned: next });
     onChanged();
   }
 
@@ -249,6 +258,21 @@ export function RecipeModal({
           >
             Find recipe online ↗
           </a>
+
+          {saved && (
+            <button
+              onClick={handleTogglePin}
+              className={`text-sm px-2.5 py-1.5 rounded transition flex items-center gap-1.5 ${
+                saved.pinned
+                  ? "text-pear bg-pear/10 hover:bg-pear/15"
+                  : "text-muted hover:text-ink hover:bg-hover"
+              }`}
+              title={saved.pinned ? "Unpin from top" : "Pin to top of saved"}
+            >
+              <PinIcon filled={Boolean(saved.pinned)} />
+              {saved.pinned ? "Pinned" : "Pin"}
+            </button>
+          )}
 
           {saved && (
             <button

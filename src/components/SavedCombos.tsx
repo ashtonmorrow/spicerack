@@ -2,7 +2,13 @@
 
 import { useEffect, useState } from "react";
 import type { IngredientSummary } from "@/lib/types";
-import { deleteCombo, loadCombos, type SavedCombo } from "@/lib/combos";
+import {
+  deleteCombo,
+  loadCombosSorted,
+  togglePinnedCombo,
+  type SavedCombo,
+} from "@/lib/combos";
+import { PinIcon } from "./PinIcon";
 
 interface Props {
   refreshKey: number; // bump to force a reload from storage
@@ -14,14 +20,20 @@ export function SavedCombos({ refreshKey, onLoad, onChanged }: Props) {
   const [combos, setCombos] = useState<SavedCombo[]>([]);
 
   useEffect(() => {
-    setCombos(loadCombos());
+    setCombos(loadCombosSorted());
   }, [refreshKey]);
 
   if (combos.length === 0) return null;
 
   function remove(id: string) {
     deleteCombo(id);
-    setCombos(loadCombos());
+    setCombos(loadCombosSorted());
+    onChanged();
+  }
+
+  function togglePin(id: string) {
+    togglePinnedCombo(id);
+    setCombos(loadCombosSorted());
     onChanged();
   }
 
@@ -34,36 +46,54 @@ export function SavedCombos({ refreshKey, onLoad, onChanged }: Props) {
         {combos.map((c) => (
           <div
             key={c.id}
-            className="border border-border rounded-md p-3 hover:bg-hover transition group"
+            className="relative border border-border rounded-md hover:bg-hover transition group"
           >
-            <div className="flex items-start justify-between gap-3">
-              <button
-                onClick={() => onLoad(c.ingredients)}
-                className="flex-1 text-left"
-              >
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-medium text-sm text-ink">{c.name}</span>
-                  <span className="text-xs text-muted">
-                    {c.ingredients.length} ingredients
-                  </span>
-                </div>
-                {c.about && (
-                  <p className="text-sm text-muted mt-1 leading-snug">{c.about}</p>
+            <button
+              onClick={() => onLoad(c.ingredients)}
+              className="block w-full text-left p-3 pr-9"
+            >
+              <div className="flex items-center gap-2 flex-wrap">
+                {c.pinned && (
+                  <PinIcon filled size={12} className="text-pear shrink-0" />
                 )}
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {c.ingredients.map((i) => (
-                    <span
-                      key={i.slug}
-                      className={`text-[10px] px-1.5 py-0.5 rounded cat-${i.category}`}
-                    >
-                      {i.name}
-                    </span>
-                  ))}
-                </div>
+                <span className="font-medium text-sm text-ink">{c.name}</span>
+                <span className="text-xs text-muted">
+                  {c.ingredients.length} ingredients
+                </span>
+              </div>
+              {c.about && (
+                <p className="text-sm text-muted mt-1 leading-snug">{c.about}</p>
+              )}
+              <div className="flex flex-wrap gap-1 mt-2">
+                {c.ingredients.map((i) => (
+                  <span
+                    key={i.slug}
+                    className={`text-[10px] px-1.5 py-0.5 rounded cat-${i.category}`}
+                  >
+                    {i.name}
+                  </span>
+                ))}
+              </div>
+            </button>
+            <div className="absolute top-2 right-2 flex items-center gap-1">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  togglePin(c.id);
+                }}
+                className={`w-7 h-7 rounded flex items-center justify-center transition ${
+                  c.pinned
+                    ? "text-pear opacity-100"
+                    : "text-muted opacity-0 group-hover:opacity-100 hover:text-ink hover:bg-bg"
+                }`}
+                title={c.pinned ? "Unpin" : "Pin to top"}
+                aria-label={c.pinned ? "Unpin combo" : "Pin combo"}
+              >
+                <PinIcon filled={Boolean(c.pinned)} />
               </button>
               <button
                 onClick={() => remove(c.id)}
-                className="opacity-0 group-hover:opacity-100 text-muted hover:text-ink text-xs transition shrink-0"
+                className="opacity-0 group-hover:opacity-100 text-muted hover:text-ink text-xs transition px-1.5 py-0.5 rounded"
                 title="Delete combo"
               >
                 Delete

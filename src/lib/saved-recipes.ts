@@ -8,6 +8,7 @@ export interface SavedRecipe {
   recipeId: string;    // catalog recipe.id
   recipe: Recipe;      // snapshot — survives even if the catalog evolves
   notes: string;
+  pinned?: boolean;    // pinned items sort to the top
   createdAt: number;
 }
 
@@ -67,4 +68,28 @@ export function updateRecipeNotes(savedId: string, notes: string): void {
   if (idx === -1) return;
   all[idx] = { ...all[idx], notes };
   window.localStorage.setItem(KEY, JSON.stringify(all));
+}
+
+// Toggle pinned state for a saved recipe. Pinned items render first in the
+// saved list. Returns the new pinned value.
+export function togglePinnedRecipe(savedId: string): boolean {
+  if (!isBrowser()) return false;
+  const all = loadSavedRecipes();
+  const idx = all.findIndex((r) => r.id === savedId);
+  if (idx === -1) return false;
+  const next = !all[idx].pinned;
+  all[idx] = { ...all[idx], pinned: next };
+  window.localStorage.setItem(KEY, JSON.stringify(all));
+  return next;
+}
+
+// Same list but with pinned items sorted to the top, then by createdAt desc.
+// Use this in the UI when you want pinned-first ordering.
+export function loadSavedRecipesSorted(): SavedRecipe[] {
+  return [...loadSavedRecipes()].sort((a, b) => {
+    if (Boolean(b.pinned) !== Boolean(a.pinned)) {
+      return Number(Boolean(b.pinned)) - Number(Boolean(a.pinned));
+    }
+    return b.createdAt - a.createdAt;
+  });
 }

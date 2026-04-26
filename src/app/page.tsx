@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { IngredientSearch } from "@/components/IngredientSearch";
 import { SelectedChips } from "@/components/SelectedChips";
 import { PairingsPanel } from "@/components/PairingsPanel";
@@ -96,8 +97,22 @@ export default function Home() {
         />
       </div>
 
-      <footer className="mt-16 text-xs text-muted text-center">
-        Click any suggestion to chain it on. Press Esc to dismiss the dropdown.
+      <footer className="mt-16 text-xs text-muted text-center space-y-2">
+        <p>Click any suggestion to chain it on. Press Esc to dismiss the dropdown.</p>
+        <p>
+          <Link href="/privacy" className="hover:text-ink transition">
+            Privacy
+          </Link>
+          <span className="mx-2 opacity-50">·</span>
+          <a
+            href="https://github.com/ashtonmorrow/spicerack"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-ink transition"
+          >
+            Source
+          </a>
+        </p>
       </footer>
     </main>
   );

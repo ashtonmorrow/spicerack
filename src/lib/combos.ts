@@ -9,6 +9,7 @@ export interface SavedCombo {
   name: string;
   about: string;
   ingredients: IngredientSummary[];
+  pinned?: boolean;
   createdAt: number;
 }
 
@@ -49,6 +50,28 @@ export function deleteCombo(id: string): void {
   if (!isBrowser()) return;
   const remaining = loadCombos().filter((c) => c.id !== id);
   window.localStorage.setItem(KEY, JSON.stringify(remaining));
+}
+
+// Toggle pinned state for a saved combo.
+export function togglePinnedCombo(id: string): boolean {
+  if (!isBrowser()) return false;
+  const all = loadCombos();
+  const idx = all.findIndex((c) => c.id === id);
+  if (idx === -1) return false;
+  const next = !all[idx].pinned;
+  all[idx] = { ...all[idx], pinned: next };
+  window.localStorage.setItem(KEY, JSON.stringify(all));
+  return next;
+}
+
+// Pinned-first, then most-recent-first ordering for UI rendering.
+export function loadCombosSorted(): SavedCombo[] {
+  return [...loadCombos()].sort((a, b) => {
+    if (Boolean(b.pinned) !== Boolean(a.pinned)) {
+      return Number(Boolean(b.pinned)) - Number(Boolean(a.pinned));
+    }
+    return b.createdAt - a.createdAt;
+  });
 }
 
 // Sort-insensitive exact match. Two combos are "the same" iff their

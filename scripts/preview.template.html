@@ -276,6 +276,45 @@
     border: 1px solid var(--border); background: var(--bg); color: var(--ink);
   }
   .modal .btn-outline:hover { background: var(--hover); }
+  .pin-btn {
+    background: none; border: none; cursor: pointer; padding: 0;
+    width: 1.75rem; height: 1.75rem; display: inline-flex; align-items: center;
+    justify-content: center; color: var(--muted); border-radius: .25rem;
+    transition: opacity .15s, color .15s, background .15s;
+  }
+  .pin-btn:hover { color: var(--ink); background: var(--bg); }
+  .pin-btn.pinned { color: var(--pear); opacity: 1 !important; }
+  .pin-btn.pinned:hover { background: rgba(26, 127, 55, .12); }
+  .combo-card .pin-btn, .recipe-card .pin-btn {
+    position: absolute; top: .4rem; right: .4rem; opacity: 0;
+  }
+  .combo-card:hover .pin-btn, .recipe-card:hover .pin-btn { opacity: 1; }
+  .combo-card .pin-btn.pinned, .recipe-card .pin-btn.pinned { opacity: 1; }
+  .pin-inline {
+    display: inline-flex; vertical-align: -2px; color: var(--pear); margin-right: .25rem;
+  }
+  .modal .pin-action {
+    display: inline-flex; align-items: center; gap: .375rem;
+    padding: .375rem .625rem; border-radius: .25rem; cursor: pointer;
+    border: none; font-family: inherit; font-size: .875rem;
+    transition: background .15s, color .15s;
+    background: none; color: var(--muted);
+  }
+  .modal .pin-action:hover { color: var(--ink); background: var(--hover); }
+  .modal .pin-action.pinned { color: var(--pear); background: rgba(26, 127, 55, .1); }
+  .modal .pin-action.pinned:hover { background: rgba(26, 127, 55, .15); }
+
+  /* Privacy modal long-form content */
+  .privacy-modal { max-width: 36rem; max-height: 85vh; overflow-y: auto; }
+  .privacy-modal h2 { font-size: 1.25rem; }
+  .privacy-modal h3 { font-size: .9rem; margin: 1.25rem 0 .375rem; font-weight: 600; }
+  .privacy-modal p { font-size: .875rem; line-height: 1.55; color: var(--ink); margin: 0 0 .75rem; }
+  .privacy-modal code { background: var(--hover); padding: .1rem .35rem; border-radius: .2rem; font-size: .8rem; }
+  .privacy-modal a { color: var(--pear); }
+  .privacy-modal .updated { font-size: .75rem; color: var(--muted); margin-top: -.25rem; margin-bottom: 1rem; }
+  footer a { color: inherit; text-decoration: none; }
+  footer a:hover { color: var(--ink); }
+  footer .dot { opacity: .5; margin: 0 .375rem; }
   .modal label {
     display: block; font-size: .68rem; text-transform: uppercase;
     letter-spacing: .08em; color: var(--muted); margin-bottom: .25rem; font-weight: 500;
@@ -352,7 +391,14 @@
     </section>
   </div>
 
-  <footer>Click any suggestion to chain it on. Press Esc to dismiss the dropdown.</footer>
+  <footer>
+    <p>Click any suggestion to chain it on. Press Esc to dismiss the dropdown.</p>
+    <p style="margin-top: .5rem;">
+      <a href="#" id="open-privacy">Privacy</a>
+      <span class="dot">·</span>
+      <a href="https://github.com/ashtonmorrow/spicerack" target="_blank" rel="noopener noreferrer">Source</a>
+    </p>
+  </footer>
 </main>
 
 <div id="modal-root"></div>
@@ -481,6 +527,45 @@ function updateRecipeNotes(savedId, notes) {
   if (idx === -1) return;
   all[idx] = { ...all[idx], notes };
   localStorage.setItem(STORAGE_RECIPES, JSON.stringify(all));
+}
+function togglePinnedRecipe(savedId) {
+  const all = loadSavedRecipes();
+  const idx = all.findIndex(r => r.id === savedId);
+  if (idx === -1) return false;
+  const next = !all[idx].pinned;
+  all[idx] = { ...all[idx], pinned: next };
+  localStorage.setItem(STORAGE_RECIPES, JSON.stringify(all));
+  return next;
+}
+function togglePinnedCombo(id) {
+  const all = loadCombos();
+  const idx = all.findIndex(c => c.id === id);
+  if (idx === -1) return false;
+  const next = !all[idx].pinned;
+  all[idx] = { ...all[idx], pinned: next };
+  localStorage.setItem(STORAGE_COMBOS, JSON.stringify(all));
+  return next;
+}
+function loadCombosSorted() {
+  return [...loadCombos()].sort((a, b) =>
+    (Boolean(b.pinned) - Boolean(a.pinned)) || (b.createdAt - a.createdAt)
+  );
+}
+function loadSavedRecipesSorted() {
+  return [...loadSavedRecipes()].sort((a, b) =>
+    (Boolean(b.pinned) - Boolean(a.pinned)) || (b.createdAt - a.createdAt)
+  );
+}
+
+// Inline pin SVG used both in the modal (with text) and on cards.
+function pinSvg(filled, size) {
+  size = size || 14;
+  return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="${filled ? "currentColor" : "none"}"
+    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M14.5 3.5 L20.5 9.5"/>
+    <path d="M16.5 5.5 L9 13 L5 14 L10 19 L11 15 L18.5 7.5 Z"/>
+    <path d="M10 19 L4 23"/>
+  </svg>`;
 }
 
 // --- UI state ---
@@ -691,7 +776,7 @@ function renderRecipes() {
 }
 
 function renderSavedCombos() {
-  const combos = loadCombos();
+  const combos = loadCombosSorted();
   if (combos.length === 0) {
     savedCombosSectionEl.classList.add("hidden");
     return;
@@ -700,7 +785,7 @@ function renderSavedCombos() {
   savedCombosListEl.innerHTML = combos.map(c => `
     <div class="combo-card" data-id="${c.id}">
       <button class="combo-load" data-id="${c.id}">
-        <span class="name">${escape(c.name)}</span>
+        <span class="name">${c.pinned ? '<span class="pin-inline">' + pinSvg(true, 12) + '</span>' : ''}${escape(c.name)}</span>
         <span class="count">${c.ingredients.length} ingredients</span>
         ${c.about ? `<p class="about">${escape(c.about)}</p>` : ""}
         <div class="combo-chips">
@@ -708,6 +793,10 @@ function renderSavedCombos() {
             `<span class="cat-label cat-${i.category}">${escape(i.name)}</span>`
           ).join("")}
         </div>
+      </button>
+      <button class="pin-btn ${c.pinned ? "pinned" : ""}" data-id="${c.id}" data-action="pin"
+              title="${c.pinned ? "Unpin" : "Pin to top"}">
+        ${pinSvg(Boolean(c.pinned))}
       </button>
       <button class="delete" data-id="${c.id}">Delete</button>
     </div>`).join("");
@@ -717,13 +806,16 @@ function renderSavedCombos() {
       if (c) { state.selected = c.ingredients.slice(); state.filter = "all"; renderAll(); }
     };
   });
+  savedCombosListEl.querySelectorAll('[data-action="pin"]').forEach(b => {
+    b.onclick = e => { e.stopPropagation(); togglePinnedCombo(b.dataset.id); renderAll(); };
+  });
   savedCombosListEl.querySelectorAll(".delete").forEach(b => {
     b.onclick = e => { e.stopPropagation(); deleteComboById(b.dataset.id); renderAll(); };
   });
 }
 
 function renderSavedRecipes() {
-  const list = loadSavedRecipes();
+  const list = loadSavedRecipesSorted();
   if (list.length === 0) {
     savedRecipesSectionEl.classList.add("hidden");
     return;
@@ -737,22 +829,31 @@ function renderSavedRecipes() {
       const name = ing ? ing.name : prettySlug(slug);
       return `<span class="cat-label cat-${cat}">${escape(name)}</span>`;
     }).join("");
-    return `<button class="recipe-card" data-id="${sr.id}" data-saved="1">
-      <div class="head">
-        <span class="name">${escape(r.name)}${r.cuisine ? ' <span class="saved-pill">' + escape(r.cuisine) + '</span>' : ""}</span>
-      </div>
-      ${r.about ? `<p class="about">${escape(r.about)}</p>` : ""}
-      ${sr.notes ? `<p class="about" style="font-style:italic;">"${escape(sr.notes)}"</p>` : ""}
-      <div class="ing-row">${chips}</div>
-      <div class="open-hint">Open to view method, edit notes, or use these ingredients →</div>
-    </button>`;
+    return `<div class="recipe-card" data-id="${sr.id}" data-saved="1" style="position:relative;">
+      <button class="combo-load" data-id="${sr.id}" style="background:none;border:none;text-align:left;cursor:pointer;font:inherit;color:inherit;width:100%;padding:0;">
+        <div class="head">
+          <span class="name">${sr.pinned ? '<span class="pin-inline">' + pinSvg(true, 12) + '</span>' : ''}${escape(r.name)}${r.cuisine ? ' <span class="saved-pill">' + escape(r.cuisine) + '</span>' : ""}</span>
+        </div>
+        ${r.about ? `<p class="about">${escape(r.about)}</p>` : ""}
+        ${sr.notes ? `<p class="about" style="font-style:italic;">"${escape(sr.notes)}"</p>` : ""}
+        <div class="ing-row">${chips}</div>
+        <div class="open-hint">Open to view method, edit notes, or use these ingredients →</div>
+      </button>
+      <button class="pin-btn ${sr.pinned ? "pinned" : ""}" data-id="${sr.id}" data-action="pin"
+              title="${sr.pinned ? "Unpin" : "Pin to top"}">
+        ${pinSvg(Boolean(sr.pinned))}
+      </button>
+    </div>`;
   }).join("");
-  savedRecipesListEl.querySelectorAll(".recipe-card").forEach(card => {
-    card.onclick = () => {
-      const sr = loadSavedRecipes().find(x => x.id === card.dataset.id);
+  savedRecipesListEl.querySelectorAll(".combo-load").forEach(b => {
+    b.onclick = () => {
+      const sr = loadSavedRecipes().find(x => x.id === b.dataset.id);
       if (!sr) return;
       openRecipeModal(sr.recipe);
     };
+  });
+  savedRecipesListEl.querySelectorAll('[data-action="pin"]').forEach(b => {
+    b.onclick = e => { e.stopPropagation(); togglePinnedRecipe(b.dataset.id); renderAll(); };
   });
 }
 
@@ -834,6 +935,9 @@ function openRecipeModal(recipe) {
         <button class="btn btn-primary" id="modal-use">Use this recipe</button>
         <button class="btn btn-outline" id="modal-save" ${saveDisabled}>${saveLabel}</button>
         <a href="${findUrl}" target="_blank" rel="noopener noreferrer">Find recipe online ↗</a>
+        ${saved ? `<button id="modal-pin" class="pin-action ${saved.pinned ? "pinned" : ""}" title="${saved.pinned ? "Unpin from top" : "Pin to top of saved"}">
+          ${pinSvg(Boolean(saved.pinned))}<span>${saved.pinned ? "Pinned" : "Pin"}</span>
+        </button>` : ""}
         ${saved ? `<button class="btn" id="modal-delete" style="margin-left:auto;background:none;color:var(--muted);font-size:.75rem;">Remove from saved</button>` : ""}
       </div>
     </div></div>`;
@@ -875,12 +979,62 @@ function openRecipeModal(recipe) {
       render();
       renderAll();
     };
+    const pinBtn = document.getElementById("modal-pin");
+    if (pinBtn) pinBtn.onclick = () => {
+      const next = togglePinnedRecipe(saved.id);
+      saved = { ...saved, pinned: next };
+      render();
+      renderAll();
+    };
   }
 
   render();
 }
 
 function closeRecipeModal() { state.comboModalOpen = false; modalRoot.innerHTML = ""; }
+
+function openPrivacyModal() {
+  state.comboModalOpen = true;
+  modalRoot.innerHTML = `<div class="overlay" id="overlay">
+    <div class="modal privacy-modal">
+      <div class="modal-head">
+        <h2>Privacy Policy</h2>
+        <button class="close-x" id="modal-close" aria-label="Close">×</button>
+      </div>
+      <p class="updated">Last updated: April 26, 2026</p>
+      <p>Flavor Pear is a small web tool for discovering ingredient pairings and recipes. This page explains exactly what data the app handles — there isn't much.</p>
+
+      <h3>What the app does not collect</h3>
+      <p>Flavor Pear has no user accounts, no analytics, and no advertising trackers. The app does not collect, store, or transmit your usage data to any server we control. There is no "us" tracking what you do.</p>
+
+      <h3>What is stored on your device</h3>
+      <p>When you save a combo, save a recipe, pin a saved item, or add personal notes to a recipe, that information is written to your browser's <code>localStorage</code> under the keys <code>flavor-pear:combos</code> and <code>flavor-pear:saved-recipes</code>.</p>
+      <p>That data stays on your device. The author of the app cannot read it. Clearing your browser data, switching browsers, or using a different device will reset what's stored.</p>
+
+      <h3>Hosting and source code</h3>
+      <p>The app is hosted on Vercel and the source code is on GitHub. Vercel keeps standard server access logs (IP address, user agent, request URL, timestamp) for operational purposes — see <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Vercel's privacy policy</a> for details.</p>
+
+      <h3>External links</h3>
+      <p>When you click <em>Find recipe online</em> on a recipe, the app opens a Google search in a new tab. Anything you do on Google after that is governed by Google's terms.</p>
+
+      <h3>Children</h3>
+      <p>Flavor Pear is not directed at children under 13. The app does not knowingly collect data from children, and since it does not collect data from anyone, this is straightforward.</p>
+
+      <h3>Changes</h3>
+      <p>If the way the app handles data changes — for example, if it later adds accounts or remote storage — this page will be updated and the date at the top will move forward. The change will be visible in the public commit history of the GitHub repository.</p>
+
+      <h3>Contact</h3>
+      <p>Questions or concerns? Open an issue on the GitHub repository: <a href="https://github.com/ashtonmorrow/spicerack/issues" target="_blank" rel="noopener noreferrer">github.com/ashtonmorrow/spicerack</a>.</p>
+
+      <div class="footer-actions">
+        <button class="btn btn-outline" id="modal-close-2">Close</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById("overlay").onclick = e => { if (e.target.id === "overlay") closeRecipeModal(); };
+  document.getElementById("modal-close").onclick = closeRecipeModal;
+  document.getElementById("modal-close-2").onclick = closeRecipeModal;
+}
 
 function openComboModal() {
   state.comboModalOpen = true;
@@ -979,6 +1133,8 @@ qEl.addEventListener("keydown", e => {
 });
 qEl.addEventListener("focus", () => { state.open = true; refreshDropdown(); });
 qEl.addEventListener("blur", () => setTimeout(() => { state.open = false; renderDropdown(); }, 150));
+
+document.getElementById("open-privacy").onclick = e => { e.preventDefault(); openPrivacyModal(); };
 
 renderAll();
 </script>

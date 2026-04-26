@@ -2,8 +2,13 @@
 
 import { useEffect, useState } from "react";
 import type { IngredientSummary, Recipe } from "@/lib/types";
-import { loadSavedRecipes, type SavedRecipe } from "@/lib/saved-recipes";
+import {
+  loadSavedRecipesSorted,
+  togglePinnedRecipe,
+  type SavedRecipe,
+} from "@/lib/saved-recipes";
 import { RecipeModal } from "./RecipeModal";
+import { PinIcon } from "./PinIcon";
 
 interface Props {
   refreshKey: number;
@@ -47,7 +52,7 @@ export function SavedRecipes({ refreshKey, onLoad, onChanged }: Props) {
   const [openRecipe, setOpenRecipe] = useState<Recipe | null>(null);
 
   useEffect(() => {
-    const list = loadSavedRecipes();
+    const list = loadSavedRecipesSorted();
     setSaved(list);
     Promise.all(
       list.map(async (sr) => {
@@ -86,42 +91,70 @@ export function SavedRecipes({ refreshKey, onLoad, onChanged }: Props) {
           {saved.map((sr) => {
             const ingredients = chips.get(sr.id) ?? [];
             return (
-              <button
+              <div
                 key={sr.id}
-                onClick={() => setOpenRecipe(sr.recipe)}
-                className="block w-full text-left border border-border rounded-md p-3 hover:bg-hover transition"
+                className="relative border border-border rounded-md hover:bg-hover transition group"
               >
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-medium text-sm text-ink">
-                    {sr.recipe.name}
-                  </span>
-                  {sr.recipe.cuisine && (
-                    <span className="text-xs text-muted">
-                      {sr.recipe.cuisine}
+                <button
+                  onClick={() => setOpenRecipe(sr.recipe)}
+                  className="block w-full text-left p-3 pr-9"
+                >
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {sr.pinned && (
+                      <PinIcon
+                        filled
+                        size={12}
+                        className="text-pear shrink-0"
+                      />
+                    )}
+                    <span className="font-medium text-sm text-ink">
+                      {sr.recipe.name}
                     </span>
+                    {sr.recipe.cuisine && (
+                      <span className="text-xs text-muted">
+                        {sr.recipe.cuisine}
+                      </span>
+                    )}
+                  </div>
+                  {sr.recipe.about && (
+                    <p className="text-sm text-muted mt-1 leading-snug">
+                      {sr.recipe.about}
+                    </p>
                   )}
-                </div>
-                {sr.recipe.about && (
-                  <p className="text-sm text-muted mt-1 leading-snug">
-                    {sr.recipe.about}
-                  </p>
-                )}
-                {sr.notes && (
-                  <p className="text-xs text-ink/80 mt-1.5 italic leading-snug">
-                    “{sr.notes}”
-                  </p>
-                )}
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {ingredients.map((i) => (
-                    <span
-                      key={i.slug}
-                      className={`text-[10px] px-1.5 py-0.5 rounded cat-${i.category}`}
-                    >
-                      {i.name}
-                    </span>
-                  ))}
-                </div>
-              </button>
+                  {sr.notes && (
+                    <p className="text-xs text-ink/80 mt-1.5 italic leading-snug">
+                      “{sr.notes}”
+                    </p>
+                  )}
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {ingredients.map((i) => (
+                      <span
+                        key={i.slug}
+                        className={`text-[10px] px-1.5 py-0.5 rounded cat-${i.category}`}
+                      >
+                        {i.name}
+                      </span>
+                    ))}
+                  </div>
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    togglePinnedRecipe(sr.id);
+                    setSaved(loadSavedRecipesSorted());
+                    onChanged();
+                  }}
+                  className={`absolute top-2 right-2 w-7 h-7 rounded flex items-center justify-center transition ${
+                    sr.pinned
+                      ? "text-pear opacity-100"
+                      : "text-muted opacity-0 group-hover:opacity-100 hover:text-ink hover:bg-bg"
+                  }`}
+                  title={sr.pinned ? "Unpin" : "Pin to top"}
+                  aria-label={sr.pinned ? "Unpin recipe" : "Pin recipe"}
+                >
+                  <PinIcon filled={Boolean(sr.pinned)} />
+                </button>
+              </div>
             );
           })}
         </div>
