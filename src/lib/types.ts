@@ -55,9 +55,12 @@ export interface Recipe {
   about: string;
   cuisine?: string;
   course?: "starter" | "main" | "side" | "dessert" | "sauce";
-  time?: number; // rough total minutes
-  required: string[]; // ingredient slugs that define the dish
-  optional?: string[]; // ingredient slugs that are common but not essential
+  time?: number;          // rough total minutes
+  servings?: number | string;
+  required: string[];     // ingredient slugs that define the dish
+  optional?: string[];    // ingredient slugs that are common but not essential
+  method?: string;        // brief generic technique (1–3 sentences)
+  tips?: string;          // optional pointer; surfaced subtly in the modal
 }
 
 // What /api/recipes returns: the recipe plus how it scored against the user's

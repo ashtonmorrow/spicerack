@@ -1,6 +1,6 @@
 {
-  "$schema_version": 1,
-  "notes": "Hand-curated classic dishes used to suggest 'what could I make' from the user's ingredient selection. Descriptions are brief and factual; instructions are intentionally omitted (find a real recipe for those).",
+  "$schema_version": 2,
+  "notes": "Hand-curated classic dishes. Methods are intentionally brief and describe general technique rather than detailed copyrighted procedures.",
   "recipes": [
     {
       "id": "caprese",
@@ -9,8 +9,11 @@
       "cuisine": "italian",
       "course": "starter",
       "time": 5,
+      "servings": 2,
       "required": ["tomato", "mozzarella", "basil", "olive-oil"],
-      "optional": ["balsamic-vinegar", "black-pepper"]
+      "optional": ["balsamic-vinegar", "black-pepper"],
+      "method": "Slice tomatoes and mozzarella roughly the same thickness. Alternate on a plate with whole basil leaves. Drizzle with olive oil; finish with salt and pepper.",
+      "tips": "Quality matters more than technique — peak-season tomatoes and the best mozzarella you can find."
     },
     {
       "id": "tomato-basil-pasta",
@@ -19,8 +22,10 @@
       "cuisine": "italian",
       "course": "main",
       "time": 25,
+      "servings": 4,
       "required": ["pasta", "tomato", "basil", "garlic", "olive-oil"],
-      "optional": ["parmesan", "chili", "onion"]
+      "optional": ["parmesan", "chili", "onion"],
+      "method": "Sauté garlic in olive oil until fragrant. Add crushed tomatoes; simmer 15 minutes. Toss with cooked pasta; finish with torn basil and grated parmesan."
     },
     {
       "id": "pesto-pasta",
@@ -29,8 +34,11 @@
       "cuisine": "italian",
       "course": "main",
       "time": 20,
+      "servings": 4,
       "required": ["pasta", "basil", "pine-nut", "parmesan", "garlic", "olive-oil"],
-      "optional": []
+      "optional": [],
+      "method": "Blend basil, pine nuts, garlic, parmesan, and olive oil into a paste. Loosen with pasta water; toss with cooked pasta off the heat.",
+      "tips": "Don't overheat the pesto or it'll turn dull green and lose its punch."
     },
     {
       "id": "aglio-e-olio",
@@ -39,8 +47,11 @@
       "cuisine": "italian",
       "course": "main",
       "time": 15,
+      "servings": 4,
       "required": ["pasta", "garlic", "olive-oil", "chili", "parsley"],
-      "optional": []
+      "optional": [],
+      "method": "Slice garlic thin. Cook gently in olive oil with chili until just pale gold. Toss with cooked spaghetti and a splash of pasta water; finish with parsley.",
+      "tips": "Burnt garlic is bitter — pull the pan off the heat the moment the slivers turn pale."
     },
     {
       "id": "bruschetta",
@@ -49,8 +60,10 @@
       "cuisine": "italian",
       "course": "starter",
       "time": 10,
+      "servings": 4,
       "required": ["bread", "tomato", "basil", "garlic", "olive-oil"],
-      "optional": []
+      "optional": [],
+      "method": "Toast or grill bread. Rub with raw garlic. Top with diced tomatoes mixed with olive oil, basil, and salt."
     },
     {
       "id": "mushroom-risotto",
@@ -59,8 +72,11 @@
       "cuisine": "italian",
       "course": "main",
       "time": 40,
+      "servings": 4,
       "required": ["rice", "mushroom", "butter", "parmesan", "thyme"],
-      "optional": ["shallot", "wine-white", "garlic"]
+      "optional": ["shallot", "wine-white", "garlic"],
+      "method": "Sauté mushrooms separately. In another pan: shallot in butter, then rice, then wine, then warm stock added a ladle at a time, stirring until rice is creamy. Stir in butter, parmesan, mushrooms, thyme.",
+      "tips": "Keep the stock hot — adding cold liquid stops the cook and makes the rice gummy."
     },
     {
       "id": "butternut-sage-pasta",
@@ -69,8 +85,10 @@
       "cuisine": "italian",
       "course": "main",
       "time": 35,
+      "servings": 4,
       "required": ["pasta", "butternut-squash", "sage", "brown-butter", "parmesan"],
-      "optional": ["nutmeg"]
+      "optional": ["nutmeg"],
+      "method": "Roast squash cubes at 425°F until caramelized. Brown butter with sage leaves until nutty. Toss pasta, squash, and butter; finish with parmesan."
     },
     {
       "id": "mac-and-cheese",
@@ -79,8 +97,10 @@
       "cuisine": "american",
       "course": "main",
       "time": 30,
+      "servings": 6,
       "required": ["pasta", "cheddar", "butter", "milk"],
-      "optional": ["nutmeg", "black-pepper"]
+      "optional": ["nutmeg", "black-pepper"],
+      "method": "Make a roux with butter and flour; whisk in milk and simmer to thicken. Off heat, melt in cheddar. Toss with cooked pasta; bake with breadcrumbs if desired."
     },
     {
       "id": "roasted-chicken",
@@ -89,8 +109,11 @@
       "cuisine": "french",
       "course": "main",
       "time": 75,
+      "servings": 4,
       "required": ["chicken", "lemon", "thyme", "garlic", "butter"],
-      "optional": ["rosemary", "olive-oil"]
+      "optional": ["rosemary", "olive-oil"],
+      "method": "Pat dry; salt generously inside and out. Stuff cavity with lemon halves, herb sprigs, garlic. Rub with butter. Roast at 425°F until thigh reads 165°F internal, about 60–75 minutes.",
+      "tips": "Rest 10–15 minutes before carving so the juices settle."
     },
     {
       "id": "chicken-piccata",
@@ -99,8 +122,10 @@
       "cuisine": "italian",
       "course": "main",
       "time": 25,
+      "servings": 4,
       "required": ["chicken", "lemon", "capers", "butter", "parsley"],
-      "optional": ["wine-white", "shallot"]
+      "optional": ["wine-white", "shallot"],
+      "method": "Pound chicken thin, dredge in flour, sear in butter. Remove. Deglaze with wine and lemon juice; add capers; whisk in cold butter to finish. Garnish with parsley."
     },
     {
       "id": "coq-au-vin",
@@ -109,18 +134,23 @@
       "cuisine": "french",
       "course": "main",
       "time": 90,
+      "servings": 4,
       "required": ["chicken", "wine-red", "mushroom", "bacon", "onion", "thyme"],
-      "optional": ["bay-leaf", "garlic", "carrot"]
+      "optional": ["bay-leaf", "garlic", "carrot"],
+      "method": "Brown chicken pieces; remove. Cook bacon, then onions and mushrooms. Return chicken; add red wine, stock, thyme, bay leaf. Braise covered ~1 hour until tender.",
+      "tips": "Use a wine you'd actually drink — bad wine doesn't hide in long cooks."
     },
     {
       "id": "shrimp-scampi",
       "name": "Shrimp Scampi",
-      "about": "Shrimp sautéed in garlic butter with lemon, parsley, and a pinch of chili.",
+      "about": "Shrimp sautéed in garlic butter with lemon, parsley, and chili.",
       "cuisine": "italian",
       "course": "main",
       "time": 15,
+      "servings": 4,
       "required": ["shrimp", "garlic", "butter", "lemon", "parsley"],
-      "optional": ["chili", "wine-white", "pasta"]
+      "optional": ["chili", "wine-white", "pasta"],
+      "method": "Sauté garlic in butter and olive oil. Add shrimp; cook just until pink, about 2 minutes per side. Deglaze with wine and lemon; finish with parsley."
     },
     {
       "id": "salmon-with-dill",
@@ -129,8 +159,10 @@
       "cuisine": "scandinavian",
       "course": "main",
       "time": 20,
+      "servings": 2,
       "required": ["salmon", "dill", "lemon", "butter"],
-      "optional": ["capers", "olive-oil"]
+      "optional": ["capers", "olive-oil"],
+      "method": "Salt salmon. Pan-sear skin-side down in butter until skin is crisp; flip briefly to finish. Finish with lemon juice, capers, and dill."
     },
     {
       "id": "miso-glazed-salmon",
@@ -139,8 +171,10 @@
       "cuisine": "japanese",
       "course": "main",
       "time": 20,
+      "servings": 2,
       "required": ["salmon", "miso", "ginger"],
-      "optional": ["scallion", "sesame-oil", "soy-sauce"]
+      "optional": ["scallion", "sesame-oil", "soy-sauce"],
+      "method": "Whisk miso, mirin (or sugar), soy, and grated ginger; brush on salmon. Broil or bake at 425°F until edges caramelize and salmon flakes. Garnish with scallions and sesame."
     },
     {
       "id": "pork-chop-with-apples",
@@ -149,8 +183,10 @@
       "cuisine": "american",
       "course": "main",
       "time": 30,
+      "servings": 4,
       "required": ["pork", "apple", "sage", "butter"],
-      "optional": ["onion", "thyme"]
+      "optional": ["onion", "thyme"],
+      "method": "Season pork chops; sear in butter on both sides. Remove. In the same pan, cook sliced apples, onion, and sage until soft. Return pork to warm through."
     },
     {
       "id": "maple-mustard-pork",
@@ -159,8 +195,10 @@
       "cuisine": "american",
       "course": "main",
       "time": 40,
+      "servings": 4,
       "required": ["pork", "maple-syrup", "mustard", "garlic"],
-      "optional": ["thyme", "rosemary"]
+      "optional": ["thyme", "rosemary"],
+      "method": "Whisk mustard, maple syrup, garlic, and thyme. Brush over pork tenderloin. Roast at 400°F until 145°F internal, about 20 minutes. Rest before slicing."
     },
     {
       "id": "beef-stew",
@@ -169,8 +207,10 @@
       "cuisine": "french",
       "course": "main",
       "time": 150,
+      "servings": 6,
       "required": ["beef", "onion", "carrot", "thyme", "wine-red", "garlic"],
-      "optional": ["bay-leaf", "mushroom", "potato"]
+      "optional": ["bay-leaf", "mushroom", "potato"],
+      "method": "Brown beef chunks in batches. Sauté onions, carrots, garlic in the same pot. Deglaze with wine. Add stock, thyme, bay leaf. Cover and simmer 2–2½ hours until fork-tender."
     },
     {
       "id": "lamb-with-rosemary",
@@ -179,8 +219,10 @@
       "cuisine": "mediterranean",
       "course": "main",
       "time": 90,
+      "servings": 6,
       "required": ["lamb", "rosemary", "garlic", "olive-oil", "lemon"],
-      "optional": ["thyme"]
+      "optional": ["thyme"],
+      "method": "Score the fat. Rub with crushed garlic, rosemary, olive oil, lemon zest, and salt. Roast at 400°F until 130°F internal for medium-rare. Rest 15 minutes."
     },
     {
       "id": "lamb-yogurt-mint",
@@ -189,8 +231,10 @@
       "cuisine": "middle-eastern",
       "course": "main",
       "time": 45,
+      "servings": 4,
       "required": ["lamb", "mint", "yogurt", "cumin", "garlic"],
-      "optional": ["lemon", "harissa", "pomegranate"]
+      "optional": ["lemon", "harissa", "pomegranate"],
+      "method": "Spice-rub lamb with cumin, garlic, and salt. Sear or grill to desired doneness. Serve with a sauce of yogurt, chopped mint, crushed garlic, and lemon."
     },
     {
       "id": "duck-orange",
@@ -199,8 +243,10 @@
       "cuisine": "french",
       "course": "main",
       "time": 120,
+      "servings": 4,
       "required": ["duck", "orange", "thyme"],
-      "optional": ["wine-red", "honey"]
+      "optional": ["wine-red", "honey"],
+      "method": "Score the duck breast skin; render fat in a cold pan over low heat until skin is crisp. Flip briefly. For the sauce: reduce orange juice, zest, and a splash of vinegar; finish with butter."
     },
     {
       "id": "cobb-salad",
@@ -209,8 +255,10 @@
       "cuisine": "american",
       "course": "main",
       "time": 25,
+      "servings": 4,
       "required": ["chicken", "bacon", "avocado", "egg", "blue-cheese"],
-      "optional": ["tomato", "olive-oil"]
+      "optional": ["tomato", "olive-oil"],
+      "method": "Lay down a bed of chopped lettuce. Arrange neat rows of diced chicken, crumbled bacon, avocado, halved hard-boiled eggs, tomato, and blue cheese. Dress with vinaigrette."
     },
     {
       "id": "greek-salad",
@@ -219,8 +267,10 @@
       "cuisine": "greek",
       "course": "side",
       "time": 10,
+      "servings": 4,
       "required": ["tomato", "feta", "cucumber", "olive", "oregano", "olive-oil"],
-      "optional": ["onion"]
+      "optional": ["onion"],
+      "method": "Chop tomatoes and cucumbers into chunks; thinly slice red onion. Combine with cubed feta and olives. Dress with olive oil, dried oregano, and salt."
     },
     {
       "id": "watermelon-feta",
@@ -229,8 +279,10 @@
       "cuisine": "mediterranean",
       "course": "side",
       "time": 5,
+      "servings": 4,
       "required": ["watermelon", "feta", "mint"],
-      "optional": ["lime", "olive-oil"]
+      "optional": ["lime", "olive-oil"],
+      "method": "Cube watermelon. Crumble feta over. Tear mint leaves on top. Drizzle olive oil and a squeeze of lime."
     },
     {
       "id": "pear-blue-cheese-salad",
@@ -239,8 +291,10 @@
       "cuisine": "french",
       "course": "starter",
       "time": 10,
+      "servings": 4,
       "required": ["pear", "blue-cheese", "walnut", "arugula"],
-      "optional": ["honey", "olive-oil"]
+      "optional": ["honey", "olive-oil"],
+      "method": "Slice pears thin. Arrange on arugula. Crumble blue cheese; scatter walnuts. Drizzle olive oil with a touch of honey."
     },
     {
       "id": "tzatziki",
@@ -249,8 +303,11 @@
       "cuisine": "greek",
       "course": "sauce",
       "time": 10,
+      "servings": 6,
       "required": ["cucumber", "yogurt", "dill", "mint", "garlic"],
-      "optional": ["olive-oil", "lemon"]
+      "optional": ["olive-oil", "lemon"],
+      "method": "Grate cucumber, salt, and drain in a strainer 15 minutes; squeeze dry. Stir into thick yogurt with minced garlic, dill, mint, and a drizzle of olive oil.",
+      "tips": "The cucumber-draining step keeps it thick — skip it and you get watery tzatziki."
     },
     {
       "id": "hummus",
@@ -259,8 +316,11 @@
       "cuisine": "middle-eastern",
       "course": "starter",
       "time": 10,
+      "servings": 6,
       "required": ["chickpea", "tahini", "lemon", "garlic", "olive-oil"],
-      "optional": ["cumin", "paprika"]
+      "optional": ["cumin", "paprika"],
+      "method": "Blend cooked chickpeas with tahini, lemon juice, garlic, salt, and ice water. Process for 5+ minutes for the silkiest texture.",
+      "tips": "Peeling the chickpeas (or using cooked-soft ones) gives a noticeably creamier texture."
     },
     {
       "id": "baba-ganoush",
@@ -269,8 +329,10 @@
       "cuisine": "middle-eastern",
       "course": "starter",
       "time": 50,
+      "servings": 4,
       "required": ["eggplant", "tahini", "lemon", "garlic", "olive-oil"],
-      "optional": ["cumin", "parsley"]
+      "optional": ["cumin", "parsley"],
+      "method": "Char whole eggplants over flame or under the broiler until skin blackens and flesh collapses. Cool, scoop the flesh, mash with tahini, lemon, garlic, and olive oil."
     },
     {
       "id": "tomato-soup",
@@ -279,8 +341,10 @@
       "cuisine": "american",
       "course": "main",
       "time": 35,
+      "servings": 4,
       "required": ["tomato", "onion", "butter", "basil"],
-      "optional": ["cream", "garlic"]
+      "optional": ["cream", "garlic"],
+      "method": "Sauté onion in butter until soft. Add tomatoes (canned or fresh) and simmer 20 minutes. Blend until smooth. Stir in basil and cream off the heat."
     },
     {
       "id": "apple-pie-filling",
@@ -289,8 +353,10 @@
       "cuisine": "american",
       "course": "dessert",
       "time": 30,
+      "servings": "1 pie",
       "required": ["apple", "cinnamon", "butter"],
-      "optional": ["nutmeg", "sugar", "lemon"]
+      "optional": ["nutmeg", "sugar", "lemon"],
+      "method": "Peel and slice apples thin. Toss with sugar, cinnamon, lemon juice, and a touch of flour. Cook in butter until just tender, or use raw to fill a pie."
     },
     {
       "id": "apple-cheddar-grilled-cheese",
@@ -299,8 +365,10 @@
       "cuisine": "american",
       "course": "main",
       "time": 10,
+      "servings": 2,
       "required": ["apple", "cheddar", "bread", "butter"],
-      "optional": []
+      "optional": [],
+      "method": "Butter the outside of two bread slices. Layer thin apple slices and shredded sharp cheddar inside. Grill in a pan over medium until cheese melts and bread is golden."
     },
     {
       "id": "caramel-apples",
@@ -309,8 +377,10 @@
       "cuisine": "american",
       "course": "dessert",
       "time": 20,
+      "servings": 4,
       "required": ["apple", "caramel"],
-      "optional": ["butter", "vanilla"]
+      "optional": ["butter", "vanilla"],
+      "method": "Insert wooden sticks into firm apples. Dip in just-melted caramel; let excess drip off. Set on parchment until firm."
     },
     {
       "id": "strawberry-shortcake",
@@ -319,8 +389,10 @@
       "cuisine": "american",
       "course": "dessert",
       "time": 30,
+      "servings": 6,
       "required": ["strawberry", "cream"],
-      "optional": ["vanilla", "sugar"]
+      "optional": ["vanilla", "sugar"],
+      "method": "Macerate halved strawberries with sugar 30 minutes. Whip cream with vanilla. Split biscuits and layer with berries and cream."
     },
     {
       "id": "caesar-dressing",
@@ -329,8 +401,10 @@
       "cuisine": "american",
       "course": "sauce",
       "time": 10,
+      "servings": "4 salads",
       "required": ["anchovy", "garlic", "parmesan", "lemon", "olive-oil"],
-      "optional": ["mustard", "egg"]
+      "optional": ["mustard", "egg"],
+      "method": "Mash anchovies, garlic, and salt into a paste. Whisk in mustard and lemon juice, then olive oil to emulsify. Stir in grated parmesan."
     },
     {
       "id": "fennel-orange-salad",
@@ -339,8 +413,10 @@
       "cuisine": "italian",
       "course": "starter",
       "time": 10,
+      "servings": 4,
       "required": ["fennel", "orange", "arugula", "olive-oil"],
-      "optional": ["walnut", "lemon"]
+      "optional": ["walnut", "lemon"],
+      "method": "Shave fennel paper-thin (a mandoline helps). Segment oranges over a bowl to catch juice. Toss fennel, oranges, and arugula with olive oil and the captured juice; salt to taste."
     }
   ]
 }

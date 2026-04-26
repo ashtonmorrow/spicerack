@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { IngredientSummary, ScoredRecipe, Recipe } from "@/lib/types";
-import { isRecipeSaved, saveRecipe } from "@/lib/saved-recipes";
+import type { IngredientSummary, Recipe, ScoredRecipe } from "@/lib/types";
+import { isRecipeSaved } from "@/lib/saved-recipes";
+import { RecipeModal } from "./RecipeModal";
 
 interface Props {
   selected: IngredientSummary[];
@@ -11,9 +12,7 @@ interface Props {
   savedVersion: number;
 }
 
-// Lightweight ingredient lookup — we only need name+category to render chips,
-// and we can fetch them on demand via /api/ingredients. To avoid roundtrips per
-// recipe row, we cache by slug.
+// Lightweight ingredient lookup — we only need name+category to render chips.
 const ingredientCache = new Map<string, IngredientSummary>();
 
 async function fetchIngredient(slug: string): Promise<IngredientSummary | null> {
@@ -37,10 +36,10 @@ export function RecipesPanel({
 }: Props) {
   const [matches, setMatches] = useState<ScoredRecipe[]>([]);
   const [loading, setLoading] = useState(false);
-  // slug -> {name, category} for all ingredients referenced by visible recipes
   const [ingredientLookup, setIngredientLookup] = useState<
     Map<string, IngredientSummary>
   >(new Map());
+  const [openRecipe, setOpenRecipe] = useState<Recipe | null>(null);
 
   useEffect(() => {
     if (selected.length < 1) {
@@ -55,7 +54,6 @@ export function RecipesPanel({
         const results = d.results as ScoredRecipe[];
         setMatches(results);
 
-        // Resolve every referenced slug for chip rendering.
         const referenced = new Set<string>();
         for (const m of results) {
           for (const s of m.recipe.required) referenced.add(s);
@@ -90,65 +88,79 @@ export function RecipesPanel({
     );
   }
 
+  const userSlugs = new Set(selected.map((s) => s.slug));
+
   return (
-    <section>
-      <div className="flex items-center justify-between mb-2">
-        <h2 className="text-[11px] uppercase tracking-wider text-muted">
-          Recipes you could make
-        </h2>
-        {loading && <span className="text-xs text-muted">…</span>}
-      </div>
-      <div className="space-y-2">
-        {matches.map((m) => (
-          <RecipeCard
-            key={m.recipe.id}
-            match={m}
-            ingredientLookup={ingredientLookup}
-            onUse={() => {
-              const all = m.recipe.required.map((s) => ingredientLookup.get(s));
-              onUseRecipe(
-                all.filter((x): x is IngredientSummary => Boolean(x))
-              );
-            }}
-            onSavedChanged={onSavedChanged}
-            savedVersion={savedVersion}
-          />
-        ))}
-      </div>
-    </section>
+    <>
+      <section>
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-[11px] uppercase tracking-wider text-muted">
+            Recipes you could make
+          </h2>
+          {loading && <span className="text-xs text-muted">…</span>}
+        </div>
+        <div className="space-y-2">
+          {matches.map((m) => (
+            <RecipeCard
+              key={m.recipe.id}
+              match={m}
+              ingredientLookup={ingredientLookup}
+              userSlugs={userSlugs}
+              onOpen={() => setOpenRecipe(m.recipe)}
+              savedVersion={savedVersion}
+            />
+          ))}
+        </div>
+      </section>
+
+      {openRecipe && (
+        <RecipeModal
+          recipe={openRecipe}
+          userIngredientSlugs={userSlugs}
+          ingredientLookup={ingredientLookup}
+          onClose={() => setOpenRecipe(null)}
+          onUseRecipe={onUseRecipe}
+          onChanged={onSavedChanged}
+        />
+      )}
+    </>
   );
 }
 
 function RecipeCard({
   match,
   ingredientLookup,
-  onUse,
-  onSavedChanged,
+  userSlugs,
+  onOpen,
   savedVersion,
 }: {
   match: ScoredRecipe;
   ingredientLookup: Map<string, IngredientSummary>;
-  onUse: () => void;
-  onSavedChanged: () => void;
+  userSlugs: Set<string>;
+  onOpen: () => void;
   savedVersion: number;
 }) {
   const r = match.recipe;
-  const [alreadySaved, setAlreadySaved] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    setAlreadySaved(isRecipeSaved(r.id));
+    setSaved(isRecipeSaved(r.id));
   }, [r.id, savedVersion]);
 
-  function handleSave() {
-    if (alreadySaved) return;
-    saveRecipe(r);
-    onSavedChanged();
-  }
-
   return (
-    <article className="border border-border rounded-md p-3.5 hover:bg-hover/50 transition">
+    <button
+      onClick={onOpen}
+      className="block w-full text-left border border-border rounded-md p-3.5 hover:bg-hover/50 hover:border-border transition"
+    >
       <header className="flex items-baseline justify-between gap-3 flex-wrap mb-1">
-        <h3 className="font-medium text-sm text-ink">{r.name}</h3>
+        <h3 className="font-medium text-sm text-ink flex items-center gap-2">
+          {r.name}
+          {saved && (
+            <span className="text-[10px] font-normal text-pear/80 bg-pear/10 px-1.5 py-0.5 rounded">
+              ✓ saved
+            </span>
+          )}
+        </h3>
         <span className="text-xs text-muted">
           {match.matchedRequired.length}/{r.required.length} ingredients
           {r.cuisine ? ` · ${r.cuisine}` : ""}
@@ -159,10 +171,10 @@ function RecipeCard({
         <p className="text-sm text-muted leading-snug mb-2.5">{r.about}</p>
       )}
 
-      <div className="flex flex-wrap gap-1 mb-3">
+      <div className="flex flex-wrap gap-1">
         {r.required.map((slug) => {
           const ing = ingredientLookup.get(slug);
-          const have = match.matchedRequired.includes(slug);
+          const have = userSlugs.has(slug);
           if (!ing) return null;
           return (
             <span
@@ -172,48 +184,15 @@ function RecipeCard({
                   ? `cat-${ing.category}`
                   : "bg-hover text-muted line-through decoration-muted/40"
               }`}
-              title={have ? "You have this" : "You'd need to add this"}
             >
               {have ? "✓" : "+"} {ing.name}
             </span>
           );
         })}
-        {(r.optional ?? []).map((slug) => {
-          const ing = ingredientLookup.get(slug);
-          const have = match.matchedOptional.includes(slug);
-          if (!ing) return null;
-          return (
-            <span
-              key={slug}
-              className={`text-xs px-2 py-0.5 rounded italic ${
-                have
-                  ? `cat-${ing.category}`
-                  : "bg-bg text-muted/60 border border-dashed border-border"
-              }`}
-              title="Optional"
-            >
-              {ing.name}
-            </span>
-          );
-        })}
       </div>
-
-      <div className="flex items-center gap-2">
-        <button
-          onClick={onUse}
-          className="text-xs px-2.5 py-1 rounded bg-pear text-white hover:brightness-95 transition font-medium"
-          title="Replace your selection with this recipe's required ingredients"
-        >
-          Use this recipe
-        </button>
-        <button
-          onClick={handleSave}
-          disabled={alreadySaved}
-          className="text-xs px-2.5 py-1 rounded text-ink hover:bg-hover transition disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {alreadySaved ? "✓ Saved" : "Save recipe"}
-        </button>
+      <div className="text-xs text-muted/80 mt-2.5">
+        Open to view method, save, or use these ingredients →
       </div>
-    </article>
+    </button>
   );
 }

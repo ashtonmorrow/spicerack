@@ -147,9 +147,18 @@
   }
   .recipe-card {
     border: 1px solid var(--border); border-radius: .375rem; padding: .85rem .9rem;
-    margin-bottom: .5rem; transition: background .15s;
+    margin-bottom: .5rem; transition: background .15s, border-color .15s;
+    background: var(--bg); width: 100%; text-align: left; cursor: pointer;
+    font: inherit; color: inherit;
   }
   .recipe-card:hover { background: rgba(247, 246, 243, 0.5); }
+  .recipe-card .saved-pill {
+    font-size: .65rem; color: var(--pear); background: rgba(26, 127, 55, .1);
+    padding: .05rem .375rem; border-radius: .25rem; font-weight: 400;
+  }
+  .recipe-card .open-hint {
+    font-size: .72rem; color: rgba(120, 119, 116, .8); margin-top: .65rem;
+  }
   .recipe-card .head {
     display: flex; align-items: baseline; justify-content: space-between;
     gap: .75rem; flex-wrap: wrap; margin-bottom: .25rem;
@@ -219,8 +228,54 @@
     border-radius: .5rem; max-width: 28rem; width: 100%; padding: 1.5rem;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .25);
   }
-  .modal h2 { font-size: 1rem; margin: 0 0 .25rem; font-weight: 600; }
+  .modal { max-width: 36rem; }
+  .modal h2 { font-size: 1.05rem; margin: 0 0 .25rem; font-weight: 600; }
   .modal .desc { font-size: .875rem; color: var(--muted); margin: 0 0 1rem; line-height: 1.4; }
+  .modal .meta { font-size: .75rem; color: var(--muted); margin: 0 0 .75rem; }
+  .modal .about { font-size: .875rem; color: var(--ink); margin: 0 0 1rem; line-height: 1.5; }
+  .modal .section { margin-bottom: 1rem; }
+  .modal .section h3 {
+    text-transform: uppercase; font-size: .68rem; letter-spacing: .08em;
+    color: var(--muted); margin: 0 0 .35rem; font-weight: 500;
+  }
+  .modal .section h3 .saved-note { text-transform: none; letter-spacing: normal; opacity: .7; font-weight: 400; margin-left: .5rem; }
+  .modal .section p { margin: 0; font-size: .875rem; line-height: 1.5; color: var(--ink); }
+  .modal .section p.tip-text { color: var(--muted); }
+  .modal .section .row { display: flex; flex-wrap: wrap; gap: .375rem; }
+  .modal .ing.have { /* full color via cat-* */ }
+  .modal .ing.missing {
+    background: var(--hover); color: var(--muted);
+    text-decoration: line-through; text-decoration-color: rgba(120, 119, 116, 0.4);
+    padding: .15rem .5rem; border-radius: .25rem; font-size: .72rem;
+  }
+  .modal .ing.opt-have { font-style: italic; padding: .15rem .5rem; border-radius: .25rem; font-size: .72rem; }
+  .modal .ing.opt-missing {
+    background: var(--bg); color: rgba(120, 119, 116, .7);
+    border: 1px dashed var(--border); font-style: italic;
+    padding: .15rem .5rem; border-radius: .25rem; font-size: .72rem;
+  }
+  .modal .footer-actions {
+    display: flex; flex-wrap: wrap; gap: .5rem; align-items: center;
+    margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);
+  }
+  .modal .footer-actions a {
+    text-decoration: none; color: var(--muted); padding: .375rem .75rem;
+    font-size: .875rem; border-radius: .25rem; transition: background .15s, color .15s;
+  }
+  .modal .footer-actions a:hover { background: var(--hover); color: var(--ink); }
+  .modal .footer-actions .spacer { margin-left: auto; }
+  .modal .close-x {
+    background: none; border: none; cursor: pointer; padding: 0;
+    width: 1.75rem; height: 1.75rem; display: inline-flex; align-items: center;
+    justify-content: center; color: var(--muted); border-radius: .25rem;
+    font-size: 1.25rem; line-height: 1; transition: background .15s, color .15s;
+  }
+  .modal .close-x:hover { background: var(--hover); color: var(--ink); }
+  .modal .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; margin-bottom: .25rem; }
+  .modal .btn-outline {
+    border: 1px solid var(--border); background: var(--bg); color: var(--ink);
+  }
+  .modal .btn-outline:hover { background: var(--hover); }
   .modal label {
     display: block; font-size: .68rem; text-transform: uppercase;
     letter-spacing: .08em; color: var(--muted); margin-bottom: .25rem; font-weight: 500;
@@ -419,6 +474,14 @@ function saveRecipeToStorage(recipe) {
 }
 function deleteSavedRecipeById(id) { localStorage.setItem(STORAGE_RECIPES, JSON.stringify(loadSavedRecipes().filter(r => r.id !== id))); }
 function isRecipeSaved(recipeId) { return loadSavedRecipes().some(r => r.recipeId === recipeId); }
+function findSavedByRecipeId(recipeId) { return loadSavedRecipes().find(r => r.recipeId === recipeId) || null; }
+function updateRecipeNotes(savedId, notes) {
+  const all = loadSavedRecipes();
+  const idx = all.findIndex(r => r.id === savedId);
+  if (idx === -1) return;
+  all[idx] = { ...all[idx], notes };
+  localStorage.setItem(STORAGE_RECIPES, JSON.stringify(all));
+}
 
 // --- UI state ---
 const state = {
@@ -599,7 +662,6 @@ function renderRecipes() {
     const r = m.recipe;
     const meta = [r.cuisine, r.time ? `${r.time} min` : null].filter(Boolean).join(" · ");
     const reqHave = new Set(m.matchedRequired);
-    const optHave = new Set(m.matchedOptional);
     const requiredChips = r.required.map(slug => {
       const ing = bySlug.get(slug);
       const name = ing ? ing.name : prettySlug(slug);
@@ -609,48 +671,22 @@ function renderRecipes() {
         ? `<span class="ing cat-${cat}">✓ ${escape(name)}</span>`
         : `<span class="ing missing">+ ${escape(name)}</span>`;
     }).join("");
-    const optionalChips = (r.optional || []).map(slug => {
-      const ing = bySlug.get(slug);
-      const name = ing ? ing.name : prettySlug(slug);
-      const cat = ing ? ing.category : "pantry";
-      const have = optHave.has(slug);
-      return have
-        ? `<span class="ing cat-${cat} opt-have">${escape(name)}</span>`
-        : `<span class="ing opt-missing">${escape(name)}</span>`;
-    }).join("");
     const saved = isRecipeSaved(r.id);
-    return `<article class="recipe-card" data-id="${r.id}">
+    return `<button class="recipe-card" data-id="${r.id}">
       <div class="head">
-        <span class="name">${escape(r.name)}</span>
+        <span class="name">${escape(r.name)}${saved ? ' <span class="saved-pill">✓ saved</span>' : ''}</span>
         <span class="meta">${m.matchedRequired.length}/${r.required.length} ingredients${meta ? " · " + escape(meta) : ""}</span>
       </div>
       ${r.about ? `<p class="about">${escape(r.about)}</p>` : ""}
-      <div class="ing-row">${requiredChips}${optionalChips}</div>
-      <div class="actions">
-        <button class="btn btn-primary" data-act="use">Use this recipe</button>
-        <button class="btn btn-secondary" data-act="save" ${saved ? "disabled" : ""}>${saved ? "✓ Saved" : "Save recipe"}</button>
-      </div>
-    </article>`;
+      <div class="ing-row">${requiredChips}</div>
+      <div class="open-hint">Open to view method, save, or use these ingredients →</div>
+    </button>`;
   }).join("");
   recipesListEl.querySelectorAll(".recipe-card").forEach(card => {
     const id = card.dataset.id;
     const recipe = RECIPES.recipes.find(r => r.id === id);
     if (!recipe) return;
-    card.querySelector('[data-act="use"]').onclick = () => {
-      state.selected = recipe.required
-        .map(s => bySlug.get(s)).filter(Boolean).map(summary);
-      state.filter = "all";
-      qEl.value = "";
-      state.items = [];
-      renderAll();
-      qEl.focus();
-    };
-    const saveBtn = card.querySelector('[data-act="save"]');
-    saveBtn.onclick = () => {
-      if (saveBtn.disabled) return;
-      saveRecipeToStorage(recipe);
-      renderAll();
-    };
+    card.onclick = () => openRecipeModal(recipe);
   });
 }
 
@@ -701,30 +737,150 @@ function renderSavedRecipes() {
       const name = ing ? ing.name : prettySlug(slug);
       return `<span class="cat-label cat-${cat}">${escape(name)}</span>`;
     }).join("");
-    return `<div class="combo-card" data-id="${sr.id}">
-      <button class="combo-load" data-id="${sr.id}">
-        <span class="name">${escape(r.name)}</span>
-        ${r.cuisine ? `<span class="count">${escape(r.cuisine)}</span>` : ""}
-        ${r.about ? `<p class="about">${escape(r.about)}</p>` : ""}
-        <div class="combo-chips">${chips}</div>
-      </button>
-      <button class="delete" data-id="${sr.id}">Delete</button>
-    </div>`;
+    return `<button class="recipe-card" data-id="${sr.id}" data-saved="1">
+      <div class="head">
+        <span class="name">${escape(r.name)}${r.cuisine ? ' <span class="saved-pill">' + escape(r.cuisine) + '</span>' : ""}</span>
+      </div>
+      ${r.about ? `<p class="about">${escape(r.about)}</p>` : ""}
+      ${sr.notes ? `<p class="about" style="font-style:italic;">"${escape(sr.notes)}"</p>` : ""}
+      <div class="ing-row">${chips}</div>
+      <div class="open-hint">Open to view method, edit notes, or use these ingredients →</div>
+    </button>`;
   }).join("");
-  savedRecipesListEl.querySelectorAll(".combo-load").forEach(b => {
-    b.onclick = () => {
-      const sr = loadSavedRecipes().find(x => x.id === b.dataset.id);
+  savedRecipesListEl.querySelectorAll(".recipe-card").forEach(card => {
+    card.onclick = () => {
+      const sr = loadSavedRecipes().find(x => x.id === card.dataset.id);
       if (!sr) return;
-      state.selected = sr.recipe.required
-        .map(s => bySlug.get(s)).filter(Boolean).map(summary);
-      state.filter = "all";
-      renderAll();
+      openRecipeModal(sr.recipe);
     };
   });
-  savedRecipesListEl.querySelectorAll(".delete").forEach(b => {
-    b.onclick = e => { e.stopPropagation(); deleteSavedRecipeById(b.dataset.id); renderAll(); };
-  });
 }
+
+function openRecipeModal(recipe) {
+  state.comboModalOpen = true;
+  let saved = findSavedByRecipeId(recipe.id);
+  let notes = saved ? saved.notes : "";
+  let notesDirty = false;
+
+  const userSlugs = new Set(selectedSlugs());
+  const reqHaveSet = new Set(recipe.required.filter(s => userSlugs.has(s)));
+  const optHaveSet = new Set((recipe.optional || []).filter(s => userSlugs.has(s)));
+
+  const meta = [
+    recipe.cuisine, recipe.course,
+    recipe.time ? `${recipe.time} min` : null,
+    recipe.servings ? `serves ${recipe.servings}` : null,
+  ].filter(Boolean).join(" · ");
+
+  const findUrl = "https://www.google.com/search?q=" + encodeURIComponent(recipe.name + " recipe");
+
+  function chip(slug, cat, name, kind) {
+    if (kind === "have") return `<span class="ing cat-${cat}">✓ ${escape(name)}</span>`;
+    if (kind === "missing") return `<span class="ing missing">+ ${escape(name)}</span>`;
+    if (kind === "opt-have") return `<span class="ing cat-${cat} opt-have">${escape(name)}</span>`;
+    return `<span class="ing opt-missing">${escape(name)}</span>`;
+  }
+  const requiredChips = recipe.required.map(slug => {
+    const ing = bySlug.get(slug);
+    return chip(slug, ing ? ing.category : "pantry", ing ? ing.name : prettySlug(slug), reqHaveSet.has(slug) ? "have" : "missing");
+  }).join("");
+  const optionalChips = (recipe.optional || []).map(slug => {
+    const ing = bySlug.get(slug);
+    return chip(slug, ing ? ing.category : "pantry", ing ? ing.name : prettySlug(slug), optHaveSet.has(slug) ? "opt-have" : "opt-missing");
+  }).join("");
+
+  function render() {
+    const saveLabel = saved
+      ? (notesDirty ? "Update notes" : "Saved")
+      : "Save recipe";
+    const saveDisabled = saved && !notesDirty ? "disabled" : "";
+
+    modalRoot.innerHTML = `<div class="overlay" id="overlay"><div class="modal">
+      <div class="modal-head">
+        <h2>${escape(recipe.name)}</h2>
+        <button class="close-x" id="modal-close" aria-label="Close">×</button>
+      </div>
+      ${meta ? `<p class="meta">${escape(meta)}</p>` : ""}
+      ${recipe.about ? `<p class="about">${escape(recipe.about)}</p>` : ""}
+
+      <div class="section">
+        <h3>Required</h3>
+        <div class="row">${requiredChips}</div>
+      </div>
+      ${(recipe.optional || []).length ? `
+      <div class="section">
+        <h3>Optional</h3>
+        <div class="row">${optionalChips}</div>
+      </div>` : ""}
+      ${recipe.method ? `
+      <div class="section">
+        <h3>Method</h3>
+        <p>${escape(recipe.method)}</p>
+      </div>` : ""}
+      ${recipe.tips ? `
+      <div class="section">
+        <h3>Tip</h3>
+        <p class="tip-text">${escape(recipe.tips)}</p>
+      </div>` : ""}
+
+      <div class="section">
+        <h3>Your notes${saved ? ' <span class="saved-note">(saved on this device)</span>' : ""}</h3>
+        <textarea id="recipe-notes" class="text" rows="3" placeholder="${
+          saved ? "What worked, what didn't, what you'd do differently..." : "Save the recipe to keep personal notes."
+        }">${escape(notes)}</textarea>
+      </div>
+
+      <div class="footer-actions">
+        <button class="btn btn-primary" id="modal-use">Use this recipe</button>
+        <button class="btn btn-outline" id="modal-save" ${saveDisabled}>${saveLabel}</button>
+        <a href="${findUrl}" target="_blank" rel="noopener noreferrer">Find recipe online ↗</a>
+        ${saved ? `<button class="btn" id="modal-delete" style="margin-left:auto;background:none;color:var(--muted);font-size:.75rem;">Remove from saved</button>` : ""}
+      </div>
+    </div></div>`;
+
+    document.getElementById("overlay").onclick = e => { if (e.target.id === "overlay") closeRecipeModal(); };
+    document.getElementById("modal-close").onclick = closeRecipeModal;
+    const notesEl = document.getElementById("recipe-notes");
+    notesEl.oninput = () => { notes = notesEl.value; notesDirty = true; render(); };
+    document.getElementById("modal-use").onclick = () => {
+      state.selected = recipe.required.map(s => bySlug.get(s)).filter(Boolean).map(summary);
+      state.filter = "all";
+      qEl.value = ""; state.items = [];
+      closeRecipeModal();
+      renderAll();
+      qEl.focus();
+    };
+    const saveBtn = document.getElementById("modal-save");
+    saveBtn.onclick = () => {
+      if (saved) {
+        if (!notesDirty) return;
+        updateRecipeNotes(saved.id, notes);
+        notesDirty = false;
+      } else {
+        saved = saveRecipeToStorage(recipe);
+        saved.notes = notes;
+        if (notes) updateRecipeNotes(saved.id, notes);
+        notesDirty = false;
+      }
+      saveBtn.textContent = "✓ Saved";
+      setTimeout(() => render(), 800);
+      renderAll();
+    };
+    const delBtn = document.getElementById("modal-delete");
+    if (delBtn) delBtn.onclick = () => {
+      deleteSavedRecipeById(saved.id);
+      saved = null;
+      notes = "";
+      notesDirty = false;
+      render();
+      renderAll();
+    };
+  }
+
+  render();
+}
+
+function closeRecipeModal() { state.comboModalOpen = false; modalRoot.innerHTML = ""; }
 
 function openComboModal() {
   state.comboModalOpen = true;

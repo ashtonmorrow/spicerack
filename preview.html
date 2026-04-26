@@ -147,9 +147,18 @@
   }
   .recipe-card {
     border: 1px solid var(--border); border-radius: .375rem; padding: .85rem .9rem;
-    margin-bottom: .5rem; transition: background .15s;
+    margin-bottom: .5rem; transition: background .15s, border-color .15s;
+    background: var(--bg); width: 100%; text-align: left; cursor: pointer;
+    font: inherit; color: inherit;
   }
   .recipe-card:hover { background: rgba(247, 246, 243, 0.5); }
+  .recipe-card .saved-pill {
+    font-size: .65rem; color: var(--pear); background: rgba(26, 127, 55, .1);
+    padding: .05rem .375rem; border-radius: .25rem; font-weight: 400;
+  }
+  .recipe-card .open-hint {
+    font-size: .72rem; color: rgba(120, 119, 116, .8); margin-top: .65rem;
+  }
   .recipe-card .head {
     display: flex; align-items: baseline; justify-content: space-between;
     gap: .75rem; flex-wrap: wrap; margin-bottom: .25rem;
@@ -219,8 +228,54 @@
     border-radius: .5rem; max-width: 28rem; width: 100%; padding: 1.5rem;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .25);
   }
-  .modal h2 { font-size: 1rem; margin: 0 0 .25rem; font-weight: 600; }
+  .modal { max-width: 36rem; }
+  .modal h2 { font-size: 1.05rem; margin: 0 0 .25rem; font-weight: 600; }
   .modal .desc { font-size: .875rem; color: var(--muted); margin: 0 0 1rem; line-height: 1.4; }
+  .modal .meta { font-size: .75rem; color: var(--muted); margin: 0 0 .75rem; }
+  .modal .about { font-size: .875rem; color: var(--ink); margin: 0 0 1rem; line-height: 1.5; }
+  .modal .section { margin-bottom: 1rem; }
+  .modal .section h3 {
+    text-transform: uppercase; font-size: .68rem; letter-spacing: .08em;
+    color: var(--muted); margin: 0 0 .35rem; font-weight: 500;
+  }
+  .modal .section h3 .saved-note { text-transform: none; letter-spacing: normal; opacity: .7; font-weight: 400; margin-left: .5rem; }
+  .modal .section p { margin: 0; font-size: .875rem; line-height: 1.5; color: var(--ink); }
+  .modal .section p.tip-text { color: var(--muted); }
+  .modal .section .row { display: flex; flex-wrap: wrap; gap: .375rem; }
+  .modal .ing.have { /* full color via cat-* */ }
+  .modal .ing.missing {
+    background: var(--hover); color: var(--muted);
+    text-decoration: line-through; text-decoration-color: rgba(120, 119, 116, 0.4);
+    padding: .15rem .5rem; border-radius: .25rem; font-size: .72rem;
+  }
+  .modal .ing.opt-have { font-style: italic; padding: .15rem .5rem; border-radius: .25rem; font-size: .72rem; }
+  .modal .ing.opt-missing {
+    background: var(--bg); color: rgba(120, 119, 116, .7);
+    border: 1px dashed var(--border); font-style: italic;
+    padding: .15rem .5rem; border-radius: .25rem; font-size: .72rem;
+  }
+  .modal .footer-actions {
+    display: flex; flex-wrap: wrap; gap: .5rem; align-items: center;
+    margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);
+  }
+  .modal .footer-actions a {
+    text-decoration: none; color: var(--muted); padding: .375rem .75rem;
+    font-size: .875rem; border-radius: .25rem; transition: background .15s, color .15s;
+  }
+  .modal .footer-actions a:hover { background: var(--hover); color: var(--ink); }
+  .modal .footer-actions .spacer { margin-left: auto; }
+  .modal .close-x {
+    background: none; border: none; cursor: pointer; padding: 0;
+    width: 1.75rem; height: 1.75rem; display: inline-flex; align-items: center;
+    justify-content: center; color: var(--muted); border-radius: .25rem;
+    font-size: 1.25rem; line-height: 1; transition: background .15s, color .15s;
+  }
+  .modal .close-x:hover { background: var(--hover); color: var(--ink); }
+  .modal .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; margin-bottom: .25rem; }
+  .modal .btn-outline {
+    border: 1px solid var(--border); background: var(--bg); color: var(--ink);
+  }
+  .modal .btn-outline:hover { background: var(--hover); }
   .modal label {
     display: block; font-size: .68rem; text-transform: uppercase;
     letter-spacing: .08em; color: var(--muted); margin-bottom: .25rem; font-weight: 500;
@@ -2270,8 +2325,8 @@ const DATA = {
 }
 ;
 const RECIPES = {
-  "$schema_version": 1,
-  "notes": "Hand-curated classic dishes used to suggest 'what could I make' from the user's ingredient selection. Descriptions are brief and factual; instructions are intentionally omitted (find a real recipe for those).",
+  "$schema_version": 2,
+  "notes": "Hand-curated classic dishes. Methods are intentionally brief and describe general technique rather than detailed copyrighted procedures.",
   "recipes": [
     {
       "id": "caprese",
@@ -2280,8 +2335,11 @@ const RECIPES = {
       "cuisine": "italian",
       "course": "starter",
       "time": 5,
+      "servings": 2,
       "required": ["tomato", "mozzarella", "basil", "olive-oil"],
-      "optional": ["balsamic-vinegar", "black-pepper"]
+      "optional": ["balsamic-vinegar", "black-pepper"],
+      "method": "Slice tomatoes and mozzarella roughly the same thickness. Alternate on a plate with whole basil leaves. Drizzle with olive oil; finish with salt and pepper.",
+      "tips": "Quality matters more than technique — peak-season tomatoes and the best mozzarella you can find."
     },
     {
       "id": "tomato-basil-pasta",
@@ -2290,8 +2348,10 @@ const RECIPES = {
       "cuisine": "italian",
       "course": "main",
       "time": 25,
+      "servings": 4,
       "required": ["pasta", "tomato", "basil", "garlic", "olive-oil"],
-      "optional": ["parmesan", "chili", "onion"]
+      "optional": ["parmesan", "chili", "onion"],
+      "method": "Sauté garlic in olive oil until fragrant. Add crushed tomatoes; simmer 15 minutes. Toss with cooked pasta; finish with torn basil and grated parmesan."
     },
     {
       "id": "pesto-pasta",
@@ -2300,8 +2360,11 @@ const RECIPES = {
       "cuisine": "italian",
       "course": "main",
       "time": 20,
+      "servings": 4,
       "required": ["pasta", "basil", "pine-nut", "parmesan", "garlic", "olive-oil"],
-      "optional": []
+      "optional": [],
+      "method": "Blend basil, pine nuts, garlic, parmesan, and olive oil into a paste. Loosen with pasta water; toss with cooked pasta off the heat.",
+      "tips": "Don't overheat the pesto or it'll turn dull green and lose its punch."
     },
     {
       "id": "aglio-e-olio",
@@ -2310,8 +2373,11 @@ const RECIPES = {
       "cuisine": "italian",
       "course": "main",
       "time": 15,
+      "servings": 4,
       "required": ["pasta", "garlic", "olive-oil", "chili", "parsley"],
-      "optional": []
+      "optional": [],
+      "method": "Slice garlic thin. Cook gently in olive oil with chili until just pale gold. Toss with cooked spaghetti and a splash of pasta water; finish with parsley.",
+      "tips": "Burnt garlic is bitter — pull the pan off the heat the moment the slivers turn pale."
     },
     {
       "id": "bruschetta",
@@ -2320,8 +2386,10 @@ const RECIPES = {
       "cuisine": "italian",
       "course": "starter",
       "time": 10,
+      "servings": 4,
       "required": ["bread", "tomato", "basil", "garlic", "olive-oil"],
-      "optional": []
+      "optional": [],
+      "method": "Toast or grill bread. Rub with raw garlic. Top with diced tomatoes mixed with olive oil, basil, and salt."
     },
     {
       "id": "mushroom-risotto",
@@ -2330,8 +2398,11 @@ const RECIPES = {
       "cuisine": "italian",
       "course": "main",
       "time": 40,
+      "servings": 4,
       "required": ["rice", "mushroom", "butter", "parmesan", "thyme"],
-      "optional": ["shallot", "wine-white", "garlic"]
+      "optional": ["shallot", "wine-white", "garlic"],
+      "method": "Sauté mushrooms separately. In another pan: shallot in butter, then rice, then wine, then warm stock added a ladle at a time, stirring until rice is creamy. Stir in butter, parmesan, mushrooms, thyme.",
+      "tips": "Keep the stock hot — adding cold liquid stops the cook and makes the rice gummy."
     },
     {
       "id": "butternut-sage-pasta",
@@ -2340,8 +2411,10 @@ const RECIPES = {
       "cuisine": "italian",
       "course": "main",
       "time": 35,
+      "servings": 4,
       "required": ["pasta", "butternut-squash", "sage", "brown-butter", "parmesan"],
-      "optional": ["nutmeg"]
+      "optional": ["nutmeg"],
+      "method": "Roast squash cubes at 425°F until caramelized. Brown butter with sage leaves until nutty. Toss pasta, squash, and butter; finish with parmesan."
     },
     {
       "id": "mac-and-cheese",
@@ -2350,8 +2423,10 @@ const RECIPES = {
       "cuisine": "american",
       "course": "main",
       "time": 30,
+      "servings": 6,
       "required": ["pasta", "cheddar", "butter", "milk"],
-      "optional": ["nutmeg", "black-pepper"]
+      "optional": ["nutmeg", "black-pepper"],
+      "method": "Make a roux with butter and flour; whisk in milk and simmer to thicken. Off heat, melt in cheddar. Toss with cooked pasta; bake with breadcrumbs if desired."
     },
     {
       "id": "roasted-chicken",
@@ -2360,8 +2435,11 @@ const RECIPES = {
       "cuisine": "french",
       "course": "main",
       "time": 75,
+      "servings": 4,
       "required": ["chicken", "lemon", "thyme", "garlic", "butter"],
-      "optional": ["rosemary", "olive-oil"]
+      "optional": ["rosemary", "olive-oil"],
+      "method": "Pat dry; salt generously inside and out. Stuff cavity with lemon halves, herb sprigs, garlic. Rub with butter. Roast at 425°F until thigh reads 165°F internal, about 60–75 minutes.",
+      "tips": "Rest 10–15 minutes before carving so the juices settle."
     },
     {
       "id": "chicken-piccata",
@@ -2370,8 +2448,10 @@ const RECIPES = {
       "cuisine": "italian",
       "course": "main",
       "time": 25,
+      "servings": 4,
       "required": ["chicken", "lemon", "capers", "butter", "parsley"],
-      "optional": ["wine-white", "shallot"]
+      "optional": ["wine-white", "shallot"],
+      "method": "Pound chicken thin, dredge in flour, sear in butter. Remove. Deglaze with wine and lemon juice; add capers; whisk in cold butter to finish. Garnish with parsley."
     },
     {
       "id": "coq-au-vin",
@@ -2380,18 +2460,23 @@ const RECIPES = {
       "cuisine": "french",
       "course": "main",
       "time": 90,
+      "servings": 4,
       "required": ["chicken", "wine-red", "mushroom", "bacon", "onion", "thyme"],
-      "optional": ["bay-leaf", "garlic", "carrot"]
+      "optional": ["bay-leaf", "garlic", "carrot"],
+      "method": "Brown chicken pieces; remove. Cook bacon, then onions and mushrooms. Return chicken; add red wine, stock, thyme, bay leaf. Braise covered ~1 hour until tender.",
+      "tips": "Use a wine you'd actually drink — bad wine doesn't hide in long cooks."
     },
     {
       "id": "shrimp-scampi",
       "name": "Shrimp Scampi",
-      "about": "Shrimp sautéed in garlic butter with lemon, parsley, and a pinch of chili.",
+      "about": "Shrimp sautéed in garlic butter with lemon, parsley, and chili.",
       "cuisine": "italian",
       "course": "main",
       "time": 15,
+      "servings": 4,
       "required": ["shrimp", "garlic", "butter", "lemon", "parsley"],
-      "optional": ["chili", "wine-white", "pasta"]
+      "optional": ["chili", "wine-white", "pasta"],
+      "method": "Sauté garlic in butter and olive oil. Add shrimp; cook just until pink, about 2 minutes per side. Deglaze with wine and lemon; finish with parsley."
     },
     {
       "id": "salmon-with-dill",
@@ -2400,8 +2485,10 @@ const RECIPES = {
       "cuisine": "scandinavian",
       "course": "main",
       "time": 20,
+      "servings": 2,
       "required": ["salmon", "dill", "lemon", "butter"],
-      "optional": ["capers", "olive-oil"]
+      "optional": ["capers", "olive-oil"],
+      "method": "Salt salmon. Pan-sear skin-side down in butter until skin is crisp; flip briefly to finish. Finish with lemon juice, capers, and dill."
     },
     {
       "id": "miso-glazed-salmon",
@@ -2410,8 +2497,10 @@ const RECIPES = {
       "cuisine": "japanese",
       "course": "main",
       "time": 20,
+      "servings": 2,
       "required": ["salmon", "miso", "ginger"],
-      "optional": ["scallion", "sesame-oil", "soy-sauce"]
+      "optional": ["scallion", "sesame-oil", "soy-sauce"],
+      "method": "Whisk miso, mirin (or sugar), soy, and grated ginger; brush on salmon. Broil or bake at 425°F until edges caramelize and salmon flakes. Garnish with scallions and sesame."
     },
     {
       "id": "pork-chop-with-apples",
@@ -2420,8 +2509,10 @@ const RECIPES = {
       "cuisine": "american",
       "course": "main",
       "time": 30,
+      "servings": 4,
       "required": ["pork", "apple", "sage", "butter"],
-      "optional": ["onion", "thyme"]
+      "optional": ["onion", "thyme"],
+      "method": "Season pork chops; sear in butter on both sides. Remove. In the same pan, cook sliced apples, onion, and sage until soft. Return pork to warm through."
     },
     {
       "id": "maple-mustard-pork",
@@ -2430,8 +2521,10 @@ const RECIPES = {
       "cuisine": "american",
       "course": "main",
       "time": 40,
+      "servings": 4,
       "required": ["pork", "maple-syrup", "mustard", "garlic"],
-      "optional": ["thyme", "rosemary"]
+      "optional": ["thyme", "rosemary"],
+      "method": "Whisk mustard, maple syrup, garlic, and thyme. Brush over pork tenderloin. Roast at 400°F until 145°F internal, about 20 minutes. Rest before slicing."
     },
     {
       "id": "beef-stew",
@@ -2440,8 +2533,10 @@ const RECIPES = {
       "cuisine": "french",
       "course": "main",
       "time": 150,
+      "servings": 6,
       "required": ["beef", "onion", "carrot", "thyme", "wine-red", "garlic"],
-      "optional": ["bay-leaf", "mushroom", "potato"]
+      "optional": ["bay-leaf", "mushroom", "potato"],
+      "method": "Brown beef chunks in batches. Sauté onions, carrots, garlic in the same pot. Deglaze with wine. Add stock, thyme, bay leaf. Cover and simmer 2–2½ hours until fork-tender."
     },
     {
       "id": "lamb-with-rosemary",
@@ -2450,8 +2545,10 @@ const RECIPES = {
       "cuisine": "mediterranean",
       "course": "main",
       "time": 90,
+      "servings": 6,
       "required": ["lamb", "rosemary", "garlic", "olive-oil", "lemon"],
-      "optional": ["thyme"]
+      "optional": ["thyme"],
+      "method": "Score the fat. Rub with crushed garlic, rosemary, olive oil, lemon zest, and salt. Roast at 400°F until 130°F internal for medium-rare. Rest 15 minutes."
     },
     {
       "id": "lamb-yogurt-mint",
@@ -2460,8 +2557,10 @@ const RECIPES = {
       "cuisine": "middle-eastern",
       "course": "main",
       "time": 45,
+      "servings": 4,
       "required": ["lamb", "mint", "yogurt", "cumin", "garlic"],
-      "optional": ["lemon", "harissa", "pomegranate"]
+      "optional": ["lemon", "harissa", "pomegranate"],
+      "method": "Spice-rub lamb with cumin, garlic, and salt. Sear or grill to desired doneness. Serve with a sauce of yogurt, chopped mint, crushed garlic, and lemon."
     },
     {
       "id": "duck-orange",
@@ -2470,8 +2569,10 @@ const RECIPES = {
       "cuisine": "french",
       "course": "main",
       "time": 120,
+      "servings": 4,
       "required": ["duck", "orange", "thyme"],
-      "optional": ["wine-red", "honey"]
+      "optional": ["wine-red", "honey"],
+      "method": "Score the duck breast skin; render fat in a cold pan over low heat until skin is crisp. Flip briefly. For the sauce: reduce orange juice, zest, and a splash of vinegar; finish with butter."
     },
     {
       "id": "cobb-salad",
@@ -2480,8 +2581,10 @@ const RECIPES = {
       "cuisine": "american",
       "course": "main",
       "time": 25,
+      "servings": 4,
       "required": ["chicken", "bacon", "avocado", "egg", "blue-cheese"],
-      "optional": ["tomato", "olive-oil"]
+      "optional": ["tomato", "olive-oil"],
+      "method": "Lay down a bed of chopped lettuce. Arrange neat rows of diced chicken, crumbled bacon, avocado, halved hard-boiled eggs, tomato, and blue cheese. Dress with vinaigrette."
     },
     {
       "id": "greek-salad",
@@ -2490,8 +2593,10 @@ const RECIPES = {
       "cuisine": "greek",
       "course": "side",
       "time": 10,
+      "servings": 4,
       "required": ["tomato", "feta", "cucumber", "olive", "oregano", "olive-oil"],
-      "optional": ["onion"]
+      "optional": ["onion"],
+      "method": "Chop tomatoes and cucumbers into chunks; thinly slice red onion. Combine with cubed feta and olives. Dress with olive oil, dried oregano, and salt."
     },
     {
       "id": "watermelon-feta",
@@ -2500,8 +2605,10 @@ const RECIPES = {
       "cuisine": "mediterranean",
       "course": "side",
       "time": 5,
+      "servings": 4,
       "required": ["watermelon", "feta", "mint"],
-      "optional": ["lime", "olive-oil"]
+      "optional": ["lime", "olive-oil"],
+      "method": "Cube watermelon. Crumble feta over. Tear mint leaves on top. Drizzle olive oil and a squeeze of lime."
     },
     {
       "id": "pear-blue-cheese-salad",
@@ -2510,8 +2617,10 @@ const RECIPES = {
       "cuisine": "french",
       "course": "starter",
       "time": 10,
+      "servings": 4,
       "required": ["pear", "blue-cheese", "walnut", "arugula"],
-      "optional": ["honey", "olive-oil"]
+      "optional": ["honey", "olive-oil"],
+      "method": "Slice pears thin. Arrange on arugula. Crumble blue cheese; scatter walnuts. Drizzle olive oil with a touch of honey."
     },
     {
       "id": "tzatziki",
@@ -2520,8 +2629,11 @@ const RECIPES = {
       "cuisine": "greek",
       "course": "sauce",
       "time": 10,
+      "servings": 6,
       "required": ["cucumber", "yogurt", "dill", "mint", "garlic"],
-      "optional": ["olive-oil", "lemon"]
+      "optional": ["olive-oil", "lemon"],
+      "method": "Grate cucumber, salt, and drain in a strainer 15 minutes; squeeze dry. Stir into thick yogurt with minced garlic, dill, mint, and a drizzle of olive oil.",
+      "tips": "The cucumber-draining step keeps it thick — skip it and you get watery tzatziki."
     },
     {
       "id": "hummus",
@@ -2530,8 +2642,11 @@ const RECIPES = {
       "cuisine": "middle-eastern",
       "course": "starter",
       "time": 10,
+      "servings": 6,
       "required": ["chickpea", "tahini", "lemon", "garlic", "olive-oil"],
-      "optional": ["cumin", "paprika"]
+      "optional": ["cumin", "paprika"],
+      "method": "Blend cooked chickpeas with tahini, lemon juice, garlic, salt, and ice water. Process for 5+ minutes for the silkiest texture.",
+      "tips": "Peeling the chickpeas (or using cooked-soft ones) gives a noticeably creamier texture."
     },
     {
       "id": "baba-ganoush",
@@ -2540,8 +2655,10 @@ const RECIPES = {
       "cuisine": "middle-eastern",
       "course": "starter",
       "time": 50,
+      "servings": 4,
       "required": ["eggplant", "tahini", "lemon", "garlic", "olive-oil"],
-      "optional": ["cumin", "parsley"]
+      "optional": ["cumin", "parsley"],
+      "method": "Char whole eggplants over flame or under the broiler until skin blackens and flesh collapses. Cool, scoop the flesh, mash with tahini, lemon, garlic, and olive oil."
     },
     {
       "id": "tomato-soup",
@@ -2550,8 +2667,10 @@ const RECIPES = {
       "cuisine": "american",
       "course": "main",
       "time": 35,
+      "servings": 4,
       "required": ["tomato", "onion", "butter", "basil"],
-      "optional": ["cream", "garlic"]
+      "optional": ["cream", "garlic"],
+      "method": "Sauté onion in butter until soft. Add tomatoes (canned or fresh) and simmer 20 minutes. Blend until smooth. Stir in basil and cream off the heat."
     },
     {
       "id": "apple-pie-filling",
@@ -2560,8 +2679,10 @@ const RECIPES = {
       "cuisine": "american",
       "course": "dessert",
       "time": 30,
+      "servings": "1 pie",
       "required": ["apple", "cinnamon", "butter"],
-      "optional": ["nutmeg", "sugar", "lemon"]
+      "optional": ["nutmeg", "sugar", "lemon"],
+      "method": "Peel and slice apples thin. Toss with sugar, cinnamon, lemon juice, and a touch of flour. Cook in butter until just tender, or use raw to fill a pie."
     },
     {
       "id": "apple-cheddar-grilled-cheese",
@@ -2570,8 +2691,10 @@ const RECIPES = {
       "cuisine": "american",
       "course": "main",
       "time": 10,
+      "servings": 2,
       "required": ["apple", "cheddar", "bread", "butter"],
-      "optional": []
+      "optional": [],
+      "method": "Butter the outside of two bread slices. Layer thin apple slices and shredded sharp cheddar inside. Grill in a pan over medium until cheese melts and bread is golden."
     },
     {
       "id": "caramel-apples",
@@ -2580,8 +2703,10 @@ const RECIPES = {
       "cuisine": "american",
       "course": "dessert",
       "time": 20,
+      "servings": 4,
       "required": ["apple", "caramel"],
-      "optional": ["butter", "vanilla"]
+      "optional": ["butter", "vanilla"],
+      "method": "Insert wooden sticks into firm apples. Dip in just-melted caramel; let excess drip off. Set on parchment until firm."
     },
     {
       "id": "strawberry-shortcake",
@@ -2590,8 +2715,10 @@ const RECIPES = {
       "cuisine": "american",
       "course": "dessert",
       "time": 30,
+      "servings": 6,
       "required": ["strawberry", "cream"],
-      "optional": ["vanilla", "sugar"]
+      "optional": ["vanilla", "sugar"],
+      "method": "Macerate halved strawberries with sugar 30 minutes. Whip cream with vanilla. Split biscuits and layer with berries and cream."
     },
     {
       "id": "caesar-dressing",
@@ -2600,8 +2727,10 @@ const RECIPES = {
       "cuisine": "american",
       "course": "sauce",
       "time": 10,
+      "servings": "4 salads",
       "required": ["anchovy", "garlic", "parmesan", "lemon", "olive-oil"],
-      "optional": ["mustard", "egg"]
+      "optional": ["mustard", "egg"],
+      "method": "Mash anchovies, garlic, and salt into a paste. Whisk in mustard and lemon juice, then olive oil to emulsify. Stir in grated parmesan."
     },
     {
       "id": "fennel-orange-salad",
@@ -2610,8 +2739,10 @@ const RECIPES = {
       "cuisine": "italian",
       "course": "starter",
       "time": 10,
+      "servings": 4,
       "required": ["fennel", "orange", "arugula", "olive-oil"],
-      "optional": ["walnut", "lemon"]
+      "optional": ["walnut", "lemon"],
+      "method": "Shave fennel paper-thin (a mandoline helps). Segment oranges over a bowl to catch juice. Toss fennel, oranges, and arugula with olive oil and the captured juice; salt to taste."
     }
   ]
 }
@@ -2730,6 +2861,14 @@ function saveRecipeToStorage(recipe) {
 }
 function deleteSavedRecipeById(id) { localStorage.setItem(STORAGE_RECIPES, JSON.stringify(loadSavedRecipes().filter(r => r.id !== id))); }
 function isRecipeSaved(recipeId) { return loadSavedRecipes().some(r => r.recipeId === recipeId); }
+function findSavedByRecipeId(recipeId) { return loadSavedRecipes().find(r => r.recipeId === recipeId) || null; }
+function updateRecipeNotes(savedId, notes) {
+  const all = loadSavedRecipes();
+  const idx = all.findIndex(r => r.id === savedId);
+  if (idx === -1) return;
+  all[idx] = { ...all[idx], notes };
+  localStorage.setItem(STORAGE_RECIPES, JSON.stringify(all));
+}
 
 // --- UI state ---
 const state = {
@@ -2910,7 +3049,6 @@ function renderRecipes() {
     const r = m.recipe;
     const meta = [r.cuisine, r.time ? `${r.time} min` : null].filter(Boolean).join(" · ");
     const reqHave = new Set(m.matchedRequired);
-    const optHave = new Set(m.matchedOptional);
     const requiredChips = r.required.map(slug => {
       const ing = bySlug.get(slug);
       const name = ing ? ing.name : prettySlug(slug);
@@ -2920,48 +3058,22 @@ function renderRecipes() {
         ? `<span class="ing cat-${cat}">✓ ${escape(name)}</span>`
         : `<span class="ing missing">+ ${escape(name)}</span>`;
     }).join("");
-    const optionalChips = (r.optional || []).map(slug => {
-      const ing = bySlug.get(slug);
-      const name = ing ? ing.name : prettySlug(slug);
-      const cat = ing ? ing.category : "pantry";
-      const have = optHave.has(slug);
-      return have
-        ? `<span class="ing cat-${cat} opt-have">${escape(name)}</span>`
-        : `<span class="ing opt-missing">${escape(name)}</span>`;
-    }).join("");
     const saved = isRecipeSaved(r.id);
-    return `<article class="recipe-card" data-id="${r.id}">
+    return `<button class="recipe-card" data-id="${r.id}">
       <div class="head">
-        <span class="name">${escape(r.name)}</span>
+        <span class="name">${escape(r.name)}${saved ? ' <span class="saved-pill">✓ saved</span>' : ''}</span>
         <span class="meta">${m.matchedRequired.length}/${r.required.length} ingredients${meta ? " · " + escape(meta) : ""}</span>
       </div>
       ${r.about ? `<p class="about">${escape(r.about)}</p>` : ""}
-      <div class="ing-row">${requiredChips}${optionalChips}</div>
-      <div class="actions">
-        <button class="btn btn-primary" data-act="use">Use this recipe</button>
-        <button class="btn btn-secondary" data-act="save" ${saved ? "disabled" : ""}>${saved ? "✓ Saved" : "Save recipe"}</button>
-      </div>
-    </article>`;
+      <div class="ing-row">${requiredChips}</div>
+      <div class="open-hint">Open to view method, save, or use these ingredients →</div>
+    </button>`;
   }).join("");
   recipesListEl.querySelectorAll(".recipe-card").forEach(card => {
     const id = card.dataset.id;
     const recipe = RECIPES.recipes.find(r => r.id === id);
     if (!recipe) return;
-    card.querySelector('[data-act="use"]').onclick = () => {
-      state.selected = recipe.required
-        .map(s => bySlug.get(s)).filter(Boolean).map(summary);
-      state.filter = "all";
-      qEl.value = "";
-      state.items = [];
-      renderAll();
-      qEl.focus();
-    };
-    const saveBtn = card.querySelector('[data-act="save"]');
-    saveBtn.onclick = () => {
-      if (saveBtn.disabled) return;
-      saveRecipeToStorage(recipe);
-      renderAll();
-    };
+    card.onclick = () => openRecipeModal(recipe);
   });
 }
 
@@ -3012,30 +3124,150 @@ function renderSavedRecipes() {
       const name = ing ? ing.name : prettySlug(slug);
       return `<span class="cat-label cat-${cat}">${escape(name)}</span>`;
     }).join("");
-    return `<div class="combo-card" data-id="${sr.id}">
-      <button class="combo-load" data-id="${sr.id}">
-        <span class="name">${escape(r.name)}</span>
-        ${r.cuisine ? `<span class="count">${escape(r.cuisine)}</span>` : ""}
-        ${r.about ? `<p class="about">${escape(r.about)}</p>` : ""}
-        <div class="combo-chips">${chips}</div>
-      </button>
-      <button class="delete" data-id="${sr.id}">Delete</button>
-    </div>`;
+    return `<button class="recipe-card" data-id="${sr.id}" data-saved="1">
+      <div class="head">
+        <span class="name">${escape(r.name)}${r.cuisine ? ' <span class="saved-pill">' + escape(r.cuisine) + '</span>' : ""}</span>
+      </div>
+      ${r.about ? `<p class="about">${escape(r.about)}</p>` : ""}
+      ${sr.notes ? `<p class="about" style="font-style:italic;">"${escape(sr.notes)}"</p>` : ""}
+      <div class="ing-row">${chips}</div>
+      <div class="open-hint">Open to view method, edit notes, or use these ingredients →</div>
+    </button>`;
   }).join("");
-  savedRecipesListEl.querySelectorAll(".combo-load").forEach(b => {
-    b.onclick = () => {
-      const sr = loadSavedRecipes().find(x => x.id === b.dataset.id);
+  savedRecipesListEl.querySelectorAll(".recipe-card").forEach(card => {
+    card.onclick = () => {
+      const sr = loadSavedRecipes().find(x => x.id === card.dataset.id);
       if (!sr) return;
-      state.selected = sr.recipe.required
-        .map(s => bySlug.get(s)).filter(Boolean).map(summary);
-      state.filter = "all";
-      renderAll();
+      openRecipeModal(sr.recipe);
     };
   });
-  savedRecipesListEl.querySelectorAll(".delete").forEach(b => {
-    b.onclick = e => { e.stopPropagation(); deleteSavedRecipeById(b.dataset.id); renderAll(); };
-  });
 }
+
+function openRecipeModal(recipe) {
+  state.comboModalOpen = true;
+  let saved = findSavedByRecipeId(recipe.id);
+  let notes = saved ? saved.notes : "";
+  let notesDirty = false;
+
+  const userSlugs = new Set(selectedSlugs());
+  const reqHaveSet = new Set(recipe.required.filter(s => userSlugs.has(s)));
+  const optHaveSet = new Set((recipe.optional || []).filter(s => userSlugs.has(s)));
+
+  const meta = [
+    recipe.cuisine, recipe.course,
+    recipe.time ? `${recipe.time} min` : null,
+    recipe.servings ? `serves ${recipe.servings}` : null,
+  ].filter(Boolean).join(" · ");
+
+  const findUrl = "https://www.google.com/search?q=" + encodeURIComponent(recipe.name + " recipe");
+
+  function chip(slug, cat, name, kind) {
+    if (kind === "have") return `<span class="ing cat-${cat}">✓ ${escape(name)}</span>`;
+    if (kind === "missing") return `<span class="ing missing">+ ${escape(name)}</span>`;
+    if (kind === "opt-have") return `<span class="ing cat-${cat} opt-have">${escape(name)}</span>`;
+    return `<span class="ing opt-missing">${escape(name)}</span>`;
+  }
+  const requiredChips = recipe.required.map(slug => {
+    const ing = bySlug.get(slug);
+    return chip(slug, ing ? ing.category : "pantry", ing ? ing.name : prettySlug(slug), reqHaveSet.has(slug) ? "have" : "missing");
+  }).join("");
+  const optionalChips = (recipe.optional || []).map(slug => {
+    const ing = bySlug.get(slug);
+    return chip(slug, ing ? ing.category : "pantry", ing ? ing.name : prettySlug(slug), optHaveSet.has(slug) ? "opt-have" : "opt-missing");
+  }).join("");
+
+  function render() {
+    const saveLabel = saved
+      ? (notesDirty ? "Update notes" : "Saved")
+      : "Save recipe";
+    const saveDisabled = saved && !notesDirty ? "disabled" : "";
+
+    modalRoot.innerHTML = `<div class="overlay" id="overlay"><div class="modal">
+      <div class="modal-head">
+        <h2>${escape(recipe.name)}</h2>
+        <button class="close-x" id="modal-close" aria-label="Close">×</button>
+      </div>
+      ${meta ? `<p class="meta">${escape(meta)}</p>` : ""}
+      ${recipe.about ? `<p class="about">${escape(recipe.about)}</p>` : ""}
+
+      <div class="section">
+        <h3>Required</h3>
+        <div class="row">${requiredChips}</div>
+      </div>
+      ${(recipe.optional || []).length ? `
+      <div class="section">
+        <h3>Optional</h3>
+        <div class="row">${optionalChips}</div>
+      </div>` : ""}
+      ${recipe.method ? `
+      <div class="section">
+        <h3>Method</h3>
+        <p>${escape(recipe.method)}</p>
+      </div>` : ""}
+      ${recipe.tips ? `
+      <div class="section">
+        <h3>Tip</h3>
+        <p class="tip-text">${escape(recipe.tips)}</p>
+      </div>` : ""}
+
+      <div class="section">
+        <h3>Your notes${saved ? ' <span class="saved-note">(saved on this device)</span>' : ""}</h3>
+        <textarea id="recipe-notes" class="text" rows="3" placeholder="${
+          saved ? "What worked, what didn't, what you'd do differently..." : "Save the recipe to keep personal notes."
+        }">${escape(notes)}</textarea>
+      </div>
+
+      <div class="footer-actions">
+        <button class="btn btn-primary" id="modal-use">Use this recipe</button>
+        <button class="btn btn-outline" id="modal-save" ${saveDisabled}>${saveLabel}</button>
+        <a href="${findUrl}" target="_blank" rel="noopener noreferrer">Find recipe online ↗</a>
+        ${saved ? `<button class="btn" id="modal-delete" style="margin-left:auto;background:none;color:var(--muted);font-size:.75rem;">Remove from saved</button>` : ""}
+      </div>
+    </div></div>`;
+
+    document.getElementById("overlay").onclick = e => { if (e.target.id === "overlay") closeRecipeModal(); };
+    document.getElementById("modal-close").onclick = closeRecipeModal;
+    const notesEl = document.getElementById("recipe-notes");
+    notesEl.oninput = () => { notes = notesEl.value; notesDirty = true; render(); };
+    document.getElementById("modal-use").onclick = () => {
+      state.selected = recipe.required.map(s => bySlug.get(s)).filter(Boolean).map(summary);
+      state.filter = "all";
+      qEl.value = ""; state.items = [];
+      closeRecipeModal();
+      renderAll();
+      qEl.focus();
+    };
+    const saveBtn = document.getElementById("modal-save");
+    saveBtn.onclick = () => {
+      if (saved) {
+        if (!notesDirty) return;
+        updateRecipeNotes(saved.id, notes);
+        notesDirty = false;
+      } else {
+        saved = saveRecipeToStorage(recipe);
+        saved.notes = notes;
+        if (notes) updateRecipeNotes(saved.id, notes);
+        notesDirty = false;
+      }
+      saveBtn.textContent = "✓ Saved";
+      setTimeout(() => render(), 800);
+      renderAll();
+    };
+    const delBtn = document.getElementById("modal-delete");
+    if (delBtn) delBtn.onclick = () => {
+      deleteSavedRecipeById(saved.id);
+      saved = null;
+      notes = "";
+      notesDirty = false;
+      render();
+      renderAll();
+    };
+  }
+
+  render();
+}
+
+function closeRecipeModal() { state.comboModalOpen = false; modalRoot.innerHTML = ""; }
 
 function openComboModal() {
   state.comboModalOpen = true;

@@ -53,3 +53,18 @@ export function deleteSavedRecipe(id: string): void {
 export function isRecipeSaved(recipeId: string): boolean {
   return loadSavedRecipes().some((r) => r.recipeId === recipeId);
 }
+
+// Returns the most recent saved entry for a given catalog recipe id (or null).
+export function findSavedByRecipeId(recipeId: string): SavedRecipe | null {
+  return loadSavedRecipes().find((r) => r.recipeId === recipeId) ?? null;
+}
+
+// Update the user's personal notes on an existing saved recipe.
+export function updateRecipeNotes(savedId: string, notes: string): void {
+  if (!isBrowser()) return;
+  const all = loadSavedRecipes();
+  const idx = all.findIndex((r) => r.id === savedId);
+  if (idx === -1) return;
+  all[idx] = { ...all[idx], notes };
+  window.localStorage.setItem(KEY, JSON.stringify(all));
+}
