@@ -1,0 +1,2632 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Flavor Pear — Preview</title>
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --ink: #37352F;
+    --muted: #787774;
+    --border: #E9E9E7;
+    --hover: #F7F6F3;
+    --selected: #F1F0EE;
+    --pear: #1A7F37;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; }
+  main { max-width: 48rem; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+  header { display: flex; align-items: flex-start; gap: .75rem; margin-bottom: 2.5rem; }
+  header svg { flex-shrink: 0; margin-top: 2px; color: var(--pear); }
+  h1 { font-size: 2.25rem; margin: 0; letter-spacing: -.015em; font-weight: 600; line-height: 1.1; }
+  .sub { color: var(--muted); margin: .25rem 0 0; font-size: .95rem; }
+
+  .search-wrap { position: relative; }
+  input.search, input.text, textarea.text {
+    width: 100%; font-size: 1rem; padding: .75rem 1rem;
+    border-radius: .375rem; border: 1px solid var(--border);
+    background: var(--bg); color: var(--ink);
+    outline: none; transition: border-color .15s, box-shadow .15s;
+    font-family: inherit;
+  }
+  input.text { padding: .5rem .75rem; font-size: .875rem; }
+  textarea.text { padding: .5rem .75rem; font-size: .875rem; resize: none; }
+  input.search::placeholder, input.text::placeholder, textarea.text::placeholder { color: var(--muted); }
+  input.search:focus, input.text:focus, textarea.text:focus {
+    border-color: rgba(26, 127, 55, .6);
+    box-shadow: 0 0 0 1px rgba(26, 127, 55, .4);
+  }
+
+  .dropdown {
+    position: absolute; z-index: 20; left: 0; right: 0; top: 100%;
+    margin-top: .25rem; background: var(--bg);
+    border: 1px solid var(--border); border-radius: .375rem;
+    box-shadow: 0 4px 16px rgba(15, 15, 15, .08);
+    overflow: hidden;
+  }
+  .dropdown .header {
+    padding: .5rem 1rem; font-size: .68rem; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--muted); background: var(--hover);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .dropdown .header .hint { text-transform: none; letter-spacing: normal; opacity: .8; }
+  .dropdown ul { list-style: none; margin: 0; padding: 0; }
+  .dropdown li {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: .75rem; padding: .55rem 1rem; cursor: pointer; font-size: .875rem;
+  }
+  .dropdown li.hl { background: var(--hover); }
+  .dropdown li .right { display: flex; gap: .5rem; align-items: center; }
+  .dropdown .dots { font-size: .65rem; color: var(--muted); letter-spacing: -1px; }
+  .dropdown .multi { font-size: .65rem; background: var(--selected);
+    padding: .1rem .4rem; border-radius: 9999px; font-weight: 600; color: var(--ink); }
+
+  .selected { display: flex; flex-wrap: wrap; gap: .375rem; align-items: center;
+    margin: 1rem 0 2rem; min-height: 2rem; }
+  .selected .empty { color: var(--muted); font-size: .875rem; }
+  .chip {
+    display: inline-flex; gap: .375rem; align-items: center;
+    padding: .25rem .625rem; border-radius: .25rem;
+    font-size: .85rem; cursor: pointer; border: none; transition: filter .15s;
+  }
+  .chip:hover { filter: brightness(.95); }
+  .chip .x { opacity: .5; font-size: .75rem; }
+  .chip:hover .x { opacity: 1; }
+  .clearall, .save-combo, .saved-as {
+    font-size: .75rem; background: none; border: none;
+    cursor: pointer; padding: .25rem .5rem; border-radius: .25rem;
+    transition: background .15s, color .15s;
+  }
+  .clearall { color: var(--muted); margin-left: .25rem; }
+  .clearall:hover { color: var(--ink); background: var(--hover); }
+  .save-combo { color: var(--pear); font-weight: 500; }
+  .save-combo:hover { background: var(--hover); }
+  .saved-as { color: var(--muted); cursor: default; }
+  .saved-as strong { color: var(--ink); font-weight: 600; }
+
+  .panel {
+    background: var(--bg); border-radius: .375rem; border: 1px solid var(--border);
+    padding: 1.5rem;
+  }
+  .panel h2 { font-size: 1.1rem; margin: 0 0 1rem; font-weight: 600; }
+  .panel h2 .names { font-weight: 400; }
+  .filterbar { display: flex; flex-wrap: wrap; gap: .25rem; margin-bottom: 1.25rem; }
+  .fchip {
+    font-size: .75rem; padding: .25rem .625rem; border-radius: .25rem;
+    background: var(--hover); color: var(--muted); border: none; cursor: pointer; transition: all .15s;
+  }
+  .fchip:hover { color: var(--ink); }
+  .fchip.active { background: var(--ink); color: var(--bg); }
+
+  .group { margin-bottom: 1rem; }
+  .group h3 {
+    text-transform: uppercase; font-size: .68rem; letter-spacing: .08em;
+    color: var(--muted); margin: 0 0 .375rem; font-weight: 500;
+  }
+  .group .row { display: flex; flex-wrap: wrap; gap: .375rem; }
+  .pchip {
+    padding: .25rem .625rem; border-radius: .25rem;
+    font-size: .85rem; cursor: pointer; border: none;
+    display: inline-flex; align-items: center; gap: .375rem; transition: filter .15s;
+  }
+  .pchip:hover { filter: brightness(.95); }
+  .pchip .dots { font-size: .62rem; opacity: .55; letter-spacing: -1px; }
+  .pchip .multi { font-size: .65rem; background: rgba(0,0,0,.08);
+    padding: .05rem .375rem; border-radius: .25rem; font-weight: 600; }
+
+  .empty-panel { text-align: center; color: var(--muted); padding: 2rem; }
+  .empty-panel .big { font-size: 1rem; color: var(--ink); }
+  .empty-panel .small { font-size: .875rem; margin-top: .25rem; }
+
+  .saved-section { margin-top: 2.5rem; }
+  .saved-section h2 {
+    text-transform: uppercase; font-size: .68rem; letter-spacing: .08em;
+    color: var(--muted); margin: 0 0 .5rem; font-weight: 500;
+  }
+  .combo-card {
+    border: 1px solid var(--border); border-radius: .375rem; padding: .75rem;
+    margin-bottom: .5rem; transition: background .15s; position: relative;
+  }
+  .combo-card:hover { background: var(--hover); }
+  .combo-load {
+    background: none; border: none; padding: 0; text-align: left;
+    cursor: pointer; width: 100%; font: inherit; color: inherit;
+  }
+  .combo-card .name { font-weight: 500; font-size: .875rem; }
+  .combo-card .count { font-size: .75rem; color: var(--muted); margin-left: .5rem; }
+  .combo-card .about { font-size: .875rem; color: var(--muted); margin: .25rem 0 0; line-height: 1.4; }
+  .combo-card .combo-chips { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .5rem; }
+  .combo-card .combo-chips .cat-label { font-size: .65rem; padding: .05rem .375rem; border-radius: .25rem; }
+  .combo-card .delete {
+    position: absolute; top: .5rem; right: .5rem;
+    background: none; border: none; cursor: pointer; padding: .15rem .4rem;
+    border-radius: .25rem; font-size: .75rem; color: var(--muted);
+    opacity: 0; transition: opacity .15s, color .15s;
+  }
+  .combo-card:hover .delete { opacity: 1; }
+  .combo-card .delete:hover { color: var(--ink); }
+
+  /* Modal */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.3);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1rem; z-index: 50;
+  }
+  .modal {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: .5rem; max-width: 28rem; width: 100%; padding: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .25);
+  }
+  .modal h2 { font-size: 1rem; margin: 0 0 .25rem; font-weight: 600; }
+  .modal .desc { font-size: .875rem; color: var(--muted); margin: 0 0 1rem; line-height: 1.4; }
+  .modal label {
+    display: block; font-size: .68rem; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--muted); margin-bottom: .25rem; font-weight: 500;
+  }
+  .modal label .opt { text-transform: none; letter-spacing: normal; opacity: .7; font-weight: normal; }
+  .modal .ingredients-preview {
+    display: flex; flex-wrap: wrap; gap: .25rem; margin-bottom: 1rem;
+  }
+  .modal .ingredients-preview .cat-label { font-size: .68rem; padding: .1rem .4rem; border-radius: .25rem; }
+  .modal .field { margin-bottom: .75rem; }
+  .modal .actions { display: flex; justify-content: flex-end; gap: .5rem; margin-top: 1rem; }
+  .btn {
+    font-size: .875rem; padding: .375rem .75rem; border-radius: .25rem;
+    border: none; cursor: pointer; transition: filter .15s, background .15s, color .15s;
+    font-family: inherit;
+  }
+  .btn-secondary { background: none; color: var(--muted); }
+  .btn-secondary:hover { background: var(--hover); color: var(--ink); }
+  .btn-primary { background: var(--pear); color: white; font-weight: 500; }
+  .btn-primary:hover { filter: brightness(.95); }
+  .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+
+  .muted { color: var(--muted); }
+  .hidden { display: none; }
+  footer { text-align: center; color: var(--muted); font-size: .75rem; margin-top: 4rem; }
+  .cat-label { font-size: .68rem; padding: .1rem .4rem; border-radius: .25rem; }
+
+  /* Notion-style category tags */
+  .cat-fruit     { background: #FFE2DD; color: #5D1715; }
+  .cat-vegetable { background: #DBEDDB; color: #1C3A1F; }
+  .cat-protein   { background: #F5E0E9; color: #4C1D2D; }
+  .cat-herb      { background: #DBEDDB; color: #1C3A1F; }
+  .cat-spice     { background: #FADEC9; color: #5C2B0A; }
+  .cat-dairy     { background: #FDECC8; color: #5C3F0F; }
+  .cat-pantry    { background: #E3E2E0; color: #45413D; }
+  .cat-nut       { background: #EEE0DA; color: #4D2E1F; }
+  .cat-grain     { background: #EEE0DA; color: #4D2E1F; }
+  .cat-aromatic  { background: #E8DEEE; color: #3F2E5D; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg viewBox="0 0 64 64" width="40" height="40" fill="none" stroke="currentColor"
+         stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-label="Flavor Pear">
+      <path d="M 32 17 C 28.5 17 27.5 19.5 28 22 C 28.5 24 27.5 25.5 25.5 26.5
+               C 18 30 13 38 14 47 C 15 55 22 60 32 60 C 42 60 49 55 50 47
+               C 51 38 46 30 38.5 26.5 C 36.5 25.5 35.5 24 36 22
+               C 36.5 19.5 35.5 17 32 17 Z" />
+      <path d="M 32 17 L 33 9" />
+      <path d="M 33 11 C 38 7 44 9 43 14 C 38 14 35 13 33 11 Z" />
+    </svg>
+    <div>
+      <h1>Flavor Pear</h1>
+      <p class="sub">Add ingredients. Get suggestions, fast.</p>
+    </div>
+  </header>
+
+  <div class="search-wrap">
+    <input id="q" class="search" placeholder="Add an ingredient — apple, salmon, cumin…"
+           autocomplete="off" spellcheck="false" autofocus />
+    <div id="dropdown" class="dropdown hidden"></div>
+  </div>
+
+  <div id="selected" class="selected">
+    <span class="empty">Pick an ingredient to begin — the more you add, the smarter the suggestions.</span>
+  </div>
+
+  <div id="panel" class="panel">
+    <div class="empty-panel">
+      <div class="big">Suggestions appear here</div>
+      <div class="small">Add an ingredient and we'll show what pairs well.</div>
+    </div>
+  </div>
+
+  <section id="saved-section" class="saved-section hidden">
+    <h2>Your saved combos</h2>
+    <div id="saved-list"></div>
+  </section>
+
+  <footer>Click any suggestion to chain it on. Press Esc to dismiss the dropdown.</footer>
+</main>
+
+<div id="modal-root"></div>
+
+<script>
+const DATA = {
+  "$schema_version": 1,
+  "notes": "Hand-curated seed of well-known culinary pairings drawn from general cooking knowledge. Strength: 1=good, 2=great, 3=classic. Add freely.",
+  "ingredients": [
+    {
+      "slug": "apple",
+      "name": "Apple",
+      "category": "fruit",
+      "aliases": ["apples"],
+      "seasons": ["fall"],
+      "cuisines": ["american", "french", "german", "british"],
+      "pairings": [
+        { "slug": "cinnamon", "strength": 3 },
+        { "slug": "butter", "strength": 3 },
+        { "slug": "pork", "strength": 3 },
+        { "slug": "cheddar", "strength": 3 },
+        { "slug": "caramel", "strength": 3 },
+        { "slug": "walnut", "strength": 2 },
+        { "slug": "maple-syrup", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "nutmeg", "strength": 2 },
+        { "slug": "vanilla", "strength": 2 },
+        { "slug": "honey", "strength": 2 },
+        { "slug": "sage", "strength": 2 },
+        { "slug": "bacon", "strength": 2 },
+        { "slug": "onion", "strength": 2 },
+        { "slug": "rosemary", "strength": 1 },
+        { "slug": "blue-cheese", "strength": 2 },
+        { "slug": "lemon", "strength": 1 }
+      ]
+    },
+    {
+      "slug": "pear",
+      "name": "Pear",
+      "category": "fruit",
+      "seasons": ["fall", "winter"],
+      "pairings": [
+        { "slug": "blue-cheese", "strength": 3 },
+        { "slug": "walnut", "strength": 3 },
+        { "slug": "honey", "strength": 3 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "vanilla", "strength": 2 },
+        { "slug": "cardamom", "strength": 2 },
+        { "slug": "chocolate", "strength": 2 },
+        { "slug": "almond", "strength": 2 },
+        { "slug": "cinnamon", "strength": 2 },
+        { "slug": "prosciutto", "strength": 2 },
+        { "slug": "arugula", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "lemon",
+      "name": "Lemon",
+      "category": "fruit",
+      "pairings": [
+        { "slug": "olive-oil", "strength": 3 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "parsley", "strength": 3 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "rosemary", "strength": 2 },
+        { "slug": "chicken", "strength": 3 },
+        { "slug": "fish-white", "strength": 3 },
+        { "slug": "shrimp", "strength": 3 },
+        { "slug": "butter", "strength": 3 },
+        { "slug": "honey", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "blueberry", "strength": 2 },
+        { "slug": "raspberry", "strength": 2 },
+        { "slug": "vanilla", "strength": 2 },
+        { "slug": "asparagus", "strength": 2 },
+        { "slug": "artichoke", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "lime",
+      "name": "Lime",
+      "category": "fruit",
+      "cuisines": ["mexican", "thai", "vietnamese"],
+      "pairings": [
+        { "slug": "cilantro", "strength": 3 },
+        { "slug": "chili", "strength": 3 },
+        { "slug": "fish-sauce", "strength": 3 },
+        { "slug": "coconut-milk", "strength": 3 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "lemongrass", "strength": 3 },
+        { "slug": "shrimp", "strength": 3 },
+        { "slug": "avocado", "strength": 3 },
+        { "slug": "mango", "strength": 2 },
+        { "slug": "tequila", "strength": 2 },
+        { "slug": "mint", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "orange",
+      "name": "Orange",
+      "category": "fruit",
+      "pairings": [
+        { "slug": "chocolate", "strength": 3 },
+        { "slug": "cardamom", "strength": 2 },
+        { "slug": "cinnamon", "strength": 2 },
+        { "slug": "duck", "strength": 3 },
+        { "slug": "fennel", "strength": 3 },
+        { "slug": "almond", "strength": 2 },
+        { "slug": "vanilla", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "beet", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "strawberry",
+      "name": "Strawberry",
+      "category": "fruit",
+      "seasons": ["spring", "summer"],
+      "pairings": [
+        { "slug": "balsamic-vinegar", "strength": 3 },
+        { "slug": "basil", "strength": 3 },
+        { "slug": "black-pepper", "strength": 2 },
+        { "slug": "cream", "strength": 3 },
+        { "slug": "vanilla", "strength": 3 },
+        { "slug": "chocolate", "strength": 3 },
+        { "slug": "rhubarb", "strength": 2 },
+        { "slug": "mint", "strength": 2 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "honey", "strength": 2 },
+        { "slug": "almond", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "blueberry",
+      "name": "Blueberry",
+      "category": "fruit",
+      "seasons": ["summer"],
+      "pairings": [
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "vanilla", "strength": 3 },
+        { "slug": "cinnamon", "strength": 2 },
+        { "slug": "maple-syrup", "strength": 2 },
+        { "slug": "yogurt", "strength": 2 },
+        { "slug": "almond", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "thyme", "strength": 1 },
+        { "slug": "cream", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "raspberry",
+      "name": "Raspberry",
+      "category": "fruit",
+      "pairings": [
+        { "slug": "chocolate", "strength": 3 },
+        { "slug": "vanilla", "strength": 3 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "cream", "strength": 3 },
+        { "slug": "almond", "strength": 2 },
+        { "slug": "rose", "strength": 2 },
+        { "slug": "mint", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "peach",
+      "name": "Peach",
+      "category": "fruit",
+      "seasons": ["summer"],
+      "pairings": [
+        { "slug": "basil", "strength": 3 },
+        { "slug": "vanilla", "strength": 3 },
+        { "slug": "almond", "strength": 3 },
+        { "slug": "prosciutto", "strength": 2 },
+        { "slug": "burrata", "strength": 3 },
+        { "slug": "honey", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "balsamic-vinegar", "strength": 2 },
+        { "slug": "cinnamon", "strength": 2 },
+        { "slug": "thyme", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "mango",
+      "name": "Mango",
+      "category": "fruit",
+      "cuisines": ["indian", "thai", "mexican"],
+      "pairings": [
+        { "slug": "lime", "strength": 3 },
+        { "slug": "chili", "strength": 3 },
+        { "slug": "coconut-milk", "strength": 3 },
+        { "slug": "cilantro", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "yogurt", "strength": 2 },
+        { "slug": "cardamom", "strength": 2 },
+        { "slug": "shrimp", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "avocado",
+      "name": "Avocado",
+      "category": "fruit",
+      "pairings": [
+        { "slug": "lime", "strength": 3 },
+        { "slug": "cilantro", "strength": 3 },
+        { "slug": "chili", "strength": 3 },
+        { "slug": "tomato", "strength": 3 },
+        { "slug": "onion", "strength": 2 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "salmon", "strength": 2 },
+        { "slug": "shrimp", "strength": 2 },
+        { "slug": "egg", "strength": 2 },
+        { "slug": "bacon", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "tomato",
+      "name": "Tomato",
+      "category": "vegetable",
+      "seasons": ["summer"],
+      "cuisines": ["italian", "mexican", "spanish", "french"],
+      "pairings": [
+        { "slug": "basil", "strength": 3 },
+        { "slug": "mozzarella", "strength": 3 },
+        { "slug": "olive-oil", "strength": 3 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "balsamic-vinegar", "strength": 3 },
+        { "slug": "oregano", "strength": 2 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "onion", "strength": 2 },
+        { "slug": "parsley", "strength": 2 },
+        { "slug": "anchovy", "strength": 2 },
+        { "slug": "feta", "strength": 2 },
+        { "slug": "bread", "strength": 2 },
+        { "slug": "egg", "strength": 2 },
+        { "slug": "parmesan", "strength": 3 },
+        { "slug": "burrata", "strength": 3 },
+        { "slug": "shallot", "strength": 2 },
+        { "slug": "cucumber", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "onion",
+      "name": "Onion",
+      "category": "aromatic",
+      "pairings": [
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "butter", "strength": 3 },
+        { "slug": "thyme", "strength": 3 },
+        { "slug": "bay-leaf", "strength": 2 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "tomato", "strength": 2 },
+        { "slug": "beef", "strength": 2 },
+        { "slug": "gruyere", "strength": 3 },
+        { "slug": "parsley", "strength": 2 },
+        { "slug": "vinegar-red-wine", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "garlic",
+      "name": "Garlic",
+      "category": "aromatic",
+      "pairings": [
+        { "slug": "olive-oil", "strength": 3 },
+        { "slug": "parsley", "strength": 3 },
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "rosemary", "strength": 3 },
+        { "slug": "thyme", "strength": 3 },
+        { "slug": "tomato", "strength": 3 },
+        { "slug": "chili", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "butter", "strength": 3 },
+        { "slug": "onion", "strength": 3 },
+        { "slug": "shrimp", "strength": 3 },
+        { "slug": "anchovy", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "shallot",
+      "name": "Shallot",
+      "category": "aromatic",
+      "pairings": [
+        { "slug": "vinegar-red-wine", "strength": 3 },
+        { "slug": "butter", "strength": 3 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "tarragon", "strength": 2 },
+        { "slug": "wine-white", "strength": 2 },
+        { "slug": "mustard", "strength": 2 },
+        { "slug": "fish-white", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "carrot",
+      "name": "Carrot",
+      "category": "vegetable",
+      "pairings": [
+        { "slug": "ginger", "strength": 3 },
+        { "slug": "honey", "strength": 2 },
+        { "slug": "butter", "strength": 2 },
+        { "slug": "cumin", "strength": 2 },
+        { "slug": "coriander", "strength": 2 },
+        { "slug": "parsley", "strength": 2 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "orange", "strength": 2 },
+        { "slug": "maple-syrup", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "potato",
+      "name": "Potato",
+      "category": "vegetable",
+      "pairings": [
+        { "slug": "butter", "strength": 3 },
+        { "slug": "rosemary", "strength": 3 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "cream", "strength": 3 },
+        { "slug": "gruyere", "strength": 3 },
+        { "slug": "bacon", "strength": 3 },
+        { "slug": "chive", "strength": 3 },
+        { "slug": "leek", "strength": 3 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "parsley", "strength": 2 },
+        { "slug": "black-pepper", "strength": 2 },
+        { "slug": "dill", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "sweet-potato",
+      "name": "Sweet Potato",
+      "category": "vegetable",
+      "pairings": [
+        { "slug": "cinnamon", "strength": 3 },
+        { "slug": "maple-syrup", "strength": 3 },
+        { "slug": "butter", "strength": 3 },
+        { "slug": "pecan", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "chili", "strength": 2 },
+        { "slug": "lime", "strength": 2 },
+        { "slug": "sage", "strength": 2 },
+        { "slug": "coconut-milk", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "butternut-squash",
+      "name": "Butternut Squash",
+      "category": "vegetable",
+      "seasons": ["fall", "winter"],
+      "pairings": [
+        { "slug": "sage", "strength": 3 },
+        { "slug": "brown-butter", "strength": 3 },
+        { "slug": "nutmeg", "strength": 2 },
+        { "slug": "cinnamon", "strength": 2 },
+        { "slug": "maple-syrup", "strength": 2 },
+        { "slug": "parmesan", "strength": 3 },
+        { "slug": "pecan", "strength": 2 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "ricotta", "strength": 2 },
+        { "slug": "ginger", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "mushroom",
+      "name": "Mushroom",
+      "category": "vegetable",
+      "pairings": [
+        { "slug": "thyme", "strength": 3 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "butter", "strength": 3 },
+        { "slug": "parsley", "strength": 3 },
+        { "slug": "shallot", "strength": 3 },
+        { "slug": "wine-white", "strength": 2 },
+        { "slug": "wine-red", "strength": 2 },
+        { "slug": "cream", "strength": 3 },
+        { "slug": "soy-sauce", "strength": 2 },
+        { "slug": "miso", "strength": 2 },
+        { "slug": "tarragon", "strength": 2 },
+        { "slug": "egg", "strength": 2 },
+        { "slug": "polenta", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "spinach",
+      "name": "Spinach",
+      "category": "vegetable",
+      "pairings": [
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "nutmeg", "strength": 3 },
+        { "slug": "feta", "strength": 3 },
+        { "slug": "ricotta", "strength": 3 },
+        { "slug": "cream", "strength": 2 },
+        { "slug": "egg", "strength": 2 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "pine-nut", "strength": 2 },
+        { "slug": "raisin", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "broccoli",
+      "name": "Broccoli",
+      "category": "vegetable",
+      "pairings": [
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "anchovy", "strength": 2 },
+        { "slug": "chili", "strength": 2 },
+        { "slug": "parmesan", "strength": 2 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "almond", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "cauliflower",
+      "name": "Cauliflower",
+      "category": "vegetable",
+      "pairings": [
+        { "slug": "cumin", "strength": 3 },
+        { "slug": "turmeric", "strength": 2 },
+        { "slug": "tahini", "strength": 3 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "parsley", "strength": 2 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "raisin", "strength": 2 },
+        { "slug": "anchovy", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "asparagus",
+      "name": "Asparagus",
+      "category": "vegetable",
+      "seasons": ["spring"],
+      "pairings": [
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "butter", "strength": 3 },
+        { "slug": "parmesan", "strength": 3 },
+        { "slug": "egg", "strength": 3 },
+        { "slug": "prosciutto", "strength": 3 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "tarragon", "strength": 2 },
+        { "slug": "morel", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "eggplant",
+      "name": "Eggplant",
+      "category": "vegetable",
+      "cuisines": ["italian", "middle-eastern", "indian"],
+      "pairings": [
+        { "slug": "tomato", "strength": 3 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "tahini", "strength": 3 },
+        { "slug": "olive-oil", "strength": 3 },
+        { "slug": "basil", "strength": 2 },
+        { "slug": "feta", "strength": 2 },
+        { "slug": "yogurt", "strength": 2 },
+        { "slug": "cumin", "strength": 2 },
+        { "slug": "mint", "strength": 2 },
+        { "slug": "miso", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "zucchini",
+      "name": "Zucchini",
+      "category": "vegetable",
+      "seasons": ["summer"],
+      "pairings": [
+        { "slug": "basil", "strength": 2 },
+        { "slug": "mint", "strength": 2 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "feta", "strength": 2 },
+        { "slug": "parmesan", "strength": 2 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "ricotta", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "corn",
+      "name": "Corn",
+      "category": "vegetable",
+      "seasons": ["summer"],
+      "pairings": [
+        { "slug": "butter", "strength": 3 },
+        { "slug": "lime", "strength": 3 },
+        { "slug": "chili", "strength": 3 },
+        { "slug": "cilantro", "strength": 2 },
+        { "slug": "basil", "strength": 2 },
+        { "slug": "feta", "strength": 2 },
+        { "slug": "tomato", "strength": 2 },
+        { "slug": "bacon", "strength": 2 },
+        { "slug": "black-pepper", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "beet",
+      "name": "Beet",
+      "category": "vegetable",
+      "pairings": [
+        { "slug": "goat-cheese", "strength": 3 },
+        { "slug": "walnut", "strength": 3 },
+        { "slug": "orange", "strength": 2 },
+        { "slug": "dill", "strength": 3 },
+        { "slug": "horseradish", "strength": 2 },
+        { "slug": "balsamic-vinegar", "strength": 2 },
+        { "slug": "yogurt", "strength": 2 },
+        { "slug": "arugula", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "fennel",
+      "name": "Fennel",
+      "category": "vegetable",
+      "pairings": [
+        { "slug": "orange", "strength": 3 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "fish-white", "strength": 3 },
+        { "slug": "pork", "strength": 3 },
+        { "slug": "parmesan", "strength": 2 },
+        { "slug": "anise", "strength": 2 },
+        { "slug": "arugula", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "arugula",
+      "name": "Arugula",
+      "category": "vegetable",
+      "pairings": [
+        { "slug": "parmesan", "strength": 3 },
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "olive-oil", "strength": 3 },
+        { "slug": "prosciutto", "strength": 2 },
+        { "slug": "balsamic-vinegar", "strength": 2 },
+        { "slug": "pear", "strength": 2 },
+        { "slug": "fig", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "cucumber",
+      "name": "Cucumber",
+      "category": "vegetable",
+      "pairings": [
+        { "slug": "yogurt", "strength": 3 },
+        { "slug": "dill", "strength": 3 },
+        { "slug": "mint", "strength": 3 },
+        { "slug": "feta", "strength": 2 },
+        { "slug": "tomato", "strength": 2 },
+        { "slug": "vinegar-rice", "strength": 2 },
+        { "slug": "sesame-oil", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "leek",
+      "name": "Leek",
+      "category": "aromatic",
+      "pairings": [
+        { "slug": "potato", "strength": 3 },
+        { "slug": "butter", "strength": 3 },
+        { "slug": "cream", "strength": 3 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "bay-leaf", "strength": 2 },
+        { "slug": "wine-white", "strength": 2 },
+        { "slug": "mustard", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "chicken",
+      "name": "Chicken",
+      "category": "protein",
+      "pairings": [
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "thyme", "strength": 3 },
+        { "slug": "rosemary", "strength": 3 },
+        { "slug": "tarragon", "strength": 3 },
+        { "slug": "butter", "strength": 3 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "paprika", "strength": 2 },
+        { "slug": "wine-white", "strength": 2 },
+        { "slug": "mushroom", "strength": 3 },
+        { "slug": "parsley", "strength": 2 },
+        { "slug": "sage", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "soy-sauce", "strength": 2 },
+        { "slug": "honey", "strength": 2 },
+        { "slug": "mustard", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "beef",
+      "name": "Beef",
+      "category": "protein",
+      "pairings": [
+        { "slug": "black-pepper", "strength": 3 },
+        { "slug": "rosemary", "strength": 3 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "wine-red", "strength": 3 },
+        { "slug": "mushroom", "strength": 3 },
+        { "slug": "onion", "strength": 3 },
+        { "slug": "blue-cheese", "strength": 3 },
+        { "slug": "horseradish", "strength": 3 },
+        { "slug": "mustard", "strength": 2 },
+        { "slug": "soy-sauce", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "bay-leaf", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "pork",
+      "name": "Pork",
+      "category": "protein",
+      "pairings": [
+        { "slug": "apple", "strength": 3 },
+        { "slug": "fennel", "strength": 3 },
+        { "slug": "sage", "strength": 3 },
+        { "slug": "rosemary", "strength": 2 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "mustard", "strength": 3 },
+        { "slug": "maple-syrup", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "chili", "strength": 2 },
+        { "slug": "soy-sauce", "strength": 2 },
+        { "slug": "onion", "strength": 2 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "honey", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "lamb",
+      "name": "Lamb",
+      "category": "protein",
+      "pairings": [
+        { "slug": "rosemary", "strength": 3 },
+        { "slug": "mint", "strength": 3 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "cumin", "strength": 3 },
+        { "slug": "yogurt", "strength": 3 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "harissa", "strength": 2 },
+        { "slug": "pomegranate", "strength": 2 },
+        { "slug": "feta", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "duck",
+      "name": "Duck",
+      "category": "protein",
+      "pairings": [
+        { "slug": "orange", "strength": 3 },
+        { "slug": "cherry", "strength": 3 },
+        { "slug": "fig", "strength": 3 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "five-spice", "strength": 3 },
+        { "slug": "soy-sauce", "strength": 2 },
+        { "slug": "honey", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "wine-red", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "salmon",
+      "name": "Salmon",
+      "category": "protein",
+      "pairings": [
+        { "slug": "dill", "strength": 3 },
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "capers", "strength": 3 },
+        { "slug": "horseradish", "strength": 2 },
+        { "slug": "soy-sauce", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "miso", "strength": 3 },
+        { "slug": "mustard", "strength": 2 },
+        { "slug": "maple-syrup", "strength": 2 },
+        { "slug": "avocado", "strength": 2 },
+        { "slug": "cucumber", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "fish-white",
+      "name": "White Fish",
+      "category": "protein",
+      "aliases": ["cod", "halibut", "sole", "snapper"],
+      "pairings": [
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "butter", "strength": 3 },
+        { "slug": "parsley", "strength": 3 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "capers", "strength": 2 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "fennel", "strength": 2 },
+        { "slug": "wine-white", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "shrimp",
+      "name": "Shrimp",
+      "category": "protein",
+      "pairings": [
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "butter", "strength": 3 },
+        { "slug": "chili", "strength": 3 },
+        { "slug": "lime", "strength": 3 },
+        { "slug": "cilantro", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "coconut-milk", "strength": 2 },
+        { "slug": "parsley", "strength": 2 },
+        { "slug": "tomato", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "scallop",
+      "name": "Scallop",
+      "category": "protein",
+      "pairings": [
+        { "slug": "brown-butter", "strength": 3 },
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "bacon", "strength": 3 },
+        { "slug": "cauliflower", "strength": 2 },
+        { "slug": "pea", "strength": 2 },
+        { "slug": "corn", "strength": 2 },
+        { "slug": "vanilla", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "egg",
+      "name": "Egg",
+      "category": "protein",
+      "pairings": [
+        { "slug": "butter", "strength": 3 },
+        { "slug": "chive", "strength": 3 },
+        { "slug": "black-pepper", "strength": 3 },
+        { "slug": "bacon", "strength": 3 },
+        { "slug": "cheddar", "strength": 2 },
+        { "slug": "tarragon", "strength": 2 },
+        { "slug": "parsley", "strength": 2 },
+        { "slug": "tomato", "strength": 2 },
+        { "slug": "mushroom", "strength": 2 },
+        { "slug": "spinach", "strength": 2 },
+        { "slug": "asparagus", "strength": 3 }
+      ]
+    },
+    {
+      "slug": "basil",
+      "name": "Basil",
+      "category": "herb",
+      "cuisines": ["italian", "thai"],
+      "pairings": [
+        { "slug": "tomato", "strength": 3 },
+        { "slug": "mozzarella", "strength": 3 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "pine-nut", "strength": 3 },
+        { "slug": "olive-oil", "strength": 3 },
+        { "slug": "parmesan", "strength": 3 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "strawberry", "strength": 3 },
+        { "slug": "peach", "strength": 3 },
+        { "slug": "chili", "strength": 2 },
+        { "slug": "coconut-milk", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "parsley",
+      "name": "Parsley",
+      "category": "herb",
+      "pairings": [
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "chive", "strength": 2 },
+        { "slug": "capers", "strength": 2 },
+        { "slug": "anchovy", "strength": 2 },
+        { "slug": "butter", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "cilantro",
+      "name": "Cilantro",
+      "category": "herb",
+      "cuisines": ["mexican", "thai", "indian", "vietnamese"],
+      "pairings": [
+        { "slug": "lime", "strength": 3 },
+        { "slug": "chili", "strength": 3 },
+        { "slug": "cumin", "strength": 3 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "coconut-milk", "strength": 2 },
+        { "slug": "avocado", "strength": 3 }
+      ]
+    },
+    {
+      "slug": "mint",
+      "name": "Mint",
+      "category": "herb",
+      "pairings": [
+        { "slug": "lamb", "strength": 3 },
+        { "slug": "yogurt", "strength": 3 },
+        { "slug": "cucumber", "strength": 3 },
+        { "slug": "pea", "strength": 3 },
+        { "slug": "lime", "strength": 2 },
+        { "slug": "chocolate", "strength": 3 },
+        { "slug": "watermelon", "strength": 3 },
+        { "slug": "feta", "strength": 2 },
+        { "slug": "strawberry", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "rosemary",
+      "name": "Rosemary",
+      "category": "herb",
+      "pairings": [
+        { "slug": "lamb", "strength": 3 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "olive-oil", "strength": 3 },
+        { "slug": "potato", "strength": 3 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "chicken", "strength": 3 },
+        { "slug": "bread", "strength": 2 },
+        { "slug": "honey", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "thyme",
+      "name": "Thyme",
+      "category": "herb",
+      "pairings": [
+        { "slug": "mushroom", "strength": 3 },
+        { "slug": "chicken", "strength": 3 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "tomato", "strength": 2 },
+        { "slug": "onion", "strength": 3 },
+        { "slug": "wine-red", "strength": 2 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "carrot", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "sage",
+      "name": "Sage",
+      "category": "herb",
+      "pairings": [
+        { "slug": "brown-butter", "strength": 3 },
+        { "slug": "butternut-squash", "strength": 3 },
+        { "slug": "pork", "strength": 3 },
+        { "slug": "apple", "strength": 2 },
+        { "slug": "parmesan", "strength": 2 },
+        { "slug": "onion", "strength": 2 },
+        { "slug": "bean-white", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "oregano",
+      "name": "Oregano",
+      "category": "herb",
+      "cuisines": ["italian", "greek", "mexican"],
+      "pairings": [
+        { "slug": "tomato", "strength": 3 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "feta", "strength": 3 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "lamb", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "dill",
+      "name": "Dill",
+      "category": "herb",
+      "pairings": [
+        { "slug": "salmon", "strength": 3 },
+        { "slug": "cucumber", "strength": 3 },
+        { "slug": "yogurt", "strength": 3 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "potato", "strength": 2 },
+        { "slug": "feta", "strength": 2 },
+        { "slug": "egg", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "tarragon",
+      "name": "Tarragon",
+      "category": "herb",
+      "pairings": [
+        { "slug": "chicken", "strength": 3 },
+        { "slug": "egg", "strength": 3 },
+        { "slug": "shallot", "strength": 2 },
+        { "slug": "wine-white", "strength": 2 },
+        { "slug": "mustard", "strength": 2 },
+        { "slug": "asparagus", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "chive",
+      "name": "Chive",
+      "category": "herb",
+      "pairings": [
+        { "slug": "egg", "strength": 3 },
+        { "slug": "potato", "strength": 3 },
+        { "slug": "sour-cream", "strength": 3 },
+        { "slug": "goat-cheese", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "bay-leaf",
+      "name": "Bay Leaf",
+      "category": "herb",
+      "pairings": [
+        { "slug": "onion", "strength": 2 },
+        { "slug": "carrot", "strength": 2 },
+        { "slug": "wine-red", "strength": 2 },
+        { "slug": "tomato", "strength": 2 },
+        { "slug": "bean-white", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "black-pepper",
+      "name": "Black Pepper",
+      "category": "spice",
+      "pairings": [
+        { "slug": "beef", "strength": 3 },
+        { "slug": "strawberry", "strength": 2 },
+        { "slug": "egg", "strength": 3 },
+        { "slug": "parmesan", "strength": 3 },
+        { "slug": "cream", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "cumin",
+      "name": "Cumin",
+      "category": "spice",
+      "cuisines": ["mexican", "indian", "middle-eastern"],
+      "pairings": [
+        { "slug": "coriander", "strength": 3 },
+        { "slug": "chili", "strength": 3 },
+        { "slug": "lime", "strength": 2 },
+        { "slug": "lamb", "strength": 3 },
+        { "slug": "carrot", "strength": 2 },
+        { "slug": "cauliflower", "strength": 3 },
+        { "slug": "yogurt", "strength": 2 },
+        { "slug": "cilantro", "strength": 3 }
+      ]
+    },
+    {
+      "slug": "coriander",
+      "name": "Coriander Seed",
+      "category": "spice",
+      "pairings": [
+        { "slug": "cumin", "strength": 3 },
+        { "slug": "carrot", "strength": 2 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "chicken", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "paprika",
+      "name": "Paprika",
+      "category": "spice",
+      "pairings": [
+        { "slug": "chicken", "strength": 3 },
+        { "slug": "potato", "strength": 2 },
+        { "slug": "onion", "strength": 2 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "egg", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "cinnamon",
+      "name": "Cinnamon",
+      "category": "spice",
+      "pairings": [
+        { "slug": "apple", "strength": 3 },
+        { "slug": "sweet-potato", "strength": 3 },
+        { "slug": "chocolate", "strength": 3 },
+        { "slug": "vanilla", "strength": 2 },
+        { "slug": "coffee", "strength": 2 },
+        { "slug": "honey", "strength": 2 },
+        { "slug": "lamb", "strength": 2 },
+        { "slug": "orange", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "nutmeg",
+      "name": "Nutmeg",
+      "category": "spice",
+      "pairings": [
+        { "slug": "spinach", "strength": 3 },
+        { "slug": "cream", "strength": 3 },
+        { "slug": "potato", "strength": 2 },
+        { "slug": "butternut-squash", "strength": 2 },
+        { "slug": "egg", "strength": 2 },
+        { "slug": "milk", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "ginger",
+      "name": "Ginger",
+      "category": "spice",
+      "cuisines": ["chinese", "indian", "japanese"],
+      "pairings": [
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "soy-sauce", "strength": 3 },
+        { "slug": "scallion", "strength": 3 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "lime", "strength": 2 },
+        { "slug": "honey", "strength": 2 },
+        { "slug": "carrot", "strength": 3 },
+        { "slug": "chicken", "strength": 2 },
+        { "slug": "salmon", "strength": 2 },
+        { "slug": "pear", "strength": 2 },
+        { "slug": "chocolate", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "turmeric",
+      "name": "Turmeric",
+      "category": "spice",
+      "cuisines": ["indian"],
+      "pairings": [
+        { "slug": "ginger", "strength": 3 },
+        { "slug": "black-pepper", "strength": 2 },
+        { "slug": "coconut-milk", "strength": 3 },
+        { "slug": "cauliflower", "strength": 3 },
+        { "slug": "rice", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "cardamom",
+      "name": "Cardamom",
+      "category": "spice",
+      "pairings": [
+        { "slug": "coffee", "strength": 3 },
+        { "slug": "rose", "strength": 2 },
+        { "slug": "pistachio", "strength": 3 },
+        { "slug": "orange", "strength": 2 },
+        { "slug": "rice", "strength": 2 },
+        { "slug": "chocolate", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "vanilla",
+      "name": "Vanilla",
+      "category": "spice",
+      "pairings": [
+        { "slug": "chocolate", "strength": 3 },
+        { "slug": "strawberry", "strength": 3 },
+        { "slug": "raspberry", "strength": 3 },
+        { "slug": "cream", "strength": 3 },
+        { "slug": "almond", "strength": 2 },
+        { "slug": "blueberry", "strength": 3 },
+        { "slug": "peach", "strength": 3 }
+      ]
+    },
+    {
+      "slug": "chili",
+      "name": "Chili",
+      "category": "spice",
+      "aliases": ["chile", "chili pepper"],
+      "pairings": [
+        { "slug": "lime", "strength": 3 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "cilantro", "strength": 3 },
+        { "slug": "chocolate", "strength": 2 },
+        { "slug": "shrimp", "strength": 3 },
+        { "slug": "mango", "strength": 3 },
+        { "slug": "corn", "strength": 3 }
+      ]
+    },
+    {
+      "slug": "butter",
+      "name": "Butter",
+      "category": "dairy",
+      "pairings": [
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "parsley", "strength": 2 },
+        { "slug": "shallot", "strength": 2 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "potato", "strength": 3 }
+      ]
+    },
+    {
+      "slug": "brown-butter",
+      "name": "Brown Butter",
+      "category": "dairy",
+      "pairings": [
+        { "slug": "sage", "strength": 3 },
+        { "slug": "scallop", "strength": 3 },
+        { "slug": "butternut-squash", "strength": 3 },
+        { "slug": "hazelnut", "strength": 3 },
+        { "slug": "lemon", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "cream",
+      "name": "Cream",
+      "category": "dairy",
+      "pairings": [
+        { "slug": "vanilla", "strength": 3 },
+        { "slug": "mushroom", "strength": 3 },
+        { "slug": "potato", "strength": 3 },
+        { "slug": "nutmeg", "strength": 3 },
+        { "slug": "strawberry", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "yogurt",
+      "name": "Yogurt",
+      "category": "dairy",
+      "pairings": [
+        { "slug": "cucumber", "strength": 3 },
+        { "slug": "mint", "strength": 3 },
+        { "slug": "dill", "strength": 3 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "lamb", "strength": 3 },
+        { "slug": "cumin", "strength": 2 },
+        { "slug": "honey", "strength": 2 },
+        { "slug": "strawberry", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "parmesan",
+      "name": "Parmesan",
+      "category": "dairy",
+      "pairings": [
+        { "slug": "tomato", "strength": 3 },
+        { "slug": "basil", "strength": 3 },
+        { "slug": "arugula", "strength": 3 },
+        { "slug": "egg", "strength": 2 },
+        { "slug": "asparagus", "strength": 3 },
+        { "slug": "black-pepper", "strength": 3 },
+        { "slug": "butternut-squash", "strength": 3 }
+      ]
+    },
+    {
+      "slug": "mozzarella",
+      "name": "Mozzarella",
+      "category": "dairy",
+      "pairings": [
+        { "slug": "tomato", "strength": 3 },
+        { "slug": "basil", "strength": 3 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "prosciutto", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "burrata",
+      "name": "Burrata",
+      "category": "dairy",
+      "pairings": [
+        { "slug": "tomato", "strength": 3 },
+        { "slug": "peach", "strength": 3 },
+        { "slug": "basil", "strength": 3 },
+        { "slug": "olive-oil", "strength": 3 },
+        { "slug": "balsamic-vinegar", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "feta",
+      "name": "Feta",
+      "category": "dairy",
+      "cuisines": ["greek", "middle-eastern"],
+      "pairings": [
+        { "slug": "watermelon", "strength": 3 },
+        { "slug": "tomato", "strength": 3 },
+        { "slug": "cucumber", "strength": 2 },
+        { "slug": "olive", "strength": 3 },
+        { "slug": "mint", "strength": 2 },
+        { "slug": "oregano", "strength": 3 },
+        { "slug": "spinach", "strength": 3 }
+      ]
+    },
+    {
+      "slug": "goat-cheese",
+      "name": "Goat Cheese",
+      "category": "dairy",
+      "pairings": [
+        { "slug": "beet", "strength": 3 },
+        { "slug": "honey", "strength": 3 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "fig", "strength": 3 },
+        { "slug": "walnut", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "blue-cheese",
+      "name": "Blue Cheese",
+      "category": "dairy",
+      "pairings": [
+        { "slug": "pear", "strength": 3 },
+        { "slug": "walnut", "strength": 3 },
+        { "slug": "honey", "strength": 3 },
+        { "slug": "fig", "strength": 3 },
+        { "slug": "beef", "strength": 3 },
+        { "slug": "apple", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "cheddar",
+      "name": "Cheddar",
+      "category": "dairy",
+      "aliases": ["cheese-cheddar"],
+      "pairings": [
+        { "slug": "apple", "strength": 3 },
+        { "slug": "egg", "strength": 2 },
+        { "slug": "mustard", "strength": 2 },
+        { "slug": "bread", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "ricotta",
+      "name": "Ricotta",
+      "category": "dairy",
+      "pairings": [
+        { "slug": "honey", "strength": 3 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "spinach", "strength": 3 },
+        { "slug": "pasta", "strength": 2 },
+        { "slug": "fig", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "olive-oil",
+      "name": "Olive Oil",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "tomato", "strength": 3 },
+        { "slug": "bread", "strength": 3 },
+        { "slug": "basil", "strength": 3 }
+      ]
+    },
+    {
+      "slug": "balsamic-vinegar",
+      "name": "Balsamic Vinegar",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "tomato", "strength": 3 },
+        { "slug": "strawberry", "strength": 3 },
+        { "slug": "parmesan", "strength": 2 },
+        { "slug": "fig", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "vinegar-red-wine",
+      "name": "Red Wine Vinegar",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "shallot", "strength": 3 },
+        { "slug": "tomato", "strength": 2 },
+        { "slug": "olive-oil", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "vinegar-rice",
+      "name": "Rice Vinegar",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "soy-sauce", "strength": 3 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "cucumber", "strength": 2 },
+        { "slug": "sesame-oil", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "soy-sauce",
+      "name": "Soy Sauce",
+      "category": "pantry",
+      "cuisines": ["japanese", "chinese", "korean"],
+      "pairings": [
+        { "slug": "ginger", "strength": 3 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "scallion", "strength": 3 },
+        { "slug": "sesame-oil", "strength": 3 },
+        { "slug": "honey", "strength": 2 },
+        { "slug": "salmon", "strength": 2 },
+        { "slug": "mushroom", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "fish-sauce",
+      "name": "Fish Sauce",
+      "category": "pantry",
+      "cuisines": ["thai", "vietnamese"],
+      "pairings": [
+        { "slug": "lime", "strength": 3 },
+        { "slug": "chili", "strength": 3 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "sugar", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "miso",
+      "name": "Miso",
+      "category": "pantry",
+      "cuisines": ["japanese"],
+      "pairings": [
+        { "slug": "salmon", "strength": 3 },
+        { "slug": "eggplant", "strength": 3 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "scallion", "strength": 2 },
+        { "slug": "butter", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "tahini",
+      "name": "Tahini",
+      "category": "pantry",
+      "cuisines": ["middle-eastern"],
+      "pairings": [
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "chickpea", "strength": 3 },
+        { "slug": "cauliflower", "strength": 3 },
+        { "slug": "eggplant", "strength": 3 },
+        { "slug": "honey", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "honey",
+      "name": "Honey",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "goat-cheese", "strength": 3 },
+        { "slug": "ricotta", "strength": 3 },
+        { "slug": "blue-cheese", "strength": 3 },
+        { "slug": "yogurt", "strength": 2 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "thyme", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "maple-syrup",
+      "name": "Maple Syrup",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "bacon", "strength": 3 },
+        { "slug": "sweet-potato", "strength": 3 },
+        { "slug": "pecan", "strength": 3 },
+        { "slug": "salmon", "strength": 2 },
+        { "slug": "apple", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "mustard",
+      "name": "Mustard",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "pork", "strength": 3 },
+        { "slug": "honey", "strength": 3 },
+        { "slug": "shallot", "strength": 2 },
+        { "slug": "tarragon", "strength": 2 },
+        { "slug": "beef", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "coconut-milk",
+      "name": "Coconut Milk",
+      "category": "pantry",
+      "cuisines": ["thai", "indian"],
+      "pairings": [
+        { "slug": "lime", "strength": 3 },
+        { "slug": "lemongrass", "strength": 3 },
+        { "slug": "ginger", "strength": 3 },
+        { "slug": "chili", "strength": 3 },
+        { "slug": "cilantro", "strength": 2 },
+        { "slug": "turmeric", "strength": 3 },
+        { "slug": "mango", "strength": 3 }
+      ]
+    },
+    {
+      "slug": "almond",
+      "name": "Almond",
+      "category": "nut",
+      "pairings": [
+        { "slug": "cherry", "strength": 3 },
+        { "slug": "peach", "strength": 3 },
+        { "slug": "vanilla", "strength": 2 },
+        { "slug": "chocolate", "strength": 2 },
+        { "slug": "orange", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "walnut",
+      "name": "Walnut",
+      "category": "nut",
+      "pairings": [
+        { "slug": "blue-cheese", "strength": 3 },
+        { "slug": "pear", "strength": 3 },
+        { "slug": "beet", "strength": 3 },
+        { "slug": "apple", "strength": 2 },
+        { "slug": "honey", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "pecan",
+      "name": "Pecan",
+      "category": "nut",
+      "pairings": [
+        { "slug": "maple-syrup", "strength": 3 },
+        { "slug": "sweet-potato", "strength": 2 },
+        { "slug": "bourbon", "strength": 2 },
+        { "slug": "chocolate", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "hazelnut",
+      "name": "Hazelnut",
+      "category": "nut",
+      "pairings": [
+        { "slug": "chocolate", "strength": 3 },
+        { "slug": "brown-butter", "strength": 3 },
+        { "slug": "coffee", "strength": 2 },
+        { "slug": "pear", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "pine-nut",
+      "name": "Pine Nut",
+      "category": "nut",
+      "pairings": [
+        { "slug": "basil", "strength": 3 },
+        { "slug": "parmesan", "strength": 2 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "raisin", "strength": 2 },
+        { "slug": "spinach", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "pistachio",
+      "name": "Pistachio",
+      "category": "nut",
+      "pairings": [
+        { "slug": "cardamom", "strength": 3 },
+        { "slug": "rose", "strength": 3 },
+        { "slug": "honey", "strength": 2 },
+        { "slug": "chocolate", "strength": 2 },
+        { "slug": "lamb", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "rice",
+      "name": "Rice",
+      "category": "grain",
+      "pairings": [
+        { "slug": "soy-sauce", "strength": 2 },
+        { "slug": "butter", "strength": 2 },
+        { "slug": "saffron", "strength": 2 },
+        { "slug": "coconut-milk", "strength": 2 },
+        { "slug": "cardamom", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "pasta",
+      "name": "Pasta",
+      "category": "grain",
+      "pairings": [
+        { "slug": "tomato", "strength": 3 },
+        { "slug": "basil", "strength": 3 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "olive-oil", "strength": 3 },
+        { "slug": "parmesan", "strength": 3 },
+        { "slug": "ricotta", "strength": 2 },
+        { "slug": "anchovy", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "bread",
+      "name": "Bread",
+      "category": "grain",
+      "pairings": [
+        { "slug": "olive-oil", "strength": 3 },
+        { "slug": "tomato", "strength": 2 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "butter", "strength": 3 },
+        { "slug": "rosemary", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "polenta",
+      "name": "Polenta",
+      "category": "grain",
+      "pairings": [
+        { "slug": "mushroom", "strength": 3 },
+        { "slug": "parmesan", "strength": 3 },
+        { "slug": "rosemary", "strength": 2 },
+        { "slug": "butter", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "chickpea",
+      "name": "Chickpea",
+      "category": "protein",
+      "pairings": [
+        { "slug": "tahini", "strength": 3 },
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "cumin", "strength": 3 },
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "olive-oil", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "lentil",
+      "name": "Lentil",
+      "category": "protein",
+      "pairings": [
+        { "slug": "cumin", "strength": 3 },
+        { "slug": "carrot", "strength": 2 },
+        { "slug": "onion", "strength": 2 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "yogurt", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "bacon",
+      "name": "Bacon",
+      "category": "protein",
+      "pairings": [
+        { "slug": "egg", "strength": 3 },
+        { "slug": "maple-syrup", "strength": 3 },
+        { "slug": "scallop", "strength": 3 },
+        { "slug": "potato", "strength": 3 },
+        { "slug": "apple", "strength": 2 },
+        { "slug": "brussels-sprout", "strength": 3 }
+      ]
+    },
+    {
+      "slug": "prosciutto",
+      "name": "Prosciutto",
+      "category": "protein",
+      "pairings": [
+        { "slug": "melon", "strength": 3 },
+        { "slug": "fig", "strength": 3 },
+        { "slug": "peach", "strength": 2 },
+        { "slug": "asparagus", "strength": 3 },
+        { "slug": "mozzarella", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "anchovy",
+      "name": "Anchovy",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "garlic", "strength": 3 },
+        { "slug": "tomato", "strength": 2 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "parsley", "strength": 2 },
+        { "slug": "broccoli", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "capers",
+      "name": "Capers",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "fish-white", "strength": 3 },
+        { "slug": "salmon", "strength": 3 },
+        { "slug": "parsley", "strength": 2 },
+        { "slug": "tomato", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "scallion",
+      "name": "Scallion",
+      "category": "aromatic",
+      "pairings": [
+        { "slug": "ginger", "strength": 3 },
+        { "slug": "soy-sauce", "strength": 3 },
+        { "slug": "sesame-oil", "strength": 3 },
+        { "slug": "egg", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "lemongrass",
+      "name": "Lemongrass",
+      "category": "aromatic",
+      "cuisines": ["thai", "vietnamese"],
+      "pairings": [
+        { "slug": "coconut-milk", "strength": 3 },
+        { "slug": "lime", "strength": 3 },
+        { "slug": "ginger", "strength": 3 },
+        { "slug": "chili", "strength": 2 },
+        { "slug": "cilantro", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "sesame-oil",
+      "name": "Sesame Oil",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "soy-sauce", "strength": 3 },
+        { "slug": "scallion", "strength": 3 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "cucumber", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "fig",
+      "name": "Fig",
+      "category": "fruit",
+      "seasons": ["summer", "fall"],
+      "pairings": [
+        { "slug": "prosciutto", "strength": 3 },
+        { "slug": "blue-cheese", "strength": 3 },
+        { "slug": "goat-cheese", "strength": 3 },
+        { "slug": "honey", "strength": 3 },
+        { "slug": "balsamic-vinegar", "strength": 2 },
+        { "slug": "walnut", "strength": 2 },
+        { "slug": "duck", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "cherry",
+      "name": "Cherry",
+      "category": "fruit",
+      "seasons": ["summer"],
+      "pairings": [
+        { "slug": "almond", "strength": 3 },
+        { "slug": "chocolate", "strength": 3 },
+        { "slug": "duck", "strength": 3 },
+        { "slug": "vanilla", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "watermelon",
+      "name": "Watermelon",
+      "category": "fruit",
+      "seasons": ["summer"],
+      "pairings": [
+        { "slug": "feta", "strength": 3 },
+        { "slug": "mint", "strength": 3 },
+        { "slug": "lime", "strength": 2 },
+        { "slug": "basil", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "pomegranate",
+      "name": "Pomegranate",
+      "category": "fruit",
+      "pairings": [
+        { "slug": "lamb", "strength": 2 },
+        { "slug": "yogurt", "strength": 2 },
+        { "slug": "feta", "strength": 2 },
+        { "slug": "walnut", "strength": 2 },
+        { "slug": "mint", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "chocolate",
+      "name": "Chocolate",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "vanilla", "strength": 3 },
+        { "slug": "raspberry", "strength": 3 },
+        { "slug": "orange", "strength": 3 },
+        { "slug": "hazelnut", "strength": 3 },
+        { "slug": "coffee", "strength": 3 },
+        { "slug": "mint", "strength": 3 },
+        { "slug": "chili", "strength": 2 },
+        { "slug": "cherry", "strength": 3 }
+      ]
+    },
+    {
+      "slug": "coffee",
+      "name": "Coffee",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "chocolate", "strength": 3 },
+        { "slug": "cardamom", "strength": 3 },
+        { "slug": "vanilla", "strength": 2 },
+        { "slug": "hazelnut", "strength": 2 },
+        { "slug": "cinnamon", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "brussels-sprout",
+      "name": "Brussels Sprout",
+      "category": "vegetable",
+      "pairings": [
+        { "slug": "bacon", "strength": 3 },
+        { "slug": "balsamic-vinegar", "strength": 2 },
+        { "slug": "parmesan", "strength": 2 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "maple-syrup", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "pea",
+      "name": "Pea",
+      "category": "vegetable",
+      "seasons": ["spring"],
+      "pairings": [
+        { "slug": "mint", "strength": 3 },
+        { "slug": "butter", "strength": 2 },
+        { "slug": "parmesan", "strength": 2 },
+        { "slug": "prosciutto", "strength": 2 },
+        { "slug": "lemon", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "horseradish",
+      "name": "Horseradish",
+      "category": "spice",
+      "pairings": [
+        { "slug": "beef", "strength": 3 },
+        { "slug": "salmon", "strength": 2 },
+        { "slug": "beet", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "harissa",
+      "name": "Harissa",
+      "category": "spice",
+      "cuisines": ["north-african"],
+      "pairings": [
+        { "slug": "lamb", "strength": 3 },
+        { "slug": "yogurt", "strength": 2 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "carrot", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "five-spice",
+      "name": "Five-Spice",
+      "category": "spice",
+      "cuisines": ["chinese"],
+      "pairings": [
+        { "slug": "duck", "strength": 3 },
+        { "slug": "pork", "strength": 2 },
+        { "slug": "soy-sauce", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "gruyere",
+      "name": "Gruyère",
+      "category": "dairy",
+      "aliases": ["cheese-gruyere"],
+      "pairings": [
+        { "slug": "potato", "strength": 3 },
+        { "slug": "onion", "strength": 3 },
+        { "slug": "egg", "strength": 2 },
+        { "slug": "ham", "strength": 2 },
+        { "slug": "wine-white", "strength": 2 },
+        { "slug": "bread", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "wine-white",
+      "name": "White Wine",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "shallot", "strength": 2 },
+        { "slug": "chicken", "strength": 2 },
+        { "slug": "fish-white", "strength": 2 },
+        { "slug": "mushroom", "strength": 2 },
+        { "slug": "leek", "strength": 2 },
+        { "slug": "tarragon", "strength": 2 },
+        { "slug": "gruyere", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "wine-red",
+      "name": "Red Wine",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "beef", "strength": 3 },
+        { "slug": "duck", "strength": 2 },
+        { "slug": "mushroom", "strength": 2 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "bay-leaf", "strength": 2 },
+        { "slug": "shallot", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "artichoke",
+      "name": "Artichoke",
+      "category": "vegetable",
+      "seasons": ["spring"],
+      "pairings": [
+        { "slug": "lemon", "strength": 3 },
+        { "slug": "olive-oil", "strength": 3 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "parmesan", "strength": 2 },
+        { "slug": "parsley", "strength": 2 },
+        { "slug": "mint", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "rhubarb",
+      "name": "Rhubarb",
+      "category": "vegetable",
+      "seasons": ["spring"],
+      "pairings": [
+        { "slug": "strawberry", "strength": 3 },
+        { "slug": "ginger", "strength": 2 },
+        { "slug": "vanilla", "strength": 2 },
+        { "slug": "orange", "strength": 2 },
+        { "slug": "honey", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "raisin",
+      "name": "Raisin",
+      "category": "fruit",
+      "pairings": [
+        { "slug": "pine-nut", "strength": 2 },
+        { "slug": "cauliflower", "strength": 2 },
+        { "slug": "spinach", "strength": 2 },
+        { "slug": "cinnamon", "strength": 2 },
+        { "slug": "almond", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "anise",
+      "name": "Anise",
+      "category": "spice",
+      "pairings": [
+        { "slug": "fennel", "strength": 2 },
+        { "slug": "orange", "strength": 2 },
+        { "slug": "fish-white", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "bean-white",
+      "name": "White Bean",
+      "category": "protein",
+      "pairings": [
+        { "slug": "sage", "strength": 2 },
+        { "slug": "rosemary", "strength": 2 },
+        { "slug": "garlic", "strength": 2 },
+        { "slug": "olive-oil", "strength": 2 },
+        { "slug": "tomato", "strength": 2 },
+        { "slug": "bay-leaf", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "sour-cream",
+      "name": "Sour Cream",
+      "category": "dairy",
+      "pairings": [
+        { "slug": "chive", "strength": 3 },
+        { "slug": "potato", "strength": 3 },
+        { "slug": "dill", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "milk",
+      "name": "Milk",
+      "category": "dairy",
+      "pairings": [
+        { "slug": "vanilla", "strength": 2 },
+        { "slug": "nutmeg", "strength": 2 },
+        { "slug": "honey", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "olive",
+      "name": "Olive",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "feta", "strength": 3 },
+        { "slug": "tomato", "strength": 2 },
+        { "slug": "lemon", "strength": 2 },
+        { "slug": "anchovy", "strength": 2 },
+        { "slug": "thyme", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "saffron",
+      "name": "Saffron",
+      "category": "spice",
+      "pairings": [
+        { "slug": "rice", "strength": 3 },
+        { "slug": "fish-white", "strength": 2 },
+        { "slug": "shrimp", "strength": 2 },
+        { "slug": "chicken", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "melon",
+      "name": "Melon",
+      "category": "fruit",
+      "seasons": ["summer"],
+      "pairings": [
+        { "slug": "prosciutto", "strength": 3 },
+        { "slug": "mint", "strength": 2 },
+        { "slug": "lime", "strength": 2 },
+        { "slug": "feta", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "rose",
+      "name": "Rose",
+      "category": "spice",
+      "pairings": [
+        { "slug": "raspberry", "strength": 2 },
+        { "slug": "pistachio", "strength": 3 },
+        { "slug": "cardamom", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "caramel",
+      "name": "Caramel",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "apple", "strength": 3 },
+        { "slug": "chocolate", "strength": 2 },
+        { "slug": "vanilla", "strength": 2 },
+        { "slug": "pecan", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "sugar",
+      "name": "Sugar",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "fish-sauce", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "bourbon",
+      "name": "Bourbon",
+      "category": "pantry",
+      "pairings": [
+        { "slug": "pecan", "strength": 2 },
+        { "slug": "maple-syrup", "strength": 2 },
+        { "slug": "vanilla", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "tequila",
+      "name": "Tequila",
+      "category": "pantry",
+      "cuisines": ["mexican"],
+      "pairings": [
+        { "slug": "lime", "strength": 3 }
+      ]
+    },
+    {
+      "slug": "morel",
+      "name": "Morel",
+      "category": "vegetable",
+      "seasons": ["spring"],
+      "pairings": [
+        { "slug": "asparagus", "strength": 2 },
+        { "slug": "butter", "strength": 2 },
+        { "slug": "thyme", "strength": 2 },
+        { "slug": "cream", "strength": 2 }
+      ]
+    },
+    {
+      "slug": "ham",
+      "name": "Ham",
+      "category": "protein",
+      "pairings": [
+        { "slug": "gruyere", "strength": 2 },
+        { "slug": "mustard", "strength": 2 }
+      ]
+    }
+  ]
+}
+;
+
+const STARTER_SLUGS = ["tomato","chicken","garlic","lemon","basil","onion","salmon","apple"];
+const STORAGE_KEY = "flavor-pear:combos";
+
+// --- mini repo (mirror of json-repository.ts) ---
+const bySlug = new Map();
+for (const ing of DATA.ingredients) bySlug.set(ing.slug, ing);
+
+function summary(ing) {
+  return { slug: ing.slug, name: ing.name, category: ing.category };
+}
+function search(q, limit = 8) {
+  q = q.trim().toLowerCase();
+  if (!q) return [];
+  const scored = [];
+  for (const ing of DATA.ingredients) {
+    const name = ing.name.toLowerCase();
+    const aliases = (ing.aliases || []).map(a => a.toLowerCase());
+    let s = 0;
+    if (name === q) s = 5;
+    else if (name.startsWith(q)) s = 4;
+    else if (aliases.some(a => a === q)) s = 4;
+    else if (aliases.some(a => a.startsWith(q))) s = 3;
+    else if (name.includes(q)) s = 2;
+    else if (aliases.some(a => a.includes(q))) s = 1;
+    if (s) scored.push({ ing, s });
+  }
+  scored.sort((a, b) => b.s - a.s || a.ing.name.localeCompare(b.ing.name));
+  return scored.slice(0, limit).map(x => summary(x.ing));
+}
+function pairingsFor(slugs, limit = 60) {
+  const sel = slugs.map(s => bySlug.get(s)).filter(Boolean);
+  if (!sel.length) return [];
+  const tally = new Map();
+  const selSet = new Set(slugs);
+  for (const ing of sel) {
+    for (const p of ing.pairings || []) {
+      if (selSet.has(p.slug)) continue;
+      const cur = tally.get(p.slug) || { strengthSum: 0, hits: 0 };
+      cur.strengthSum += p.strength;
+      cur.hits += 1;
+      tally.set(p.slug, cur);
+    }
+  }
+  const results = [];
+  for (const [slug, t] of tally) {
+    const ing = bySlug.get(slug);
+    const sm = ing ? summary(ing) : { slug, name: prettySlug(slug), category: "pantry" };
+    results.push({
+      ingredient: sm,
+      score: t.strengthSum * (1 + (t.hits - 1) * 0.5),
+      hits: t.hits,
+      averageStrength: t.strengthSum / t.hits,
+    });
+  }
+  results.sort((a, b) => b.score - a.score || b.hits - a.hits);
+  return results.slice(0, limit);
+}
+function prettySlug(s) {
+  return s.split("-").map(p => p[0].toUpperCase() + p.slice(1)).join(" ");
+}
+function getStarterSummaries(excludedSet) {
+  return STARTER_SLUGS.map(s => bySlug.get(s)).filter(Boolean).map(summary)
+    .filter(x => !excludedSet.has(x.slug));
+}
+
+// --- combo storage ---
+function loadCombos() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr : [];
+  } catch { return []; }
+}
+function saveComboToStorage(combo) {
+  const all = loadCombos();
+  const created = {
+    id: "c_" + Date.now() + "_" + Math.random().toString(36).slice(2,7),
+    createdAt: Date.now(),
+    ...combo,
+  };
+  all.unshift(created);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  return created;
+}
+function deleteComboById(id) {
+  const all = loadCombos().filter(c => c.id !== id);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+}
+function findExactMatch(slugs) {
+  const key = [...slugs].sort().join(",");
+  return loadCombos().find(c =>
+    [...c.ingredients.map(i => i.slug)].sort().join(",") === key
+  ) || null;
+}
+
+// --- UI state ---
+const state = {
+  selected: [],
+  items: [],
+  mode: "starters",
+  highlight: 0,
+  open: false,
+  filter: "all",
+  comboModalOpen: false,
+};
+
+const qEl = document.getElementById("q");
+const ddEl = document.getElementById("dropdown");
+const selectedEl = document.getElementById("selected");
+const panelEl = document.getElementById("panel");
+const savedSectionEl = document.getElementById("saved-section");
+const savedListEl = document.getElementById("saved-list");
+const modalRoot = document.getElementById("modal-root");
+
+function selectedSlugs() { return state.selected.map(s => s.slug); }
+
+function refreshDropdown() {
+  const excludedSet = new Set(selectedSlugs());
+  const q = qEl.value.trim();
+  if (q) {
+    state.items = search(q, 8).filter(r => !excludedSet.has(r.slug));
+    state.mode = "search";
+  } else if (state.selected.length === 0) {
+    state.items = getStarterSummaries(excludedSet);
+    state.mode = "starters";
+  } else {
+    const ranked = pairingsFor(selectedSlugs(), 10);
+    state.items = ranked.map(p => ({
+      slug: p.ingredient.slug, name: p.ingredient.name, category: p.ingredient.category,
+      dots: Math.min(3, Math.round(p.averageStrength)),
+      hits: p.hits,
+    }));
+    state.mode = "pairings";
+  }
+  state.highlight = 0;
+  renderDropdown();
+}
+
+function renderDropdown() {
+  if (!state.open || state.items.length === 0) {
+    ddEl.classList.add("hidden");
+    ddEl.innerHTML = "";
+    return;
+  }
+  ddEl.classList.remove("hidden");
+  const headerLabel =
+    state.mode === "search" ? null
+    : state.mode === "pairings" ? "Top pairings for your selection"
+    : "Start with one of these";
+  const header = headerLabel
+    ? `<div class="header"><span>${headerLabel}</span><span class="hint">↵ to add · Esc to close</span></div>`
+    : "";
+  const items = state.items.map((r, i) => {
+    const dots = r.dots !== undefined
+      ? `<span class="dots">${"●".repeat(r.dots) + "○".repeat(3 - r.dots)}</span>`
+      : "";
+    const multi = (r.hits !== undefined && r.hits > 1)
+      ? `<span class="multi">×${r.hits}</span>` : "";
+    return `<li class="${i === state.highlight ? "hl" : ""}" data-i="${i}">
+      <span>${escape(r.name)}</span>
+      <span class="right">${dots}${multi}<span class="cat-label cat-${r.category}">${r.category}</span></span>
+    </li>`;
+  }).join("");
+  ddEl.innerHTML = header + `<ul>${items}</ul>`;
+  ddEl.querySelectorAll("li").forEach(li => {
+    li.onmouseenter = () => { state.highlight = +li.dataset.i; renderDropdown(); };
+    li.onmousedown = e => { e.preventDefault(); pick(state.items[+li.dataset.i]); };
+  });
+}
+
+function renderSelected() {
+  if (!state.selected.length) {
+    selectedEl.innerHTML = `<span class="empty">Pick an ingredient to begin — the more you add, the smarter the suggestions.</span>`;
+    return;
+  }
+  const chips = state.selected.map(s => `
+    <button class="chip cat-${s.category}" data-slug="${s.slug}">
+      <span>${escape(s.name)}</span><span class="x">×</span>
+    </button>`).join("");
+  const clearBtn = state.selected.length > 1
+    ? `<button id="clear" class="clearall">clear all</button>` : "";
+
+  let comboAction = "";
+  if (state.selected.length >= 2) {
+    const existing = findExactMatch(selectedSlugs());
+    comboAction = existing
+      ? `<span class="saved-as">Saved as <strong>${escape(existing.name)}</strong></span>`
+      : `<button id="save-combo" class="save-combo" title="Save this combination so you can find it again">+ Save as combo</button>`;
+  }
+  selectedEl.innerHTML = chips + clearBtn + comboAction;
+
+  selectedEl.querySelectorAll(".chip").forEach(b => {
+    b.onclick = () => remove(b.dataset.slug);
+  });
+  const clr = document.getElementById("clear");
+  if (clr) clr.onclick = () => { state.selected = []; renderAll(); };
+  const save = document.getElementById("save-combo");
+  if (save) save.onclick = () => openComboModal();
+}
+
+const CATS = ["herb","spice","vegetable","fruit","protein","dairy","pantry","nut","grain","aromatic"];
+
+function renderPanel() {
+  if (!state.selected.length) {
+    panelEl.innerHTML = `
+      <div class="empty-panel">
+        <div class="big">Suggestions appear here</div>
+        <div class="small">Add an ingredient and we'll show what pairs well.</div>
+      </div>`;
+    return;
+  }
+  const all = pairingsFor(selectedSlugs(), 60);
+  const present = CATS.filter(c => all.some(p => p.ingredient.category === c));
+  const filtered = state.filter === "all" ? all : all.filter(p => p.ingredient.category === state.filter);
+  const grouped = new Map();
+  for (const p of filtered) {
+    if (!grouped.has(p.ingredient.category)) grouped.set(p.ingredient.category, []);
+    grouped.get(p.ingredient.category).push(p);
+  }
+
+  const multi = state.selected.length > 1;
+  const names = state.selected.map(s => s.name).join(" + ");
+  const filterBar = present.length > 1
+    ? `<div class="filterbar">
+        <button class="fchip ${state.filter === "all" ? "active" : ""}" data-c="all">all</button>
+        ${present.map(c => `<button class="fchip ${state.filter === c ? "active" : ""}" data-c="${c}">${c}</button>`).join("")}
+      </div>` : "";
+
+  const groups = Array.from(grouped.entries()).map(([cat, items]) => `
+    <div class="group">
+      <h3>${cat}</h3>
+      <div class="row">
+        ${items.map(p => {
+          const dots = Math.min(3, Math.round(p.averageStrength));
+          const dotStr = "●".repeat(dots) + "○".repeat(3 - dots);
+          return `<button class="pchip cat-${p.ingredient.category}" data-slug="${p.ingredient.slug}"
+                    title="${multi ? `Pairs with ${p.hits} of your selections` : `Affinity ${p.averageStrength.toFixed(1)}/3`}">
+              <span>${escape(p.ingredient.name)}</span>
+              <span class="dots">${dotStr}</span>
+              ${multi && p.hits > 1 ? `<span class="multi">×${p.hits}</span>` : ""}
+            </button>`;
+        }).join("")}
+      </div>
+    </div>`).join("");
+
+  panelEl.innerHTML = `
+    <h2>Pairs well with <span class="names">${escape(names)}</span></h2>
+    ${filterBar}
+    ${all.length ? groups : `<p class="muted" style="font-size:.875rem;">No pairings yet.</p>`}
+  `;
+  panelEl.querySelectorAll(".fchip").forEach(b => {
+    b.onclick = () => { state.filter = b.dataset.c; renderPanel(); };
+  });
+  panelEl.querySelectorAll(".pchip").forEach(b => {
+    b.onclick = () => {
+      const ing = bySlug.get(b.dataset.slug);
+      if (ing) add(summary(ing));
+    };
+  });
+}
+
+function renderSaved() {
+  const combos = loadCombos();
+  if (combos.length === 0) {
+    savedSectionEl.classList.add("hidden");
+    return;
+  }
+  savedSectionEl.classList.remove("hidden");
+  savedListEl.innerHTML = combos.map(c => `
+    <div class="combo-card" data-id="${c.id}">
+      <button class="combo-load" data-id="${c.id}">
+        <span class="name">${escape(c.name)}</span>
+        <span class="count">${c.ingredients.length} ingredients</span>
+        ${c.about ? `<p class="about">${escape(c.about)}</p>` : ""}
+        <div class="combo-chips">
+          ${c.ingredients.map(i =>
+            `<span class="cat-label cat-${i.category}">${escape(i.name)}</span>`
+          ).join("")}
+        </div>
+      </button>
+      <button class="delete" data-id="${c.id}">Delete</button>
+    </div>
+  `).join("");
+  savedListEl.querySelectorAll(".combo-load").forEach(b => {
+    b.onclick = () => {
+      const c = loadCombos().find(x => x.id === b.dataset.id);
+      if (c) { state.selected = c.ingredients.slice(); state.filter = "all"; renderAll(); }
+    };
+  });
+  savedListEl.querySelectorAll(".delete").forEach(b => {
+    b.onclick = e => {
+      e.stopPropagation();
+      deleteComboById(b.dataset.id);
+      renderAll();
+    };
+  });
+}
+
+function openComboModal() {
+  state.comboModalOpen = true;
+  const existing = findExactMatch(selectedSlugs());
+  const previewChips = state.selected.map(i =>
+    `<span class="cat-label cat-${i.category}">${escape(i.name)}</span>`
+  ).join("");
+
+  const body = existing
+    ? `<h2>This combo is already saved</h2>
+       <p class="desc">You already saved this exact set as "${escape(existing.name)}".</p>
+       <div class="ingredients-preview">${previewChips}</div>
+       <div class="actions">
+         <button class="btn btn-secondary" id="modal-close">Close</button>
+       </div>`
+    : `<h2>Name this combo</h2>
+       <p class="desc">This combination is new to you. Give it a name (and optional notes) so you can find it again.</p>
+       <div class="ingredients-preview">${previewChips}</div>
+       <div class="field">
+         <label>Name</label>
+         <input id="combo-name" class="text" placeholder="e.g. Caprese, Apple-pork roast" autocomplete="off" />
+       </div>
+       <div class="field">
+         <label>About <span class="opt">(optional)</span></label>
+         <textarea id="combo-about" class="text" rows="3" placeholder="What is this combo? Why does it work? When do you cook it?"></textarea>
+       </div>
+       <div class="actions">
+         <button class="btn btn-secondary" id="modal-close">Cancel</button>
+         <button class="btn btn-primary" id="modal-save" disabled>Save combo</button>
+       </div>`;
+
+  modalRoot.innerHTML = `<div class="overlay" id="overlay"><div class="modal">${body}</div></div>`;
+  document.getElementById("overlay").onclick = e => {
+    if (e.target.id === "overlay") closeComboModal();
+  };
+  document.getElementById("modal-close").onclick = closeComboModal;
+  if (!existing) {
+    const nameInput = document.getElementById("combo-name");
+    const aboutInput = document.getElementById("combo-about");
+    const saveBtn = document.getElementById("modal-save");
+    nameInput.focus();
+    nameInput.oninput = () => { saveBtn.disabled = !nameInput.value.trim(); };
+    nameInput.onkeydown = e => { if (e.key === "Enter") saveBtn.click(); };
+    saveBtn.onclick = () => {
+      if (!nameInput.value.trim()) return;
+      saveComboToStorage({
+        name: nameInput.value.trim(),
+        about: aboutInput.value.trim(),
+        ingredients: state.selected.slice(),
+      });
+      closeComboModal();
+      renderAll();
+    };
+  }
+}
+
+function closeComboModal() {
+  state.comboModalOpen = false;
+  modalRoot.innerHTML = "";
+}
+
+function renderAll() { refreshDropdown(); renderSelected(); renderPanel(); renderSaved(); }
+
+function add(ing) {
+  if (state.selected.some(s => s.slug === ing.slug)) return;
+  state.selected.push(ing);
+  qEl.value = "";
+  state.filter = "all";
+  state.open = true;
+  state.items = []; // clear stale items so dropdown doesn't flash old result
+  renderAll();
+  qEl.focus();
+}
+function remove(slug) {
+  state.selected = state.selected.filter(s => s.slug !== slug);
+  renderAll();
+}
+function pick(r) { add(r); }
+
+function escape(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+  }[c]));
+}
+
+let t = null;
+qEl.addEventListener("input", () => {
+  clearTimeout(t);
+  t = setTimeout(() => { state.open = true; refreshDropdown(); }, 50);
+});
+qEl.addEventListener("keydown", e => {
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    if (state.items.length === 0) return;
+    state.highlight = (state.highlight + 1) % state.items.length;
+    state.open = true; renderDropdown();
+  } else if (e.key === "ArrowUp") {
+    e.preventDefault();
+    if (state.items.length === 0) return;
+    state.highlight = (state.highlight - 1 + state.items.length) % state.items.length;
+    renderDropdown();
+  } else if (e.key === "Enter") {
+    if (state.items[state.highlight]) { e.preventDefault(); pick(state.items[state.highlight]); }
+  } else if (e.key === "Escape") {
+    if (state.comboModalOpen) closeComboModal();
+    else { state.open = false; renderDropdown(); }
+  }
+});
+qEl.addEventListener("focus", () => { state.open = true; refreshDropdown(); });
+qEl.addEventListener("blur", () => setTimeout(() => { state.open = false; renderDropdown(); }, 150));
+
+renderAll();
+</script>
+</body>
+</html>

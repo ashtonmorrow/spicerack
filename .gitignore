@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+.env*
+!.env.example
+*.log
+.DS_Store
+.vercel
+.turbo
+
+# previous iteration's input file — keep local only
+mvp-data.txt

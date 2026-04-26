@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html, body {
+  background: #FFFFFF;
+  color: #37352F;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Notion-style category tags: muted backgrounds, dark text */
+.cat-fruit     { background: #FFE2DD; color: #5D1715; }
+.cat-vegetable { background: #DBEDDB; color: #1C3A1F; }
+.cat-protein   { background: #F5E0E9; color: #4C1D2D; }
+.cat-herb      { background: #DBEDDB; color: #1C3A1F; }
+.cat-spice     { background: #FADEC9; color: #5C2B0A; }
+.cat-dairy     { background: #FDECC8; color: #5C3F0F; }
+.cat-pantry    { background: #E3E2E0; color: #45413D; }
+.cat-nut       { background: #EEE0DA; color: #4D2E1F; }
+.cat-grain     { background: #EEE0DA; color: #4D2E1F; }
+.cat-aromatic  { background: #E8DEEE; color: #3F2E5D; }
