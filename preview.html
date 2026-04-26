@@ -5243,8 +5243,10 @@ const state = {
   open: false,
   filter: "all",
   recipeCuisineFilter: "all",
+  recipeCourseFilter: "all",
   recipePantryMode: false,
   recipeShowAll: false,
+  recipeExpandedClusters: new Set(),
   comboModalOpen: false,
 };
 
@@ -5444,6 +5446,7 @@ function renderRecipes() {
   const filtered = allMatches.filter(m => {
     if (state.recipePantryMode && m.missingRequired.length > 0) return false;
     if (state.recipeCuisineFilter !== "all" && m.recipe.cuisine !== state.recipeCuisineFilter) return false;
+    if (state.recipeCourseFilter !== "all" && m.recipe.course !== state.recipeCourseFilter) return false;
     return true;
   });
   // Available cuisines (counts derived from pantry-respecting subset)
@@ -5454,6 +5457,28 @@ function renderRecipes() {
   }
   const availableCuisines = [...cuisineCounts.entries()]
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
+  // Course counts respect pantry + active cuisine filter
+  const courseCounts = new Map();
+  for (const m of allMatches) {
+    if (state.recipePantryMode && m.missingRequired.length > 0) continue;
+    if (state.recipeCuisineFilter !== "all" && m.recipe.cuisine !== state.recipeCuisineFilter) continue;
+    if (m.recipe.course) courseCounts.set(m.recipe.course, (courseCounts.get(m.recipe.course) || 0) + 1);
+  }
+  const availableCourses = [...courseCounts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
+  // Cluster info
+  const sigGroups = new Map();
+  for (const m of allMatches) {
+    const sig = [...m.matchedRequired].sort().join(",");
+    if (!sigGroups.has(sig)) sigGroups.set(sig, []);
+    sigGroups.get(sig).push(m);
+  }
+  function sigOf(m) { return [...m.matchedRequired].sort().join(","); }
+  function siblingsOf(m) {
+    return (sigGroups.get(sigOf(m)) || []).filter(s => s.recipe.id !== m.recipe.id);
+  }
 
   const DEFAULT_VISIBLE = 4;
   const visibleMatches = state.recipeShowAll ? filtered : filtered.slice(0, DEFAULT_VISIBLE);
@@ -5473,7 +5498,7 @@ function renderRecipes() {
 
   // Cuisine filter chips
   const cuisineBar = (availableCuisines.length > 1 || state.recipeCuisineFilter !== "all") ? `
-    <div class="filterbar" style="margin-bottom:.75rem;">
+    <div class="filterbar" data-filterkind="cuisine" style="margin-bottom:.375rem;">
       <button class="fchip ${state.recipeCuisineFilter === "all" ? "active" : ""}" data-c="all">
         all <span style="opacity:.7;font-variant-numeric:tabular-nums;font-size:.62rem;margin-left:.25rem;">${allMatches.filter(m => !state.recipePantryMode || m.missingRequired.length === 0).length}</span>
       </button>
@@ -5483,27 +5508,43 @@ function renderRecipes() {
         </button>`).join("")}
     </div>` : "";
 
+  // Course filter chips
+  const courseBar = (availableCourses.length > 1 || state.recipeCourseFilter !== "all") ? `
+    <div class="filterbar" data-filterkind="course" style="margin-bottom:.75rem;">
+      <button class="fchip ${state.recipeCourseFilter === "all" ? "active" : ""}" data-c="all">any course</button>
+      ${availableCourses.map(([course, count]) => `
+        <button class="fchip ${state.recipeCourseFilter === course ? "active" : ""}" data-c="${course}">
+          ${escape(course)} <span style="opacity:.7;font-variant-numeric:tabular-nums;font-size:.62rem;margin-left:.25rem;">${count}</span>
+        </button>`).join("")}
+    </div>` : "";
+
   // Empty after filter
   if (filtered.length === 0) {
-    recipesListEl.innerHTML = toolbar + cuisineBar + `<div class="panel" style="padding:1rem 1.25rem;font-size:.875rem;color:var(--muted);">${
-      state.recipePantryMode
-        ? "No recipes match all your selected ingredients exactly. Turn off Pantry mode to see partial matches."
-        : `No ${escape(state.recipeCuisineFilter)} recipes for this selection.`
-    }</div>`;
+    const why = state.recipePantryMode
+      ? "No recipes match all your selected ingredients exactly. Turn off Pantry mode to see partial matches."
+      : (state.recipeCuisineFilter !== "all" || state.recipeCourseFilter !== "all")
+        ? "No recipes match the current filters. Try widening them."
+        : "No recipes for this selection.";
+    recipesListEl.innerHTML = toolbar + cuisineBar + courseBar + `<div class="panel" style="padding:1rem 1.25rem;font-size:.875rem;color:var(--muted);">${why}</div>`;
     document.getElementById("recipe-pantry-toggle").onclick = () => {
       state.recipePantryMode = !state.recipePantryMode;
       state.recipeCuisineFilter = "all";
+      state.recipeCourseFilter = "all";
       state.recipeShowAll = false;
       renderRecipes();
     };
-    recipesListEl.querySelectorAll(".fchip").forEach(b => {
+    recipesListEl.querySelectorAll('[data-filterkind="cuisine"] .fchip').forEach(b => {
       b.onclick = () => { state.recipeCuisineFilter = b.dataset.c; state.recipeShowAll = false; renderRecipes(); };
+    });
+    recipesListEl.querySelectorAll('[data-filterkind="course"] .fchip').forEach(b => {
+      b.onclick = () => { state.recipeCourseFilter = b.dataset.c; state.recipeShowAll = false; renderRecipes(); };
     });
     return;
   }
 
   const matches = visibleMatches;
-  const cardHtml = matches.map(m => {
+  function renderCardHtml(m, opts) {
+    opts = opts || {};
     const r = m.recipe;
     const meta = [r.cuisine, r.time ? `${r.time} min` : null].filter(Boolean).join(" · ");
     const matchedChips = m.matchedRequired.map(slug => {
@@ -5521,7 +5562,7 @@ function renderRecipes() {
     const sourcePill = r.source === "themealdb"
       ? ' <span class="saved-pill" style="background:var(--hover);color:var(--muted);">TheMealDB</span>'
       : '';
-    return `<button class="recipe-card" data-id="${r.id}">
+    return `<button class="recipe-card" data-id="${r.id}" style="${opts.sibling ? 'padding:.65rem .75rem;font-size:.85rem;' : ''}">
       <div class="head">
         <span class="name">${escape(r.name)}${saved ? ' <span class="saved-pill">✓ saved</span>' : ''}${sourcePill}</span>
         <span class="meta">${m.matchedRequired.length}/${r.required.length} ingredients${meta ? " · " + escape(meta) : ""}</span>
@@ -5531,6 +5572,21 @@ function renderRecipes() {
       ${missingChips ? `<div class="ing-row" style="align-items:center;"><span style="font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(120,119,116,.7);margin-right:.25rem;">still need:</span>${missingChips}</div>` : ""}
       <div class="open-hint">Open to view ${r.method ? "method, " : ""}save, or use these ingredients →</div>
     </button>`;
+  }
+  const cardHtml = matches.map(m => {
+    const sig = sigOf(m);
+    const sibs = siblingsOf(m);
+    const expanded = state.recipeExpandedClusters.has(sig);
+    const main = renderCardHtml(m, { sibling: false });
+    const expander = sibs.length > 0
+      ? `<button class="cluster-expand" data-sig="${escape(sig)}" style="margin-top:.25rem;font-size:.7rem;color:var(--muted);background:none;border:none;cursor:pointer;padding:.25rem .5rem;border-radius:.25rem;transition:color .15s,background .15s;">
+          ${expanded ? "Hide" : "+"} ${sibs.length} similar ${sibs.length === 1 ? "recipe" : "recipes"} ${expanded ? "↑" : "↓"}
+        </button>` : "";
+    const sibsHtml = expanded && sibs.length
+      ? `<div style="margin-left:1.25rem;margin-top:.5rem;padding-left:.75rem;border-left:2px solid var(--border);display:flex;flex-direction:column;gap:.5rem;">
+          ${sibs.map(s => renderCardHtml(s, { sibling: true })).join("")}
+        </div>` : "";
+    return `<div style="margin-bottom:.5rem;">${main}${expander}${sibsHtml}</div>`;
   }).join("");
 
   const showMoreBtn = hiddenCount > 0
@@ -5542,16 +5598,29 @@ function renderRecipes() {
         Show fewer
       </button>` : "";
 
-  recipesListEl.innerHTML = toolbar + cuisineBar + cardHtml + showMoreBtn + showFewerBtn;
+  recipesListEl.innerHTML = toolbar + cuisineBar + courseBar + cardHtml + showMoreBtn + showFewerBtn;
 
   document.getElementById("recipe-pantry-toggle").onclick = () => {
     state.recipePantryMode = !state.recipePantryMode;
     state.recipeCuisineFilter = "all";
+    state.recipeCourseFilter = "all";
     state.recipeShowAll = false;
     renderRecipes();
   };
-  recipesListEl.querySelectorAll(".filterbar .fchip").forEach(b => {
+  recipesListEl.querySelectorAll('[data-filterkind="cuisine"] .fchip').forEach(b => {
     b.onclick = () => { state.recipeCuisineFilter = b.dataset.c; state.recipeShowAll = false; renderRecipes(); };
+  });
+  recipesListEl.querySelectorAll('[data-filterkind="course"] .fchip').forEach(b => {
+    b.onclick = () => { state.recipeCourseFilter = b.dataset.c; state.recipeShowAll = false; renderRecipes(); };
+  });
+  recipesListEl.querySelectorAll(".cluster-expand").forEach(b => {
+    b.onclick = (e) => {
+      e.stopPropagation();
+      const sig = b.dataset.sig;
+      if (state.recipeExpandedClusters.has(sig)) state.recipeExpandedClusters.delete(sig);
+      else state.recipeExpandedClusters.add(sig);
+      renderRecipes();
+    };
   });
   const sm = document.getElementById("recipe-show-more");
   if (sm) sm.onclick = () => { state.recipeShowAll = true; renderRecipes(); };
@@ -5894,14 +5963,18 @@ function add(ing) {
   qEl.value = ""; state.filter = "all"; state.open = true; state.items = [];
   // Reset recipes filters — context shifted, prior filters stale.
   state.recipeCuisineFilter = "all";
+  state.recipeCourseFilter = "all";
   state.recipeShowAll = false;
+  state.recipeExpandedClusters = new Set();
   renderAll();
   qEl.focus();
 }
 function remove(slug) {
   state.selected = state.selected.filter(s => s.slug !== slug);
   state.recipeCuisineFilter = "all";
+  state.recipeCourseFilter = "all";
   state.recipeShowAll = false;
+  state.recipeExpandedClusters = new Set();
   renderAll();
 }
 function pick(r) { add(r); }

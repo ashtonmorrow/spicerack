@@ -49,8 +49,10 @@ export function RecipesPanel({
 
   // Filter state
   const [cuisineFilter, setCuisineFilter] = useState<string>("all");
+  const [courseFilter, setCourseFilter] = useState<string>("all");
   const [pantryMode, setPantryMode] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [expandedClusters, setExpandedClusters] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (selected.length < 1) {
@@ -60,7 +62,9 @@ export function RecipesPanel({
     // Reset filters when the selection changes — context shifts, prior filters
     // become stale.
     setCuisineFilter("all");
+    setCourseFilter("all");
     setShowAll(false);
+    setExpandedClusters(new Set());
 
     const slugs = selected.map((s) => s.slug).join(",");
     setLoading(true);
@@ -96,6 +100,7 @@ export function RecipesPanel({
   const filtered = matches.filter((m) => {
     if (pantryMode && m.missingRequired.length > 0) return false;
     if (cuisineFilter !== "all" && m.recipe.cuisine !== cuisineFilter) return false;
+    if (courseFilter !== "all" && m.recipe.course !== courseFilter) return false;
     return true;
   });
 
@@ -111,6 +116,37 @@ export function RecipesPanel({
   const availableCuisines = [...cuisineCounts.entries()].sort(
     (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
   );
+
+  // Same idea for courses, respecting pantry mode + active cuisine filter.
+  const courseCounts = new Map<string, number>();
+  for (const m of matches) {
+    if (pantryMode && m.missingRequired.length > 0) continue;
+    if (cuisineFilter !== "all" && m.recipe.cuisine !== cuisineFilter) continue;
+    if (m.recipe.course) {
+      courseCounts.set(m.recipe.course, (courseCounts.get(m.recipe.course) ?? 0) + 1);
+    }
+  }
+  const availableCourses = [...courseCounts.entries()].sort(
+    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
+  );
+
+  // Cluster info: every match grouped by its matched-ingredient signature so
+  // each card can advertise sibling recipes that share the same subset.
+  const signatureGroups = new Map<string, ScoredRecipe[]>();
+  for (const m of matches) {
+    const sig = [...m.matchedRequired].sort().join(",");
+    const arr = signatureGroups.get(sig) ?? [];
+    arr.push(m);
+    signatureGroups.set(sig, arr);
+  }
+  function signatureOf(m: ScoredRecipe): string {
+    return [...m.matchedRequired].sort().join(",");
+  }
+  function siblingsOf(m: ScoredRecipe): ScoredRecipe[] {
+    return (signatureGroups.get(signatureOf(m)) ?? []).filter(
+      (s) => s.recipe.id !== m.recipe.id
+    );
+  }
 
   // Cuisine inference: weight by match score so a strong Italian top match
   // outweighs a long tail of weaker single-cuisine outliers.
@@ -192,12 +228,15 @@ export function RecipesPanel({
         </div>
 
         {(availableCuisines.length > 1 || cuisineFilter !== "all") && (
-          <div className="flex flex-wrap gap-1 mb-3">
+          <div className="flex flex-wrap gap-1 mb-1.5">
             <FilterChip
               label="all"
               count={matches.filter((m) => !pantryMode || m.missingRequired.length === 0).length}
               active={cuisineFilter === "all"}
-              onClick={() => setCuisineFilter("all")}
+              onClick={() => {
+                setCuisineFilter("all");
+                setShowAll(false);
+              }}
             />
             {availableCuisines.map(([cuisine, count]) => (
               <FilterChip
@@ -205,7 +244,35 @@ export function RecipesPanel({
                 label={cuisine}
                 count={count}
                 active={cuisineFilter === cuisine}
-                onClick={() => setCuisineFilter(cuisine)}
+                onClick={() => {
+                  setCuisineFilter(cuisine);
+                  setShowAll(false);
+                }}
+              />
+            ))}
+          </div>
+        )}
+
+        {(availableCourses.length > 1 || courseFilter !== "all") && (
+          <div className="flex flex-wrap gap-1 mb-3">
+            <FilterChip
+              label="any course"
+              active={courseFilter === "all"}
+              onClick={() => {
+                setCourseFilter("all");
+                setShowAll(false);
+              }}
+            />
+            {availableCourses.map(([course, count]) => (
+              <FilterChip
+                key={course}
+                label={course}
+                count={count}
+                active={courseFilter === course}
+                onClick={() => {
+                  setCourseFilter(course);
+                  setShowAll(false);
+                }}
               />
             ))}
           </div>
@@ -220,16 +287,47 @@ export function RecipesPanel({
         ) : (
           <>
             <div className="space-y-2">
-              {visible.map((m) => (
-                <RecipeCard
-                  key={m.recipe.id}
-                  match={m}
-                  ingredientLookup={ingredientLookup}
-                  userSlugs={userSlugs}
-                  onOpen={() => setOpenRecipe(m.recipe)}
-                  savedVersion={savedVersion}
-                />
-              ))}
+              {visible.map((m) => {
+                const sig = signatureOf(m);
+                const sibs = siblingsOf(m);
+                const isExpanded = expandedClusters.has(sig);
+                return (
+                  <div key={m.recipe.id}>
+                    <RecipeCard
+                      match={m}
+                      ingredientLookup={ingredientLookup}
+                      userSlugs={userSlugs}
+                      onOpen={() => setOpenRecipe(m.recipe)}
+                      savedVersion={savedVersion}
+                      siblingCount={sibs.length}
+                      isExpanded={isExpanded}
+                      onToggleCluster={() => {
+                        setExpandedClusters((prev) => {
+                          const next = new Set(prev);
+                          if (next.has(sig)) next.delete(sig);
+                          else next.add(sig);
+                          return next;
+                        });
+                      }}
+                    />
+                    {isExpanded && sibs.length > 0 && (
+                      <div className="ml-6 mt-2 space-y-2 border-l-2 border-border pl-3">
+                        {sibs.map((s) => (
+                          <RecipeCard
+                            key={s.recipe.id}
+                            match={s}
+                            ingredientLookup={ingredientLookup}
+                            userSlugs={userSlugs}
+                            onOpen={() => setOpenRecipe(s.recipe)}
+                            savedVersion={savedVersion}
+                            sibling
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
             {hidden > 0 && (
               <button
@@ -303,12 +401,24 @@ function RecipeCard({
   userSlugs,
   onOpen,
   savedVersion,
+  siblingCount = 0,
+  isExpanded = false,
+  onToggleCluster,
+  sibling = false,
 }: {
   match: ScoredRecipe;
   ingredientLookup: Map<string, IngredientSummary>;
   userSlugs: Set<string>;
   onOpen: () => void;
   savedVersion: number;
+  /** how many other recipes hit the same matched-ingredient signature */
+  siblingCount?: number;
+  /** whether the cluster expander is currently open */
+  isExpanded?: boolean;
+  /** called when the user clicks "+N similar" to expand/collapse the cluster */
+  onToggleCluster?: () => void;
+  /** marks this card as a sibling rendered inside an expanded cluster */
+  sibling?: boolean;
 }) {
   const r = match.recipe;
   const [saved, setSaved] = useState(false);
@@ -317,13 +427,18 @@ function RecipeCard({
     setSaved(isRecipeSaved(r.id));
   }, [r.id, savedVersion]);
 
+  // Sibling cards (rendered inside an expanded cluster) are visually denser.
+  const padding = sibling ? "p-3" : "p-3.5";
+  const titleSize = sibling ? "text-[13px]" : "text-sm";
+
   return (
+    <div className="relative">
     <button
       onClick={onOpen}
-      className="block w-full text-left border border-border rounded-md p-3.5 hover:bg-hover/50 hover:border-border transition"
+      className={`block w-full text-left border border-border rounded-md ${padding} hover:bg-hover/50 hover:border-border transition`}
     >
       <header className="flex items-baseline justify-between gap-3 flex-wrap mb-1">
-        <h3 className="font-medium text-sm text-ink flex items-center gap-2 flex-wrap">
+        <h3 className={`font-medium ${titleSize} text-ink flex items-center gap-2 flex-wrap`}>
           {r.name}
           {saved && (
             <span className="text-[10px] font-normal text-pear/80 bg-pear/10 px-1.5 py-0.5 rounded">
@@ -388,5 +503,19 @@ function RecipeCard({
         Open to view{r.method ? " method," : ""} save, or use these ingredients →
       </div>
     </button>
+    {siblingCount > 0 && onToggleCluster && (
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggleCluster();
+        }}
+        className="mt-1 text-[11px] text-muted hover:text-ink hover:bg-hover transition px-2 py-1 rounded"
+        title="Other recipes that use this same subset of your ingredients"
+      >
+        {isExpanded ? "Hide" : "+"} {siblingCount} similar {siblingCount === 1 ? "recipe" : "recipes"}{" "}
+        {isExpanded ? "↑" : "↓"}
+      </button>
+    )}
+    </div>
   );
 }
