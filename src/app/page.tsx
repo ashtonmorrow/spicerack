@@ -16,6 +16,8 @@ export default function Home() {
   const [combosVersion, setCombosVersion] = useState(0);
   const [savedRecipesVersion, setSavedRecipesVersion] = useState(0);
 
+  const hasSelection = selected.length > 0;
+
   function add(ing: IngredientSummary) {
     setSelected((cur) =>
       cur.some((c) => c.slug === ing.slug) ? cur : [...cur, ing]
@@ -29,7 +31,7 @@ export default function Home() {
   }
 
   return (
-    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+    <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
       <header className="mb-10">
         <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-ink">
           Flav<span className="text-pear"><PearLetter /></span>r Pear
@@ -59,26 +61,40 @@ export default function Home() {
         />
       </div>
 
-      <PairingsPanel selected={selected} onAdd={add} />
+      {/* Main two panels: pairings on the left, recipes on the right.
+          Side-by-side at lg+ so the user can watch both update live as they
+          add ingredients. Stacks on smaller screens. */}
+      <div
+        className={
+          hasSelection
+            ? "grid gap-4 lg:gap-6 lg:grid-cols-2 items-start"
+            : ""
+        }
+      >
+        <PairingsPanel selected={selected} onAdd={add} />
+        {hasSelection && (
+          <RecipesPanel
+            selected={selected}
+            onUseRecipe={loadIngredients}
+            onSavedChanged={() => setSavedRecipesVersion((v) => v + 1)}
+            savedVersion={savedRecipesVersion}
+          />
+        )}
+      </div>
 
-      <RecipesPanel
-        selected={selected}
-        onUseRecipe={loadIngredients}
-        onSavedChanged={() => setSavedRecipesVersion((v) => v + 1)}
-        savedVersion={savedRecipesVersion}
-      />
-
-      <SavedCombos
-        refreshKey={combosVersion}
-        onLoad={loadIngredients}
-        onChanged={() => setCombosVersion((v) => v + 1)}
-      />
-
-      <SavedRecipes
-        refreshKey={savedRecipesVersion}
-        onLoad={loadIngredients}
-        onChanged={() => setSavedRecipesVersion((v) => v + 1)}
-      />
+      {/* Saved sections: also two-up, parallel structure. */}
+      <div className="mt-10 grid gap-6 lg:grid-cols-2 items-start">
+        <SavedCombos
+          refreshKey={combosVersion}
+          onLoad={loadIngredients}
+          onChanged={() => setCombosVersion((v) => v + 1)}
+        />
+        <SavedRecipes
+          refreshKey={savedRecipesVersion}
+          onLoad={loadIngredients}
+          onChanged={() => setSavedRecipesVersion((v) => v + 1)}
+        />
+      </div>
 
       <footer className="mt-16 text-xs text-muted text-center">
         Click any suggestion to chain it on. Press Esc to dismiss the dropdown.

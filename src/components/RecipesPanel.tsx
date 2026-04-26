@@ -78,7 +78,7 @@ export function RecipesPanel({
 
   if (matches.length === 0 && !loading) {
     return (
-      <section className="mt-8">
+      <section>
         <h2 className="text-[11px] uppercase tracking-wider text-muted mb-2">
           Recipes you could make
         </h2>
@@ -91,7 +91,7 @@ export function RecipesPanel({
   }
 
   return (
-    <section className="mt-8">
+    <section>
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-[11px] uppercase tracking-wider text-muted">
           Recipes you could make

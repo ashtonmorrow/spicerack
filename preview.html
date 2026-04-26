@@ -18,7 +18,21 @@
   html, body { margin: 0; background: var(--bg); color: var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased; }
-  main { max-width: 48rem; margin: 0 auto; padding: 2.5rem 1.5rem; }
+  main { max-width: 64rem; margin: 0 auto; padding: 2.5rem 1.5rem; }
+  .two-col {
+    display: grid; gap: 1rem; grid-template-columns: 1fr;
+    align-items: start;
+  }
+  @media (min-width: 1024px) {
+    .two-col { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  }
+  .saved-grid {
+    display: grid; gap: 1.5rem; grid-template-columns: 1fr;
+    margin-top: 2.5rem; align-items: start;
+  }
+  @media (min-width: 1024px) {
+    .saved-grid { grid-template-columns: 1fr 1fr; }
+  }
 
   header { margin-bottom: 2.5rem; }
   h1 { font-size: 2.25rem; margin: 0; letter-spacing: -.015em; font-weight: 600; line-height: 1.1; }
@@ -124,7 +138,6 @@
   .empty-panel .big { font-size: 1rem; color: var(--ink); }
   .empty-panel .small { font-size: .875rem; margin-top: .25rem; }
 
-  .section { margin-top: 2.5rem; }
   .section .section-head {
     display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem;
   }
@@ -256,29 +269,33 @@
     <span class="empty">Pick an ingredient to begin — the more you add, the smarter the suggestions.</span>
   </div>
 
-  <div id="panel" class="panel">
-    <div class="empty-panel">
-      <div class="big">Suggestions appear here</div>
-      <div class="small">Add an ingredient and we'll show what pairs well.</div>
+  <div id="main-area" class="">
+    <div id="panel" class="panel">
+      <div class="empty-panel">
+        <div class="big">Suggestions appear here</div>
+        <div class="small">Add an ingredient and we'll show what pairs well.</div>
+      </div>
     </div>
+
+    <section id="recipes-section" class="section hidden">
+      <div class="section-head">
+        <h2>Recipes you could make</h2>
+      </div>
+      <div id="recipes-list"></div>
+    </section>
   </div>
 
-  <section id="recipes-section" class="section hidden">
-    <div class="section-head">
-      <h2>Recipes you could make</h2>
-    </div>
-    <div id="recipes-list"></div>
-  </section>
+  <div class="saved-grid">
+    <section id="saved-combos-section" class="section hidden">
+      <div class="section-head"><h2>Your saved combos</h2></div>
+      <div id="saved-combos-list"></div>
+    </section>
 
-  <section id="saved-combos-section" class="section hidden">
-    <div class="section-head"><h2>Your saved combos</h2></div>
-    <div id="saved-combos-list"></div>
-  </section>
-
-  <section id="saved-recipes-section" class="section hidden">
-    <div class="section-head"><h2>Your saved recipes</h2></div>
-    <div id="saved-recipes-list"></div>
-  </section>
+    <section id="saved-recipes-section" class="section hidden">
+      <div class="section-head"><h2>Your saved recipes</h2></div>
+      <div id="saved-recipes-list"></div>
+    </section>
+  </div>
 
   <footer>Click any suggestion to chain it on. Press Esc to dismiss the dropdown.</footer>
 </main>
@@ -2729,6 +2746,7 @@ const qEl = document.getElementById("q");
 const ddEl = document.getElementById("dropdown");
 const selectedEl = document.getElementById("selected");
 const panelEl = document.getElementById("panel");
+const mainAreaEl = document.getElementById("main-area");
 const recipesSectionEl = document.getElementById("recipes-section");
 const recipesListEl = document.getElementById("recipes-list");
 const savedCombosSectionEl = document.getElementById("saved-combos-section");
@@ -3073,6 +3091,8 @@ function renderAll() {
   renderRecipes();
   renderSavedCombos();
   renderSavedRecipes();
+  if (state.selected.length > 0) mainAreaEl.classList.add("two-col");
+  else mainAreaEl.classList.remove("two-col");
 }
 
 function add(ing) {

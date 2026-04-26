@@ -67,7 +67,7 @@ export function SavedRecipes({ refreshKey, onLoad, onChanged }: Props) {
   }
 
   return (
-    <section className="mt-10">
+    <section>
       <h2 className="text-[11px] uppercase tracking-wider text-muted mb-2">
         Your saved recipes
       </h2>
