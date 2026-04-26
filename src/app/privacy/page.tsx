@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PearLetter } from "@/components/PearLetter";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — Flavor Pear",
@@ -119,11 +120,7 @@ export default function PrivacyPolicy() {
         </Section>
       </article>
 
-      <footer className="mt-16 text-xs text-muted text-center">
-        <Link href="/" className="hover:text-ink transition">
-          ← Back to Flavor Pear
-        </Link>
-      </footer>
+      <Footer backLink={{ href: "/", label: "← Back to Flavor Pear" }} />
     </main>
   );
 }
