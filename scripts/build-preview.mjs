@@ -20,6 +20,10 @@ const recipesImportedPath = path.join(root, "data", "recipes-themealdb.json");
 const recipesImported = fs.existsSync(recipesImportedPath)
   ? fs.readFileSync(recipesImportedPath, "utf8")
   : '{"recipes":[]}';
+const compoundPath = path.join(root, "data", "compound-data.json");
+const compounds = fs.existsSync(compoundPath)
+  ? fs.readFileSync(compoundPath, "utf8")
+  : '{"compounds":{},"byIngredient":{}}';
 
 const tmpl = fs.readFileSync(
   path.join(root, "scripts", "preview.template.html"),
@@ -28,7 +32,8 @@ const tmpl = fs.readFileSync(
 const out = tmpl
   .replace("/*__INGREDIENTS_JSON__*/null", ingredients)
   .replace("/*__RECIPES_JSON__*/null", recipesCurated)
-  .replace("/*__RECIPES_IMPORTED_JSON__*/null", recipesImported);
+  .replace("/*__RECIPES_IMPORTED_JSON__*/null", recipesImported)
+  .replace("/*__COMPOUND_JSON__*/null", compounds);
 const outPath = path.join(root, "preview.html");
 fs.writeFileSync(outPath, out);
 

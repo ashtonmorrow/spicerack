@@ -3,6 +3,12 @@
 import { useEffect, useMemo, useState } from "react";
 import type { IngredientSummary, ScoredPairing, Category } from "@/lib/types";
 
+interface ChemistryHit {
+  ingredient: IngredientSummary;
+  meanShared: number;
+  meanSimilarity: number;
+}
+
 interface Props {
   selected: IngredientSummary[];
   onAdd: (ing: IngredientSummary) => void;
@@ -23,19 +29,26 @@ const CATEGORIES: Category[] = [
 
 export function PairingsPanel({ selected, onAdd }: Props) {
   const [pairings, setPairings] = useState<ScoredPairing[]>([]);
+  const [chemistry, setChemistry] = useState<ChemistryHit[]>([]);
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<Category | "all">("all");
 
   useEffect(() => {
     if (selected.length === 0) {
       setPairings([]);
+      setChemistry([]);
       return;
     }
     const slugs = selected.map((s) => s.slug).join(",");
     setLoading(true);
-    fetch(`/api/pairings?slugs=${encodeURIComponent(slugs)}&limit=60`)
-      .then((r) => r.json())
-      .then((d) => setPairings(d.results as ScoredPairing[]))
+    Promise.all([
+      fetch(`/api/pairings?slugs=${encodeURIComponent(slugs)}&limit=60`).then((r) => r.json()),
+      fetch(`/api/chemistry?slugs=${encodeURIComponent(slugs)}&limit=10`).then((r) => r.json()),
+    ])
+      .then(([p, c]) => {
+        setPairings(p.results as ScoredPairing[]);
+        setChemistry(c.results as ChemistryHit[]);
+      })
       .finally(() => setLoading(false));
   }, [selected.map((s) => s.slug).join(",")]);
 
@@ -125,6 +138,35 @@ export function PairingsPanel({ selected, onAdd }: Props) {
           </section>
         ))}
       </div>
+
+      {chemistry.length > 0 && (
+        <section className="mt-6 pt-5 border-t border-border">
+          <h3 className="text-[11px] uppercase tracking-wider text-muted mb-1.5 flex items-center gap-2">
+            By flavor chemistry
+            <span
+              className="normal-case tracking-normal text-muted/70 text-[10px]"
+              title="Ingredients sharing the most volatile compounds with your selection (Ahn et al. 2011 dataset)"
+            >
+              shared compounds
+            </span>
+          </h3>
+          <div className="flex flex-wrap gap-1.5">
+            {chemistry.map((c) => (
+              <button
+                key={c.ingredient.slug}
+                onClick={() => onAdd(c.ingredient)}
+                className={`group flex items-center gap-1.5 px-2.5 py-1 rounded text-sm cat-${c.ingredient.category} hover:brightness-95 transition`}
+                title={`Average ${c.meanShared.toFixed(1)} shared compounds (Jaccard ${(c.meanSimilarity * 100).toFixed(0)}%)`}
+              >
+                <span>{c.ingredient.name}</span>
+                <span className="text-[10px] opacity-60 tabular-nums">
+                  ≈{c.meanShared.toFixed(0)}
+                </span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

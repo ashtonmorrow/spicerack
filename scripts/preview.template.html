@@ -418,6 +418,7 @@
 const DATA = /*__INGREDIENTS_JSON__*/null;
 const RECIPES_CURATED = /*__RECIPES_JSON__*/null;
 const RECIPES_IMPORTED = /*__RECIPES_IMPORTED_JSON__*/null;
+const COMPOUND_DATA = /*__COMPOUND_JSON__*/null;
 // Merge: curated comes first; both sets coexist by id.
 const RECIPES = {
   recipes: [
@@ -515,6 +516,52 @@ function matchRecipes(slugs, limit = 4) {
 
 function prettySlug(s) {
   return s.split("-").map(p => p[0].toUpperCase() + p.slice(1)).join(" ");
+}
+
+// --- chemistry / shared-compound similarity (Ahn et al. 2011) ---
+const compoundSets = new Map();
+function compoundSetFor(slug) {
+  if (compoundSets.has(slug)) return compoundSets.get(slug);
+  const arr = (COMPOUND_DATA.byIngredient || {})[slug];
+  if (!arr) { compoundSets.set(slug, null); return null; }
+  const s = new Set(arr);
+  compoundSets.set(slug, s);
+  return s;
+}
+function sharedCompounds(a, b) {
+  const sa = compoundSetFor(a); const sb = compoundSetFor(b);
+  if (!sa || !sb) return 0;
+  let n = 0;
+  const [smaller, larger] = sa.size <= sb.size ? [sa, sb] : [sb, sa];
+  for (const c of smaller) if (larger.has(c)) n++;
+  return n;
+}
+function compoundJaccard(a, b) {
+  const sa = compoundSetFor(a); const sb = compoundSetFor(b);
+  if (!sa || !sb || sa.size === 0 || sb.size === 0) return 0;
+  let inter = 0;
+  for (const c of sa) if (sb.has(c)) inter++;
+  return inter / (sa.size + sb.size - inter);
+}
+function chemistryPairings(selectedSlugs, candidates, limit = 8) {
+  const sel = selectedSlugs.filter(s => compoundSetFor(s));
+  if (!sel.length) return [];
+  const selSet = new Set(selectedSlugs);
+  const out = [];
+  for (const cand of candidates) {
+    if (selSet.has(cand)) continue;
+    if (!compoundSetFor(cand)) continue;
+    let sumS = 0, sumJ = 0;
+    for (const s of sel) {
+      sumS += sharedCompounds(cand, s);
+      sumJ += compoundJaccard(cand, s);
+    }
+    const meanShared = sumS / sel.length;
+    if (meanShared <= 0) continue;
+    out.push({ slug: cand, meanShared, meanJaccard: sumJ / sel.length });
+  }
+  out.sort((a, b) => b.meanShared - a.meanShared || b.meanJaccard - a.meanJaccard);
+  return out.slice(0, limit);
 }
 function getStarterSummaries(excludedSet) {
   return STARTER_SLUGS.map(s => bySlug.get(s)).filter(Boolean).map(summary)
@@ -742,10 +789,32 @@ function renderPanel() {
         }).join("")}
       </div>
     </div>`).join("");
+  // Chemistry: shared-compound suggestions over all known ingredients.
+  const allSlugs = DATA.ingredients.map(i => i.slug);
+  const chem = chemistryPairings(selectedSlugs(), allSlugs, 10);
+  const chemSection = chem.length ? `
+    <section style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border);">
+      <h3 style="text-transform:uppercase;font-size:.68rem;letter-spacing:.08em;color:var(--muted);margin:0 0 .375rem;font-weight:500;display:flex;align-items:center;gap:.5rem;">
+        By flavor chemistry
+        <span style="text-transform:none;letter-spacing:normal;color:rgba(120,119,116,.7);font-size:.65rem;font-weight:400;">shared compounds</span>
+      </h3>
+      <div class="row">
+        ${chem.map(c => {
+          const ing = bySlug.get(c.slug);
+          if (!ing) return "";
+          return `<button class="pchip cat-${ing.category}" data-slug="${c.slug}" data-source="chem"
+                    title="Avg ${c.meanShared.toFixed(1)} shared compounds (Jaccard ${(c.meanJaccard*100).toFixed(0)}%)">
+            <span>${escape(ing.name)}</span>
+            <span style="font-size:.62rem;opacity:.6;font-variant-numeric:tabular-nums;">≈${c.meanShared.toFixed(0)}</span>
+          </button>`;
+        }).join("")}
+      </div>
+    </section>` : "";
   panelEl.innerHTML = `
     <h2>Pairs well with <span class="names">${escape(names)}</span></h2>
     ${filterBar}
     ${all.length ? groups : `<p class="muted" style="font-size:.875rem;">No pairings yet.</p>`}
+    ${chemSection}
   `;
   panelEl.querySelectorAll(".fchip").forEach(b => { b.onclick = () => { state.filter = b.dataset.c; renderPanel(); }; });
   panelEl.querySelectorAll(".pchip").forEach(b => {
