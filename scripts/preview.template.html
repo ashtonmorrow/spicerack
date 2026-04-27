@@ -304,6 +304,57 @@
   .modal .pin-action.pinned { color: var(--pear); background: rgba(26, 127, 55, .1); }
   .modal .pin-action.pinned:hover { background: rgba(26, 127, 55, .15); }
 
+  /* Cluster strip */
+  .cluster-strip { margin: 0 0 1.5rem; }
+  .cluster-head { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; margin-bottom: .5rem; }
+  .cluster-head h2 {
+    text-transform: uppercase; font-size: .68rem; letter-spacing: .08em;
+    color: var(--muted); margin: 0; font-weight: 500;
+  }
+  .cluster-head button {
+    background: none; border: none; cursor: pointer; font-size: .68rem;
+    color: var(--muted); padding: .25rem .5rem; border-radius: .25rem;
+  }
+  .cluster-head button:hover { color: var(--ink); background: var(--hover); }
+  .cluster-grid {
+    display: grid; gap: .5rem; grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px) {
+    .cluster-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1024px) {
+    .cluster-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .cluster-card {
+    background: var(--bg); border: 1px solid var(--border); border-radius: .375rem;
+    padding: .75rem; cursor: pointer; text-align: left; font: inherit; color: inherit;
+    transition: background .15s, border-color .15s;
+  }
+  .cluster-card:hover { background: rgba(247, 246, 243, 0.6); border-color: rgba(120, 119, 116, .3); }
+  .cluster-card.active { border: 2px solid var(--pear); background: rgba(26, 127, 55, .05); padding: calc(.75rem - 1px); }
+  .cluster-card .label-row {
+    display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; margin-bottom: .375rem;
+  }
+  .cluster-card .label { font-weight: 500; font-size: .85rem; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cluster-card .meta { font-size: .65rem; color: var(--muted); flex-shrink: 0; }
+  .cluster-card .ingredients { display: flex; flex-wrap: wrap; gap: .25rem; }
+  .cluster-card .ingredients .cat-label { font-size: .65rem; padding: .075rem .375rem; border-radius: .2rem; }
+  .outlier-row { margin-top: .75rem; display: flex; flex-direction: column; gap: .25rem; }
+  .outlier-row .label {
+    text-transform: uppercase; font-size: .68rem; letter-spacing: .08em; color: var(--muted);
+  }
+  .outlier-row .desc { font-size: .72rem; color: var(--muted); }
+  .outlier-anchor:hover { filter: brightness(.95); }
+  .outlier-chip {
+    font-size: .72rem; padding: .15rem .5rem; border-radius: .25rem;
+    border: 1px dashed rgba(120, 119, 116, .4); background: var(--bg); color: var(--muted);
+  }
+  .chip.outlier {
+    border: 1px dashed rgba(120, 119, 116, .5);
+    background: var(--bg) !important; color: var(--muted) !important;
+  }
+  .chip.dimmed { opacity: .4; }
+
   /* Privacy modal long-form content */
   .privacy-modal { max-width: 36rem; max-height: 85vh; overflow-y: auto; }
   .privacy-modal h2 { font-size: 1.25rem; }
@@ -362,6 +413,15 @@
   <div id="selected" class="selected">
     <span class="empty">Pick an ingredient to begin — the more you add, the smarter the suggestions.</span>
   </div>
+
+  <section id="cluster-strip" class="cluster-strip hidden">
+    <header class="cluster-head">
+      <h2 id="cluster-title"></h2>
+      <button id="cluster-clear" class="hidden">Show all</button>
+    </header>
+    <div id="cluster-grid" class="cluster-grid"></div>
+    <div id="outlier-row" class="outlier-row hidden"></div>
+  </section>
 
   <div id="main-area" class="">
     <div id="panel" class="panel">
@@ -523,8 +583,64 @@ function matchRecipes(slugs, limit = 20) {
   return scored.slice(0, limit);
 }
 
-function inferCuisineLabel(matches) {
-  if (!matches.length) return null;
+// --- cluster analysis (mirror of lib/clusters.ts) ---
+function _jaccard(a, b) {
+  if (a.size === 0 && b.size === 0) return 1;
+  let inter = 0;
+  for (const s of a) if (b.has(s)) inter++;
+  const union = a.size + b.size - inter;
+  return union ? inter / union : 0;
+}
+function _unionOf(recipes) {
+  const out = new Set();
+  for (const r of recipes) for (const s of r.matchedRequired) out.add(s);
+  return out;
+}
+function _clusterRecipes(matches, threshold) {
+  threshold = threshold === undefined ? 0.4 : threshold;
+  if (matches.length === 0) return [];
+  let clusters = matches.map(m => [m]);
+  for (let pass = 0; pass < 100; pass++) {
+    let bestI = -1, bestJ = -1, bestSim = threshold;
+    const cache = clusters.map(_unionOf);
+    for (let i = 0; i < clusters.length; i++) {
+      for (let j = i + 1; j < clusters.length; j++) {
+        const sim = _jaccard(cache[i], cache[j]);
+        if (sim > bestSim) { bestSim = sim; bestI = i; bestJ = j; }
+      }
+    }
+    if (bestI === -1) break;
+    clusters[bestI] = [...clusters[bestI], ...clusters[bestJ]];
+    clusters.splice(bestJ, 1);
+  }
+  return clusters;
+}
+function analyzeSelection(selectedSlugs, matches) {
+  const used = new Set();
+  for (const m of matches) for (const s of m.matchedRequired) used.add(s);
+  const outliers = selectedSlugs.filter(s => !used.has(s));
+  if (matches.length === 0) return { clusters: [], outliers };
+  const groups = _clusterRecipes(matches);
+  const clusters = groups.map(g => {
+    const ings = [..._unionOf(g)].sort();
+    const sortedRecipes = [...g].sort((a, b) => b.score - a.score);
+    return {
+      id: ings.join("+"),
+      ingredients: ings,
+      recipes: sortedRecipes,
+      label: sortedRecipes[0].recipe.name,
+      totalScore: g.reduce((s, r) => s + r.score, 0),
+    };
+  }).sort((a, b) => b.totalScore - a.totalScore);
+  return { clusters, outliers };
+}
+function shouldShowClusters(a) {
+  if (a.clusters.length >= 2) return true;
+  if (a.clusters.length >= 1 && a.outliers.length > 0) return true;
+  return false;
+}
+
+function inferCuisineLabel(matches, selected) {
   const w = new Map();
   let total = 0;
   for (const m of matches) {
@@ -532,6 +648,22 @@ function inferCuisineLabel(matches) {
     w.set(m.recipe.cuisine, (w.get(m.recipe.cuisine) || 0) + m.score);
     total += m.score;
   }
+  // Ingredient-level cuisine tags as a secondary signal.
+  const INGR_TOTAL_CAP = 2;
+  let ingrAdded = 0;
+  for (const ing of selected || []) {
+    const full = bySlug.get(ing.slug);
+    const cuisines = (full && full.cuisines) || ing.cuisines || [];
+    if (!cuisines.length) continue;
+    const per = 1 / cuisines.length;
+    for (const c of cuisines) {
+      w.set(c, (w.get(c) || 0) + per);
+      ingrAdded += per;
+      if (ingrAdded >= INGR_TOTAL_CAP) break;
+    }
+    if (ingrAdded >= INGR_TOTAL_CAP) break;
+  }
+  total += ingrAdded;
   if (total === 0) return null;
   const sorted = [...w.entries()].map(([c, n]) => [c, n / total]).sort((a, b) => b[1] - a[1]);
   const [c, share] = sorted[0] || [];
@@ -682,6 +814,9 @@ const state = {
   recipePantryMode: false,
   recipeShowAll: false,
   recipeExpandedClusters: new Set(),
+  activeClusterId: null,
+  // Cached analysis on the current selection. Recomputed in renderRecipes.
+  analysis: { clusters: [], outliers: [] },
   comboModalOpen: false,
 };
 
@@ -690,6 +825,11 @@ const ddEl = document.getElementById("dropdown");
 const selectedEl = document.getElementById("selected");
 const panelEl = document.getElementById("panel");
 const mainAreaEl = document.getElementById("main-area");
+const clusterStripEl = document.getElementById("cluster-strip");
+const clusterTitleEl = document.getElementById("cluster-title");
+const clusterClearEl = document.getElementById("cluster-clear");
+const clusterGridEl = document.getElementById("cluster-grid");
+const outlierRowEl = document.getElementById("outlier-row");
 const recipesSectionEl = document.getElementById("recipes-section");
 const recipesListEl = document.getElementById("recipes-list");
 const savedCombosSectionEl = document.getElementById("saved-combos-section");
@@ -699,6 +839,17 @@ const savedRecipesListEl = document.getElementById("saved-recipes-list");
 const modalRoot = document.getElementById("modal-root");
 
 function selectedSlugs() { return state.selected.map(s => s.slug); }
+function activeClusterIngredients() {
+  if (!state.activeClusterId) return null;
+  const c = state.analysis.clusters.find(x => x.id === state.activeClusterId);
+  return c ? c.ingredients : null;
+}
+function effectiveSlugs() {
+  const filt = activeClusterIngredients();
+  if (!filt) return selectedSlugs();
+  const set = new Set(filt);
+  return selectedSlugs().filter(s => set.has(s));
+}
 
 function refreshDropdown() {
   const excludedSet = new Set(selectedSlugs());
@@ -758,10 +909,22 @@ function renderSelected() {
     selectedEl.innerHTML = `<span class="empty">Pick an ingredient to begin — the more you add, the smarter the suggestions.</span>`;
     return;
   }
-  const chips = state.selected.map(s => `
-    <button class="chip cat-${s.category}" data-slug="${s.slug}">
+  const outlierSet = new Set(state.analysis.outliers || []);
+  const clusterSet = activeClusterIngredients();
+  const dimmedSet = clusterSet ? new Set(selectedSlugs().filter(s => !clusterSet.includes(s))) : new Set();
+  const chips = state.selected.map(s => {
+    const isOutlier = outlierSet.has(s.slug);
+    const isDimmed = dimmedSet.has(s.slug);
+    const cls = isOutlier
+      ? "chip outlier"
+      : `chip cat-${s.category}${isDimmed ? " dimmed" : ""}`;
+    const title = isOutlier
+      ? "Doesn't fit any current dish direction — try removing or anchoring with a related ingredient"
+      : "Remove";
+    return `<button class="${cls}" data-slug="${s.slug}" title="${title}">
       <span>${escape(s.name)}</span><span class="x">×</span>
-    </button>`).join("");
+    </button>`;
+  }).join("");
   const clearBtn = state.selected.length > 1
     ? `<button id="clear" class="clearall">clear all</button>` : "";
   let comboAction = "";
@@ -790,7 +953,12 @@ function renderPanel() {
       </div>`;
     return;
   }
-  const all = pairingsFor(selectedSlugs(), 60);
+  const slugsForPanel = effectiveSlugs();
+  if (slugsForPanel.length === 0) {
+    panelEl.innerHTML = `<div class="empty-panel"><div class="small">No ingredients in this direction.</div></div>`;
+    return;
+  }
+  const all = pairingsFor(slugsForPanel, 60);
   const present = CATS.filter(c => all.some(p => p.ingredient.category === c));
   const filtered = state.filter === "all" ? all : all.filter(p => p.ingredient.category === state.filter);
   const grouped = new Map();
@@ -798,8 +966,9 @@ function renderPanel() {
     if (!grouped.has(p.ingredient.category)) grouped.set(p.ingredient.category, []);
     grouped.get(p.ingredient.category).push(p);
   }
-  const multi = state.selected.length > 1;
-  const names = state.selected.map(s => s.name).join(" + ");
+  const effSelected = state.selected.filter(s => slugsForPanel.includes(s.slug));
+  const multi = effSelected.length > 1;
+  const names = effSelected.map(s => s.name).join(" + ");
   const filterBar = present.length > 1
     ? `<div class="filterbar">
         <button class="fchip ${state.filter === "all" ? "active" : ""}" data-c="all">all</button>
@@ -821,9 +990,10 @@ function renderPanel() {
         }).join("")}
       </div>
     </div>`).join("");
-  // Chemistry: shared-compound suggestions over all known ingredients.
+  // Chemistry: shared-compound suggestions over all known ingredients,
+  // computed against the cluster-filtered subset when a cluster is active.
   const allSlugs = DATA.ingredients.map(i => i.slug);
-  const chem = chemistryPairings(selectedSlugs(), allSlugs, 10);
+  const chem = chemistryPairings(slugsForPanel, allSlugs, 10);
   const chemSection = chem.length ? `
     <section style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border);">
       <h3 style="text-transform:uppercase;font-size:.68rem;letter-spacing:.08em;color:var(--muted);margin:0 0 .375rem;font-weight:500;display:flex;align-items:center;gap:.5rem;">
@@ -862,7 +1032,16 @@ function renderRecipes() {
     recipesSectionEl.classList.add("hidden");
     return;
   }
+  // Always score against the FULL selection so clusters reflect everything,
+  // then filter at render time using activeClusterIngredients().
   const allMatches = matchRecipes(selectedSlugs(), 20);
+  // Recompute analysis here so it's available wherever we need it (chips,
+  // cluster strip).
+  state.analysis = analyzeSelection(selectedSlugs(), allMatches);
+  // If the active cluster vanished (selection changed), drop the filter.
+  if (state.activeClusterId && !state.analysis.clusters.some(c => c.id === state.activeClusterId)) {
+    state.activeClusterId = null;
+  }
   if (allMatches.length === 0) {
     recipesSectionEl.classList.remove("hidden");
     recipesListEl.innerHTML = `<div class="panel" style="padding:1rem 1.25rem;font-size:.875rem;color:var(--muted);">
@@ -872,16 +1051,22 @@ function renderRecipes() {
   }
   recipesSectionEl.classList.remove("hidden");
   // Cuisine inference (uses unfiltered matches so the label is a property
-  // of the user's selection, not the active filter).
-  const cuisineLabel = inferCuisineLabel(allMatches);
+  // of the user's selection, not the active filter; also factors in the
+  // selected ingredients' own cuisine tags).
+  const cuisineLabel = inferCuisineLabel(allMatches, state.selected);
   const cuisineEl = document.getElementById("cuisine-inference");
   if (cuisineEl) cuisineEl.textContent = cuisineLabel || "";
 
   // Apply filters
+  const clusterFilterSet = activeClusterIngredients();
+  const clusterSet = clusterFilterSet ? new Set(clusterFilterSet) : null;
   const filtered = allMatches.filter(m => {
     if (state.recipePantryMode && m.missingRequired.length > 0) return false;
     if (state.recipeCuisineFilter !== "all" && m.recipe.cuisine !== state.recipeCuisineFilter) return false;
     if (state.recipeCourseFilter !== "all" && m.recipe.course !== state.recipeCourseFilter) return false;
+    if (clusterSet) {
+      for (const s of m.matchedRequired) if (!clusterSet.has(s)) return false;
+    }
     return true;
   });
   // Available cuisines (counts derived from pantry-respecting subset)
@@ -1381,11 +1566,127 @@ function openComboModal() {
 
 function closeComboModal() { state.comboModalOpen = false; modalRoot.innerHTML = ""; }
 
+function renderClusterStrip() {
+  const a = state.analysis;
+  if (state.selected.length === 0 || !shouldShowClusters(a)) {
+    clusterStripEl.classList.add("hidden");
+    return;
+  }
+  clusterStripEl.classList.remove("hidden");
+  clusterTitleEl.textContent =
+    `Your selection has ${a.clusters.length} direction${a.clusters.length === 1 ? "" : "s"}`;
+  if (state.activeClusterId) {
+    clusterClearEl.classList.remove("hidden");
+    clusterClearEl.onclick = () => { state.activeClusterId = null; renderAll(); };
+  } else {
+    clusterClearEl.classList.add("hidden");
+  }
+  clusterGridEl.innerHTML = a.clusters.map(c => {
+    const active = state.activeClusterId === c.id;
+    const chips = c.ingredients.map(slug => {
+      const ing = bySlug.get(slug);
+      const cat = ing ? ing.category : "pantry";
+      const name = ing ? ing.name : prettySlug(slug);
+      return `<span class="cat-label cat-${cat}">${escape(name)}</span>`;
+    }).join("");
+    return `<button class="cluster-card${active ? " active" : ""}" data-id="${escape(c.id)}">
+      <div class="label-row">
+        <span class="label">${escape(c.label)}</span>
+        <span class="meta">${c.ingredients.length} ing${c.recipes.length > 1 ? " · " + c.recipes.length + " recipes" : ""}</span>
+      </div>
+      <div class="ingredients">${chips}</div>
+    </button>`;
+  }).join("");
+  clusterGridEl.querySelectorAll(".cluster-card").forEach(b => {
+    b.onclick = () => {
+      const id = b.dataset.id;
+      state.activeClusterId = state.activeClusterId === id ? null : id;
+      renderAll();
+    };
+  });
+  if (a.outliers.length) {
+    outlierRowEl.classList.remove("hidden");
+    const selSet = new Set(selectedSlugs());
+    // Bridge-aware anchors: score = base_strength + 0.5 * bridge_strength,
+    // where bridge_strength = sum of pair strengths from candidate to other
+    // ingredients in the user's selection. Anchors that ALSO connect to the
+    // existing selection produce real merges, not just dangling additions.
+    function anchorsFor(outlier) {
+      const ing = bySlug.get(outlier);
+      if (!ing) return [];
+      const exclude = new Set(selSet);
+      exclude.add(outlier);
+      const out = [];
+      for (const p of (ing.pairings || [])) {
+        if (exclude.has(p.slug)) continue;
+        const cand = bySlug.get(p.slug);
+        if (!cand) continue;
+        let bridge = 0;
+        for (const cp of (cand.pairings || [])) {
+          if (cp.slug === outlier) continue;
+          if (exclude.has(cp.slug)) bridge += cp.strength;
+        }
+        out.push({
+          ingredient: { slug: cand.slug, name: cand.name, category: cand.category },
+          baseStrength: p.strength,
+          bridgeStrength: bridge,
+          score: p.strength + 0.5 * bridge,
+        });
+      }
+      out.sort((a, b) =>
+        b.score - a.score ||
+        b.bridgeStrength - a.bridgeStrength ||
+        b.baseStrength - a.baseStrength
+      );
+      return out.slice(0, 3);
+    }
+    const rows = a.outliers.map(slug => {
+      const ing = bySlug.get(slug);
+      const name = ing ? ing.name : prettySlug(slug);
+      const cands = anchorsFor(slug);
+      const candsHtml = cands.map(c => {
+        const isBridge = c.bridgeStrength > 0;
+        const tip = isBridge
+          ? `Adds ${c.ingredient.name} — also pairs with ${c.bridgeStrength} unit${c.bridgeStrength === 1 ? "" : "s"} of strength to your other ingredients (a real bridge)`
+          : `Adds ${c.ingredient.name} to anchor ${name}`;
+        return `<button class="outlier-anchor cat-${c.ingredient.category}" data-slug="${c.ingredient.slug}"
+          style="padding:.15rem .5rem;border-radius:.25rem;border:none;cursor:pointer;font-size:.72rem;font-family:inherit;"
+          title="${escape(tip)}">
+          + ${escape(c.ingredient.name)}${isBridge ? ' <span style="font-size:.55rem;opacity:.6;">⇌</span>' : ""}
+        </button>`;
+      }).join("");
+      const arrow = cands.length
+        ? `<span style="color:var(--muted);">→ pair with</span>${candsHtml}`
+        : `<span style="color:rgba(120,119,116,.7);">(no anchor suggestions found)</span>`;
+      return `<div style="display:flex;flex-wrap:wrap;align-items:center;gap:.375rem;font-size:.72rem;">
+        <span class="outlier-chip">${escape(name)}</span>
+        ${arrow}
+      </div>`;
+    }).join("");
+    outlierRowEl.innerHTML = `
+      <p class="label" style="width:100%;margin:0 0 .25rem;">Outliers
+        <span style="text-transform:none;letter-spacing:normal;color:rgba(120,119,116,.8);font-size:.7rem;font-weight:400;margin-left:.5rem;">don't fit any direction yet</span>
+      </p>
+      <div style="display:flex;flex-direction:column;gap:.375rem;width:100%;">${rows}</div>`;
+    // Wire the anchor "+" buttons to add to selection
+    outlierRowEl.querySelectorAll(".outlier-anchor").forEach(b => {
+      b.onclick = () => {
+        const ing = bySlug.get(b.dataset.slug);
+        if (ing) add(summary(ing));
+      };
+    });
+  } else {
+    outlierRowEl.classList.add("hidden");
+  }
+}
+
 function renderAll() {
   refreshDropdown();
+  // Order matters: renderRecipes computes state.analysis used by chips + strip.
+  renderRecipes();
+  renderClusterStrip();
   renderSelected();
   renderPanel();
-  renderRecipes();
   renderSavedCombos();
   renderSavedRecipes();
   if (state.selected.length > 0) mainAreaEl.classList.add("two-col");
@@ -1401,6 +1702,8 @@ function add(ing) {
   state.recipeCourseFilter = "all";
   state.recipeShowAll = false;
   state.recipeExpandedClusters = new Set();
+  // Don't reset activeClusterId — the renderRecipes pass will drop it if the
+  // cluster vanished, but otherwise the user's focus is preserved.
   renderAll();
   qEl.focus();
 }

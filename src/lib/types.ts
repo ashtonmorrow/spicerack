@@ -32,11 +32,13 @@ export interface Ingredient {
   pairings: PairingRef[];
 }
 
-// What the search endpoint returns — light enough to render fast.
+// What the search endpoint returns — light enough to render fast, but with
+// cuisines included so the recipes panel can factor them into inference.
 export interface IngredientSummary {
   slug: string;
   name: string;
   category: Category;
+  cuisines?: string[];
 }
 
 // What the pairings endpoint returns for a given selection.
@@ -65,6 +67,16 @@ export interface Recipe {
   tips?: string;          // optional pointer; surfaced subtly in the modal
   source?: RecipeSource;  // where this recipe came from (curated vs imported)
   sourceUrl?: string;     // upstream link for "find recipe online"
+}
+
+// What /api/anchors returns per outlier: a candidate ingredient that would
+// anchor the outlier into a coherent direction, with both its base affinity
+// to the outlier and its bridge strength to the user's existing selection.
+export interface AnchorSuggestion {
+  ingredient: IngredientSummary;
+  baseStrength: number;   // affinity to the outlier itself
+  bridgeStrength: number; // sum of strengths to other ingredients in selection
+  score: number;          // baseStrength + 0.5 * bridgeStrength
 }
 
 // What /api/recipes returns: the recipe plus how it scored against the user's

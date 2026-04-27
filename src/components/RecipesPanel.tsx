@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { IngredientSummary, Recipe, ScoredRecipe } from "@/lib/types";
 import { isRecipeSaved } from "@/lib/saved-recipes";
@@ -10,6 +11,12 @@ interface Props {
   onUseRecipe: (ingredients: IngredientSummary[]) => void;
   onSavedChanged: () => void;
   savedVersion: number;
+  /** Notifies the parent of every fresh batch of matches so it can compute
+   *  cross-panel things (cluster analysis, outliers). */
+  onMatches?: (matches: ScoredRecipe[]) => void;
+  /** When set, only matches whose matchedRequired is a subset of these slugs
+   *  are shown. Used by the cluster strip to focus on one dish direction. */
+  clusterFilter?: string[] | null;
 }
 
 // Lightweight ingredient lookup — we only need name+category to render chips.
@@ -39,6 +46,8 @@ export function RecipesPanel({
   onUseRecipe,
   onSavedChanged,
   savedVersion,
+  onMatches,
+  clusterFilter,
 }: Props) {
   const [matches, setMatches] = useState<ScoredRecipe[]>([]);
   const [loading, setLoading] = useState(false);
@@ -73,6 +82,7 @@ export function RecipesPanel({
       .then(async (d) => {
         const results = d.results as ScoredRecipe[];
         setMatches(results);
+        if (onMatches) onMatches(results);
 
         const referenced = new Set<string>();
         for (const m of results) {
@@ -96,11 +106,17 @@ export function RecipesPanel({
 
   const userSlugs = new Set(selected.map((s) => s.slug));
 
-  // Apply filters
+  // Apply filters. clusterFilter is the cross-panel "focus on this direction"
+  // signal — every matched ingredient must be inside the cluster's slug set.
+  const clusterSlugSet = clusterFilter ? new Set(clusterFilter) : null;
   const filtered = matches.filter((m) => {
     if (pantryMode && m.missingRequired.length > 0) return false;
     if (cuisineFilter !== "all" && m.recipe.cuisine !== cuisineFilter) return false;
     if (courseFilter !== "all" && m.recipe.course !== courseFilter) return false;
+    if (clusterSlugSet) {
+      // every matched-required slug should be in the cluster
+      for (const s of m.matchedRequired) if (!clusterSlugSet.has(s)) return false;
+    }
     return true;
   });
 
@@ -148,10 +164,16 @@ export function RecipesPanel({
     );
   }
 
-  // Cuisine inference: weight by match score so a strong Italian top match
-  // outweighs a long tail of weaker single-cuisine outliers.
-  let totalWeight = 0;
+  // Hybrid cuisine inference: combine recipe-match cuisines (weighted by
+  // score) with selected-ingredient cuisine tags. The latter lets a selection
+  // like miso + ginger + scallion fire "Mostly Japanese" even before any
+  // recipe matches are strong enough to dominate.
+  //
+  // Ingredient tags carry less weight per signal than recipe matches, since
+  // (a) each ingredient often spans multiple cuisines, and (b) recipe matches
+  // already aggregate many ingredients into one cuisine vote.
   const weightedCuisines = new Map<string, number>();
+  let totalWeight = 0;
   for (const m of matches) {
     if (!m.recipe.cuisine || m.score <= 0) continue;
     weightedCuisines.set(
@@ -160,6 +182,25 @@ export function RecipesPanel({
     );
     totalWeight += m.score;
   }
+  // Each ingredient tag contributes 1/N where N is how many cuisines it lists,
+  // so a single-cuisine ingredient (miso → japanese) votes harder than a
+  // pan-cuisine one (ginger → 4 cuisines, 0.25 each). Total cap of ~2 weight
+  // across all ingredient tags so a 3-recipe match still anchors the call.
+  const INGR_TOTAL_CAP = 2;
+  let ingrAdded = 0;
+  for (const ing of selected) {
+    const cuisines = ing.cuisines ?? [];
+    if (cuisines.length === 0) continue;
+    const perCuisine = 1 / cuisines.length;
+    for (const c of cuisines) {
+      weightedCuisines.set(c, (weightedCuisines.get(c) ?? 0) + perCuisine);
+      ingrAdded += perCuisine;
+      if (ingrAdded >= INGR_TOTAL_CAP) break;
+    }
+    if (ingrAdded >= INGR_TOTAL_CAP) break;
+  }
+  totalWeight += ingrAdded;
+
   let inferenceLabel: string | null = null;
   if (totalWeight > 0) {
     const sorted = [...weightedCuisines.entries()]
@@ -432,10 +473,10 @@ function RecipeCard({
   const titleSize = sibling ? "text-[13px]" : "text-sm";
 
   return (
-    <div className="relative">
+    <div className="relative group">
     <button
       onClick={onOpen}
-      className={`block w-full text-left border border-border rounded-md ${padding} hover:bg-hover/50 hover:border-border transition`}
+      className={`block w-full text-left border border-border rounded-md ${padding} hover:bg-hover/50 hover:border-border transition pr-16`}
     >
       <header className="flex items-baseline justify-between gap-3 flex-wrap mb-1">
         <h3 className={`font-medium ${titleSize} text-ink flex items-center gap-2 flex-wrap`}>
@@ -499,10 +540,18 @@ function RecipeCard({
           })}
         </div>
       )}
-      <div className="text-xs text-muted/80 mt-2.5">
-        Open to view{r.method ? " method," : ""} save, or use these ingredients →
+      <div className="text-xs text-muted/80 mt-2.5 flex items-center justify-between gap-3 flex-wrap">
+        <span>Open quick view (method, save, use ingredients) →</span>
       </div>
     </button>
+    <Link
+      href={`/recipes/${r.id}`}
+      className="absolute top-2 right-2 text-[11px] text-muted hover:text-pear hover:bg-hover transition px-2 py-1 rounded"
+      onClick={(e) => e.stopPropagation()}
+      title="Open the full recipe page (shareable URL)"
+    >
+      Page ↗
+    </Link>
     {siblingCount > 0 && onToggleCluster && (
       <button
         onClick={(e) => {

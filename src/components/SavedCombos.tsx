@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { IngredientSummary } from "@/lib/types";
 import {
@@ -76,6 +77,14 @@ export function SavedCombos({ refreshKey, onLoad, onChanged }: Props) {
               </div>
             </button>
             <div className="absolute top-2 right-2 flex items-center gap-1">
+              <Link
+                href={`/combos/${c.id}`}
+                className="opacity-0 group-hover:opacity-100 text-muted hover:text-ink text-[11px] transition px-1.5 py-0.5 rounded"
+                title="Open combo page"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Page ↗
+              </Link>
               <button
                 onClick={(e) => {
                   e.stopPropagation();

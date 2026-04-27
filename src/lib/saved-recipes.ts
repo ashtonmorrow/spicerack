@@ -60,6 +60,39 @@ export function findSavedByRecipeId(recipeId: string): SavedRecipe | null {
   return loadSavedRecipes().find((r) => r.recipeId === recipeId) ?? null;
 }
 
+// Returns groups of saved recipes with the same recipeId (size >= 2 each).
+export function findDuplicateRecipes(): SavedRecipe[][] {
+  const groups = new Map<string, SavedRecipe[]>();
+  for (const r of loadSavedRecipes()) {
+    const arr = groups.get(r.recipeId) ?? [];
+    arr.push(r);
+    groups.set(r.recipeId, arr);
+  }
+  return [...groups.values()].filter((g) => g.length >= 2);
+}
+
+// Merge duplicate saves of the same recipe. Keeps the oldest id and
+// concatenates notes with a divider.
+export function mergeRecipes(group: SavedRecipe[]): SavedRecipe | null {
+  if (!isBrowser() || group.length < 2) return null;
+  const sorted = [...group].sort((a, b) => a.createdAt - b.createdAt);
+  const survivor = sorted[0];
+  const notes = [...new Set(sorted.map((r) => r.notes).filter(Boolean))].join(
+    "\n\n---\n\n"
+  );
+  const pinned = sorted.some((r) => r.pinned) || undefined;
+  const merged: SavedRecipe = {
+    ...survivor,
+    notes,
+    ...(pinned !== undefined ? { pinned } : {}),
+  };
+  const all = loadSavedRecipes()
+    .filter((r) => r.id === survivor.id || !group.some((g) => g.id === r.id))
+    .map((r) => (r.id === survivor.id ? merged : r));
+  window.localStorage.setItem(KEY, JSON.stringify(all));
+  return merged;
+}
+
 // Update the user's personal notes on an existing saved recipe.
 export function updateRecipeNotes(savedId: string, notes: string): void {
   if (!isBrowser()) return;

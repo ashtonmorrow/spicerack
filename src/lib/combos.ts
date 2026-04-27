@@ -84,3 +84,44 @@ export function findExactMatch(slugs: string[]): SavedCombo | null {
     ) ?? null
   );
 }
+
+// Returns groups of combos with identical ingredient sets (size >= 2 each).
+// Used by the dedupe UI to surface merge candidates.
+export function findDuplicateCombos(): SavedCombo[][] {
+  const groups = new Map<string, SavedCombo[]>();
+  for (const c of loadCombos()) {
+    const key = [...c.ingredients.map((i) => i.slug)].sort().join(",");
+    const arr = groups.get(key) ?? [];
+    arr.push(c);
+    groups.set(key, arr);
+  }
+  return [...groups.values()].filter((g) => g.length >= 2);
+}
+
+// Merges a duplicate group into a single combo. Strategy:
+//   - Keep the oldest record's id (pinned status sticks if any was pinned).
+//   - Concatenate distinct names (joined by " / ") and distinct about texts.
+//   - Pinned wins if any duplicate was pinned.
+//   - Delete the rest.
+export function mergeCombos(group: SavedCombo[]): SavedCombo | null {
+  if (!isBrowser() || group.length < 2) return null;
+  const sorted = [...group].sort((a, b) => a.createdAt - b.createdAt);
+  const survivor = sorted[0];
+  const names = [...new Set(sorted.map((c) => c.name).filter(Boolean))];
+  const abouts = [...new Set(sorted.map((c) => c.about).filter(Boolean))];
+  const pinned = sorted.some((c) => c.pinned) || undefined;
+
+  const merged: SavedCombo = {
+    ...survivor,
+    name: names.join(" / "),
+    about: abouts.join("\n\n"),
+    ...(pinned !== undefined ? { pinned } : {}),
+  };
+
+  const surviveSet = new Set([survivor.id]);
+  const all = loadCombos()
+    .filter((c) => surviveSet.has(c.id) || !group.some((g) => g.id === c.id))
+    .map((c) => (c.id === survivor.id ? merged : c));
+  window.localStorage.setItem(KEY, JSON.stringify(all));
+  return merged;
+}

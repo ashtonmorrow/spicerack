@@ -3,6 +3,7 @@
 
 import seed from "../../data/ingredients.json";
 import type {
+  AnchorSuggestion,
   Ingredient,
   IngredientSummary,
   PairingStrength,
@@ -30,7 +31,7 @@ export class JsonIngredientRepository implements IngredientRepository {
 
   async list(): Promise<IngredientSummary[]> {
     return this.all
-      .map((i) => ({ slug: i.slug, name: i.name, category: i.category }))
+      .map((i) => toSummary(i))
       .sort((a, b) => a.name.localeCompare(b.name));
   }
 
@@ -56,11 +57,7 @@ export class JsonIngredientRepository implements IngredientRepository {
     return scored
       .sort((a, b) => b.score - a.score || a.ing.name.localeCompare(b.ing.name))
       .slice(0, limit)
-      .map(({ ing }) => ({
-        slug: ing.slug,
-        name: ing.name,
-        category: ing.category,
-      }));
+      .map(({ ing }) => toSummary(ing));
   }
 
   async pairingsFor(
@@ -117,6 +114,47 @@ export class JsonIngredientRepository implements IngredientRepository {
       .sort((a, b) => b.score - a.score || b.hits - a.hits)
       .slice(0, limit);
   }
+
+  async anchorsFor(
+    outlierSlug: string,
+    selectionSlugs: string[],
+    limit = 3
+  ): Promise<AnchorSuggestion[]> {
+    const outlier = this.bySlug.get(outlierSlug);
+    if (!outlier) return [];
+    // Don't propose anything the user already has.
+    const exclude = new Set(selectionSlugs);
+    exclude.add(outlierSlug);
+
+    const out: AnchorSuggestion[] = [];
+    for (const p of outlier.pairings) {
+      if (exclude.has(p.slug)) continue;
+      const cand = this.bySlug.get(p.slug);
+      if (!cand) continue;
+      // Bridge strength: how much does this candidate also pair with other
+      // ingredients the user has? Higher = more cohesive merge.
+      let bridge = 0;
+      for (const cp of cand.pairings) {
+        if (cp.slug === outlierSlug) continue;
+        if (exclude.has(cp.slug)) bridge += cp.strength;
+      }
+      out.push({
+        ingredient: toSummary(cand),
+        baseStrength: p.strength,
+        bridgeStrength: bridge,
+        score: p.strength + 0.5 * bridge,
+      });
+    }
+
+    return out
+      .sort(
+        (a, b) =>
+          b.score - a.score ||
+          b.bridgeStrength - a.bridgeStrength ||
+          b.baseStrength - a.baseStrength
+      )
+      .slice(0, limit);
+  }
 }
 
 function prettySlug(slug: string): string {
@@ -124,4 +162,13 @@ function prettySlug(slug: string): string {
     .split("-")
     .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
     .join(" ");
+}
+
+function toSummary(i: Ingredient): IngredientSummary {
+  return {
+    slug: i.slug,
+    name: i.name,
+    category: i.category,
+    ...(i.cuisines && i.cuisines.length ? { cuisines: i.cuisines } : {}),
+  };
 }

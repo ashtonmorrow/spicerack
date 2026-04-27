@@ -12,6 +12,9 @@ interface ChemistryHit {
 interface Props {
   selected: IngredientSummary[];
   onAdd: (ing: IngredientSummary) => void;
+  /** When set, pairings are computed only against this subset of slugs (a
+   *  dish-direction focus). null = use the full selection. */
+  clusterFilter?: string[] | null;
 }
 
 const CATEGORIES: Category[] = [
@@ -27,19 +30,26 @@ const CATEGORIES: Category[] = [
   "aromatic",
 ];
 
-export function PairingsPanel({ selected, onAdd }: Props) {
+export function PairingsPanel({ selected, onAdd, clusterFilter }: Props) {
   const [pairings, setPairings] = useState<ScoredPairing[]>([]);
   const [chemistry, setChemistry] = useState<ChemistryHit[]>([]);
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<Category | "all">("all");
 
+  // When a cluster is active, scope the pairings computation to just those
+  // slugs so suggestions reflect only the chosen direction.
+  const effectiveSelected =
+    clusterFilter && clusterFilter.length
+      ? selected.filter((s) => clusterFilter.includes(s.slug))
+      : selected;
+
   useEffect(() => {
-    if (selected.length === 0) {
+    if (effectiveSelected.length === 0) {
       setPairings([]);
       setChemistry([]);
       return;
     }
-    const slugs = selected.map((s) => s.slug).join(",");
+    const slugs = effectiveSelected.map((s) => s.slug).join(",");
     setLoading(true);
     Promise.all([
       fetch(`/api/pairings?slugs=${encodeURIComponent(slugs)}&limit=60`).then((r) => r.json()),
@@ -50,7 +60,7 @@ export function PairingsPanel({ selected, onAdd }: Props) {
         setChemistry(c.results as ChemistryHit[]);
       })
       .finally(() => setLoading(false));
-  }, [selected.map((s) => s.slug).join(",")]);
+  }, [effectiveSelected.map((s) => s.slug).join(",")]);
 
   const grouped = useMemo(() => {
     const filtered =
@@ -85,7 +95,7 @@ export function PairingsPanel({ selected, onAdd }: Props) {
         <h2 className="text-lg font-semibold text-ink">
           Pairs well with{" "}
           <span className="font-normal">
-            {selected.map((s) => s.name).join(" + ")}
+            {effectiveSelected.map((s) => s.name).join(" + ")}
           </span>
         </h2>
         {loading && <span className="text-xs text-muted">…</span>}
@@ -130,7 +140,7 @@ export function PairingsPanel({ selected, onAdd }: Props) {
                 <PairingChip
                   key={p.ingredient.slug}
                   pairing={p}
-                  multi={selected.length > 1}
+                  multi={effectiveSelected.length > 1}
                   onClick={() => onAdd(p.ingredient)}
                 />
               ))}

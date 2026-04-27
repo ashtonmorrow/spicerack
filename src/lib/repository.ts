@@ -2,13 +2,25 @@
 // Today the only implementation is JSON-backed; tomorrow it can be Postgres,
 // SQLite, or a remote API — no caller changes required.
 
-import type { Ingredient, IngredientSummary, ScoredPairing } from "./types";
+import type {
+  AnchorSuggestion,
+  Ingredient,
+  IngredientSummary,
+  ScoredPairing,
+} from "./types";
 
 export interface IngredientRepository {
   getBySlug(slug: string): Promise<Ingredient | null>;
   search(query: string, limit?: number): Promise<IngredientSummary[]>;
   list(): Promise<IngredientSummary[]>;
   pairingsFor(slugs: string[], limit?: number): Promise<ScoredPairing[]>;
+  /** Bridge-aware anchor suggestions: candidates that pair with the outlier
+   *  AND ideally also pair with ingredients in `selectionSlugs`. */
+  anchorsFor(
+    outlierSlug: string,
+    selectionSlugs: string[],
+    limit?: number
+  ): Promise<AnchorSuggestion[]>;
 }
 
 // Singleton accessor — swap implementations here.

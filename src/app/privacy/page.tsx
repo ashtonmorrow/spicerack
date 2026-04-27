@@ -4,9 +4,16 @@ import { PearLetter } from "@/components/PearLetter";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Flavor Pear",
+  title: "Privacy Policy",
   description:
     "How Flavor Pear handles your data — short version: we don't collect any.",
+  alternates: { canonical: "/privacy" },
+  openGraph: {
+    title: "Privacy Policy — Flavor Pear",
+    description: "Flavor Pear collects nothing. Everything you save lives in your browser.",
+    url: "/privacy",
+    type: "article",
+  },
 };
 
 // The policy is intentionally small and concrete because the app's

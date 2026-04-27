@@ -6,46 +6,142 @@
       "slug": "apple",
       "name": "Apple",
       "category": "fruit",
-      "aliases": ["apples"],
-      "seasons": ["fall"],
-      "cuisines": ["american", "french", "german", "british"],
+      "aliases": [
+        "apples"
+      ],
+      "seasons": [
+        "fall"
+      ],
+      "cuisines": [
+        "american",
+        "french",
+        "german",
+        "british"
+      ],
       "pairings": [
-        { "slug": "cinnamon", "strength": 3 },
-        { "slug": "butter", "strength": 3 },
-        { "slug": "pork", "strength": 3 },
-        { "slug": "cheddar", "strength": 3 },
-        { "slug": "caramel", "strength": 3 },
-        { "slug": "walnut", "strength": 2 },
-        { "slug": "maple-syrup", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "nutmeg", "strength": 2 },
-        { "slug": "vanilla", "strength": 2 },
-        { "slug": "honey", "strength": 2 },
-        { "slug": "sage", "strength": 2 },
-        { "slug": "bacon", "strength": 2 },
-        { "slug": "onion", "strength": 2 },
-        { "slug": "rosemary", "strength": 1 },
-        { "slug": "blue-cheese", "strength": 2 },
-        { "slug": "lemon", "strength": 1 }
+        {
+          "slug": "cinnamon",
+          "strength": 3
+        },
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "pork",
+          "strength": 3
+        },
+        {
+          "slug": "cheddar",
+          "strength": 3
+        },
+        {
+          "slug": "caramel",
+          "strength": 3
+        },
+        {
+          "slug": "walnut",
+          "strength": 2
+        },
+        {
+          "slug": "maple-syrup",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "nutmeg",
+          "strength": 2
+        },
+        {
+          "slug": "vanilla",
+          "strength": 2
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        },
+        {
+          "slug": "sage",
+          "strength": 2
+        },
+        {
+          "slug": "bacon",
+          "strength": 2
+        },
+        {
+          "slug": "onion",
+          "strength": 2
+        },
+        {
+          "slug": "rosemary",
+          "strength": 1
+        },
+        {
+          "slug": "blue-cheese",
+          "strength": 2
+        },
+        {
+          "slug": "lemon",
+          "strength": 1
+        }
       ]
     },
     {
       "slug": "pear",
       "name": "Pear",
       "category": "fruit",
-      "seasons": ["fall", "winter"],
+      "seasons": [
+        "fall",
+        "winter"
+      ],
       "pairings": [
-        { "slug": "blue-cheese", "strength": 3 },
-        { "slug": "walnut", "strength": 3 },
-        { "slug": "honey", "strength": 3 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "vanilla", "strength": 2 },
-        { "slug": "cardamom", "strength": 2 },
-        { "slug": "chocolate", "strength": 2 },
-        { "slug": "almond", "strength": 2 },
-        { "slug": "cinnamon", "strength": 2 },
-        { "slug": "prosciutto", "strength": 2 },
-        { "slug": "arugula", "strength": 2 }
+        {
+          "slug": "blue-cheese",
+          "strength": 3
+        },
+        {
+          "slug": "walnut",
+          "strength": 3
+        },
+        {
+          "slug": "honey",
+          "strength": 3
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "vanilla",
+          "strength": 2
+        },
+        {
+          "slug": "cardamom",
+          "strength": 2
+        },
+        {
+          "slug": "chocolate",
+          "strength": 2
+        },
+        {
+          "slug": "almond",
+          "strength": 2
+        },
+        {
+          "slug": "cinnamon",
+          "strength": 2
+        },
+        {
+          "slug": "prosciutto",
+          "strength": 2
+        },
+        {
+          "slug": "arugula",
+          "strength": 2
+        }
       ]
     },
     {
@@ -53,41 +149,126 @@
       "name": "Lemon",
       "category": "fruit",
       "pairings": [
-        { "slug": "olive-oil", "strength": 3 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "parsley", "strength": 3 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "rosemary", "strength": 2 },
-        { "slug": "chicken", "strength": 3 },
-        { "slug": "fish-white", "strength": 3 },
-        { "slug": "shrimp", "strength": 3 },
-        { "slug": "butter", "strength": 3 },
-        { "slug": "honey", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "blueberry", "strength": 2 },
-        { "slug": "raspberry", "strength": 2 },
-        { "slug": "vanilla", "strength": 2 },
-        { "slug": "asparagus", "strength": 2 },
-        { "slug": "artichoke", "strength": 2 }
+        {
+          "slug": "olive-oil",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "parsley",
+          "strength": 3
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "rosemary",
+          "strength": 2
+        },
+        {
+          "slug": "chicken",
+          "strength": 3
+        },
+        {
+          "slug": "fish-white",
+          "strength": 3
+        },
+        {
+          "slug": "shrimp",
+          "strength": 3
+        },
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "blueberry",
+          "strength": 2
+        },
+        {
+          "slug": "raspberry",
+          "strength": 2
+        },
+        {
+          "slug": "vanilla",
+          "strength": 2
+        },
+        {
+          "slug": "asparagus",
+          "strength": 2
+        },
+        {
+          "slug": "artichoke",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "lime",
       "name": "Lime",
       "category": "fruit",
-      "cuisines": ["mexican", "thai", "vietnamese"],
+      "cuisines": [
+        "mexican",
+        "thai",
+        "vietnamese"
+      ],
       "pairings": [
-        { "slug": "cilantro", "strength": 3 },
-        { "slug": "chili", "strength": 3 },
-        { "slug": "fish-sauce", "strength": 3 },
-        { "slug": "coconut-milk", "strength": 3 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "lemongrass", "strength": 3 },
-        { "slug": "shrimp", "strength": 3 },
-        { "slug": "avocado", "strength": 3 },
-        { "slug": "mango", "strength": 2 },
-        { "slug": "tequila", "strength": 2 },
-        { "slug": "mint", "strength": 2 }
+        {
+          "slug": "cilantro",
+          "strength": 3
+        },
+        {
+          "slug": "chili",
+          "strength": 3
+        },
+        {
+          "slug": "fish-sauce",
+          "strength": 3
+        },
+        {
+          "slug": "coconut-milk",
+          "strength": 3
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "lemongrass",
+          "strength": 3
+        },
+        {
+          "slug": "shrimp",
+          "strength": 3
+        },
+        {
+          "slug": "avocado",
+          "strength": 3
+        },
+        {
+          "slug": "mango",
+          "strength": 2
+        },
+        {
+          "slug": "tequila",
+          "strength": 2
+        },
+        {
+          "slug": "mint",
+          "strength": 2
+        }
       ]
     },
     {
@@ -95,52 +276,147 @@
       "name": "Orange",
       "category": "fruit",
       "pairings": [
-        { "slug": "chocolate", "strength": 3 },
-        { "slug": "cardamom", "strength": 2 },
-        { "slug": "cinnamon", "strength": 2 },
-        { "slug": "duck", "strength": 3 },
-        { "slug": "fennel", "strength": 3 },
-        { "slug": "almond", "strength": 2 },
-        { "slug": "vanilla", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "beet", "strength": 2 }
+        {
+          "slug": "chocolate",
+          "strength": 3
+        },
+        {
+          "slug": "cardamom",
+          "strength": 2
+        },
+        {
+          "slug": "cinnamon",
+          "strength": 2
+        },
+        {
+          "slug": "duck",
+          "strength": 3
+        },
+        {
+          "slug": "fennel",
+          "strength": 3
+        },
+        {
+          "slug": "almond",
+          "strength": 2
+        },
+        {
+          "slug": "vanilla",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "beet",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "strawberry",
       "name": "Strawberry",
       "category": "fruit",
-      "seasons": ["spring", "summer"],
+      "seasons": [
+        "spring",
+        "summer"
+      ],
       "pairings": [
-        { "slug": "balsamic-vinegar", "strength": 3 },
-        { "slug": "basil", "strength": 3 },
-        { "slug": "black-pepper", "strength": 2 },
-        { "slug": "cream", "strength": 3 },
-        { "slug": "vanilla", "strength": 3 },
-        { "slug": "chocolate", "strength": 3 },
-        { "slug": "rhubarb", "strength": 2 },
-        { "slug": "mint", "strength": 2 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "honey", "strength": 2 },
-        { "slug": "almond", "strength": 2 }
+        {
+          "slug": "balsamic-vinegar",
+          "strength": 3
+        },
+        {
+          "slug": "basil",
+          "strength": 3
+        },
+        {
+          "slug": "black-pepper",
+          "strength": 2
+        },
+        {
+          "slug": "cream",
+          "strength": 3
+        },
+        {
+          "slug": "vanilla",
+          "strength": 3
+        },
+        {
+          "slug": "chocolate",
+          "strength": 3
+        },
+        {
+          "slug": "rhubarb",
+          "strength": 2
+        },
+        {
+          "slug": "mint",
+          "strength": 2
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        },
+        {
+          "slug": "almond",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "blueberry",
       "name": "Blueberry",
       "category": "fruit",
-      "seasons": ["summer"],
+      "seasons": [
+        "summer"
+      ],
       "pairings": [
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "vanilla", "strength": 3 },
-        { "slug": "cinnamon", "strength": 2 },
-        { "slug": "maple-syrup", "strength": 2 },
-        { "slug": "yogurt", "strength": 2 },
-        { "slug": "almond", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "thyme", "strength": 1 },
-        { "slug": "cream", "strength": 2 }
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "vanilla",
+          "strength": 3
+        },
+        {
+          "slug": "cinnamon",
+          "strength": 2
+        },
+        {
+          "slug": "maple-syrup",
+          "strength": 2
+        },
+        {
+          "slug": "yogurt",
+          "strength": 2
+        },
+        {
+          "slug": "almond",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "thyme",
+          "strength": 1
+        },
+        {
+          "slug": "cream",
+          "strength": 2
+        }
       ]
     },
     {
@@ -148,47 +424,128 @@
       "name": "Raspberry",
       "category": "fruit",
       "pairings": [
-        { "slug": "chocolate", "strength": 3 },
-        { "slug": "vanilla", "strength": 3 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "cream", "strength": 3 },
-        { "slug": "almond", "strength": 2 },
-        { "slug": "rose", "strength": 2 },
-        { "slug": "mint", "strength": 2 }
+        {
+          "slug": "chocolate",
+          "strength": 3
+        },
+        {
+          "slug": "vanilla",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "cream",
+          "strength": 3
+        },
+        {
+          "slug": "almond",
+          "strength": 2
+        },
+        {
+          "slug": "rose",
+          "strength": 2
+        },
+        {
+          "slug": "mint",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "peach",
       "name": "Peach",
       "category": "fruit",
-      "seasons": ["summer"],
+      "seasons": [
+        "summer"
+      ],
       "pairings": [
-        { "slug": "basil", "strength": 3 },
-        { "slug": "vanilla", "strength": 3 },
-        { "slug": "almond", "strength": 3 },
-        { "slug": "prosciutto", "strength": 2 },
-        { "slug": "burrata", "strength": 3 },
-        { "slug": "honey", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "balsamic-vinegar", "strength": 2 },
-        { "slug": "cinnamon", "strength": 2 },
-        { "slug": "thyme", "strength": 2 }
+        {
+          "slug": "basil",
+          "strength": 3
+        },
+        {
+          "slug": "vanilla",
+          "strength": 3
+        },
+        {
+          "slug": "almond",
+          "strength": 3
+        },
+        {
+          "slug": "prosciutto",
+          "strength": 2
+        },
+        {
+          "slug": "burrata",
+          "strength": 3
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "balsamic-vinegar",
+          "strength": 2
+        },
+        {
+          "slug": "cinnamon",
+          "strength": 2
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "mango",
       "name": "Mango",
       "category": "fruit",
-      "cuisines": ["indian", "thai", "mexican"],
+      "cuisines": [
+        "indian",
+        "thai",
+        "mexican"
+      ],
       "pairings": [
-        { "slug": "lime", "strength": 3 },
-        { "slug": "chili", "strength": 3 },
-        { "slug": "coconut-milk", "strength": 3 },
-        { "slug": "cilantro", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "yogurt", "strength": 2 },
-        { "slug": "cardamom", "strength": 2 },
-        { "slug": "shrimp", "strength": 2 }
+        {
+          "slug": "lime",
+          "strength": 3
+        },
+        {
+          "slug": "chili",
+          "strength": 3
+        },
+        {
+          "slug": "coconut-milk",
+          "strength": 3
+        },
+        {
+          "slug": "cilantro",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "yogurt",
+          "strength": 2
+        },
+        {
+          "slug": "cardamom",
+          "strength": 2
+        },
+        {
+          "slug": "shrimp",
+          "strength": 2
+        }
       ]
     },
     {
@@ -196,42 +553,133 @@
       "name": "Avocado",
       "category": "fruit",
       "pairings": [
-        { "slug": "lime", "strength": 3 },
-        { "slug": "cilantro", "strength": 3 },
-        { "slug": "chili", "strength": 3 },
-        { "slug": "tomato", "strength": 3 },
-        { "slug": "onion", "strength": 2 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "salmon", "strength": 2 },
-        { "slug": "shrimp", "strength": 2 },
-        { "slug": "egg", "strength": 2 },
-        { "slug": "bacon", "strength": 2 }
+        {
+          "slug": "lime",
+          "strength": 3
+        },
+        {
+          "slug": "cilantro",
+          "strength": 3
+        },
+        {
+          "slug": "chili",
+          "strength": 3
+        },
+        {
+          "slug": "tomato",
+          "strength": 3
+        },
+        {
+          "slug": "onion",
+          "strength": 2
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "salmon",
+          "strength": 2
+        },
+        {
+          "slug": "shrimp",
+          "strength": 2
+        },
+        {
+          "slug": "egg",
+          "strength": 2
+        },
+        {
+          "slug": "bacon",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "mexican"
       ]
     },
     {
       "slug": "tomato",
       "name": "Tomato",
       "category": "vegetable",
-      "seasons": ["summer"],
-      "cuisines": ["italian", "mexican", "spanish", "french"],
+      "seasons": [
+        "summer"
+      ],
+      "cuisines": [
+        "italian",
+        "mexican",
+        "spanish",
+        "french"
+      ],
       "pairings": [
-        { "slug": "basil", "strength": 3 },
-        { "slug": "mozzarella", "strength": 3 },
-        { "slug": "olive-oil", "strength": 3 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "balsamic-vinegar", "strength": 3 },
-        { "slug": "oregano", "strength": 2 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "onion", "strength": 2 },
-        { "slug": "parsley", "strength": 2 },
-        { "slug": "anchovy", "strength": 2 },
-        { "slug": "feta", "strength": 2 },
-        { "slug": "bread", "strength": 2 },
-        { "slug": "egg", "strength": 2 },
-        { "slug": "parmesan", "strength": 3 },
-        { "slug": "burrata", "strength": 3 },
-        { "slug": "shallot", "strength": 2 },
-        { "slug": "cucumber", "strength": 2 }
+        {
+          "slug": "basil",
+          "strength": 3
+        },
+        {
+          "slug": "mozzarella",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "balsamic-vinegar",
+          "strength": 3
+        },
+        {
+          "slug": "oregano",
+          "strength": 2
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "onion",
+          "strength": 2
+        },
+        {
+          "slug": "parsley",
+          "strength": 2
+        },
+        {
+          "slug": "anchovy",
+          "strength": 2
+        },
+        {
+          "slug": "feta",
+          "strength": 2
+        },
+        {
+          "slug": "bread",
+          "strength": 2
+        },
+        {
+          "slug": "egg",
+          "strength": 2
+        },
+        {
+          "slug": "parmesan",
+          "strength": 3
+        },
+        {
+          "slug": "burrata",
+          "strength": 3
+        },
+        {
+          "slug": "shallot",
+          "strength": 2
+        },
+        {
+          "slug": "cucumber",
+          "strength": 2
+        }
       ]
     },
     {
@@ -239,16 +687,46 @@
       "name": "Onion",
       "category": "aromatic",
       "pairings": [
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "butter", "strength": 3 },
-        { "slug": "thyme", "strength": 3 },
-        { "slug": "bay-leaf", "strength": 2 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "tomato", "strength": 2 },
-        { "slug": "beef", "strength": 2 },
-        { "slug": "gruyere", "strength": 3 },
-        { "slug": "parsley", "strength": 2 },
-        { "slug": "vinegar-red-wine", "strength": 2 }
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "thyme",
+          "strength": 3
+        },
+        {
+          "slug": "bay-leaf",
+          "strength": 2
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "tomato",
+          "strength": 2
+        },
+        {
+          "slug": "beef",
+          "strength": 2
+        },
+        {
+          "slug": "gruyere",
+          "strength": 3
+        },
+        {
+          "slug": "parsley",
+          "strength": 2
+        },
+        {
+          "slug": "vinegar-red-wine",
+          "strength": 2
+        }
       ]
     },
     {
@@ -256,18 +734,54 @@
       "name": "Garlic",
       "category": "aromatic",
       "pairings": [
-        { "slug": "olive-oil", "strength": 3 },
-        { "slug": "parsley", "strength": 3 },
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "rosemary", "strength": 3 },
-        { "slug": "thyme", "strength": 3 },
-        { "slug": "tomato", "strength": 3 },
-        { "slug": "chili", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "butter", "strength": 3 },
-        { "slug": "onion", "strength": 3 },
-        { "slug": "shrimp", "strength": 3 },
-        { "slug": "anchovy", "strength": 2 }
+        {
+          "slug": "olive-oil",
+          "strength": 3
+        },
+        {
+          "slug": "parsley",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "rosemary",
+          "strength": 3
+        },
+        {
+          "slug": "thyme",
+          "strength": 3
+        },
+        {
+          "slug": "tomato",
+          "strength": 3
+        },
+        {
+          "slug": "chili",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "onion",
+          "strength": 3
+        },
+        {
+          "slug": "shrimp",
+          "strength": 3
+        },
+        {
+          "slug": "anchovy",
+          "strength": 2
+        }
       ]
     },
     {
@@ -275,13 +789,37 @@
       "name": "Shallot",
       "category": "aromatic",
       "pairings": [
-        { "slug": "vinegar-red-wine", "strength": 3 },
-        { "slug": "butter", "strength": 3 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "tarragon", "strength": 2 },
-        { "slug": "wine-white", "strength": 2 },
-        { "slug": "mustard", "strength": 2 },
-        { "slug": "fish-white", "strength": 2 }
+        {
+          "slug": "vinegar-red-wine",
+          "strength": 3
+        },
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "tarragon",
+          "strength": 2
+        },
+        {
+          "slug": "wine-white",
+          "strength": 2
+        },
+        {
+          "slug": "mustard",
+          "strength": 2
+        },
+        {
+          "slug": "fish-white",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "french"
       ]
     },
     {
@@ -289,15 +827,42 @@
       "name": "Carrot",
       "category": "vegetable",
       "pairings": [
-        { "slug": "ginger", "strength": 3 },
-        { "slug": "honey", "strength": 2 },
-        { "slug": "butter", "strength": 2 },
-        { "slug": "cumin", "strength": 2 },
-        { "slug": "coriander", "strength": 2 },
-        { "slug": "parsley", "strength": 2 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "orange", "strength": 2 },
-        { "slug": "maple-syrup", "strength": 2 }
+        {
+          "slug": "ginger",
+          "strength": 3
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        },
+        {
+          "slug": "butter",
+          "strength": 2
+        },
+        {
+          "slug": "cumin",
+          "strength": 2
+        },
+        {
+          "slug": "coriander",
+          "strength": 2
+        },
+        {
+          "slug": "parsley",
+          "strength": 2
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "orange",
+          "strength": 2
+        },
+        {
+          "slug": "maple-syrup",
+          "strength": 2
+        }
       ]
     },
     {
@@ -305,19 +870,58 @@
       "name": "Potato",
       "category": "vegetable",
       "pairings": [
-        { "slug": "butter", "strength": 3 },
-        { "slug": "rosemary", "strength": 3 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "cream", "strength": 3 },
-        { "slug": "gruyere", "strength": 3 },
-        { "slug": "bacon", "strength": 3 },
-        { "slug": "chive", "strength": 3 },
-        { "slug": "leek", "strength": 3 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "parsley", "strength": 2 },
-        { "slug": "black-pepper", "strength": 2 },
-        { "slug": "dill", "strength": 2 }
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "rosemary",
+          "strength": 3
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "cream",
+          "strength": 3
+        },
+        {
+          "slug": "gruyere",
+          "strength": 3
+        },
+        {
+          "slug": "bacon",
+          "strength": 3
+        },
+        {
+          "slug": "chive",
+          "strength": 3
+        },
+        {
+          "slug": "leek",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "parsley",
+          "strength": 2
+        },
+        {
+          "slug": "black-pepper",
+          "strength": 2
+        },
+        {
+          "slug": "dill",
+          "strength": 2
+        }
       ]
     },
     {
@@ -325,33 +929,96 @@
       "name": "Sweet Potato",
       "category": "vegetable",
       "pairings": [
-        { "slug": "cinnamon", "strength": 3 },
-        { "slug": "maple-syrup", "strength": 3 },
-        { "slug": "butter", "strength": 3 },
-        { "slug": "pecan", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "chili", "strength": 2 },
-        { "slug": "lime", "strength": 2 },
-        { "slug": "sage", "strength": 2 },
-        { "slug": "coconut-milk", "strength": 2 }
+        {
+          "slug": "cinnamon",
+          "strength": 3
+        },
+        {
+          "slug": "maple-syrup",
+          "strength": 3
+        },
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "pecan",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "chili",
+          "strength": 2
+        },
+        {
+          "slug": "lime",
+          "strength": 2
+        },
+        {
+          "slug": "sage",
+          "strength": 2
+        },
+        {
+          "slug": "coconut-milk",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "american"
       ]
     },
     {
       "slug": "butternut-squash",
       "name": "Butternut Squash",
       "category": "vegetable",
-      "seasons": ["fall", "winter"],
+      "seasons": [
+        "fall",
+        "winter"
+      ],
       "pairings": [
-        { "slug": "sage", "strength": 3 },
-        { "slug": "brown-butter", "strength": 3 },
-        { "slug": "nutmeg", "strength": 2 },
-        { "slug": "cinnamon", "strength": 2 },
-        { "slug": "maple-syrup", "strength": 2 },
-        { "slug": "parmesan", "strength": 3 },
-        { "slug": "pecan", "strength": 2 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "ricotta", "strength": 2 },
-        { "slug": "ginger", "strength": 2 }
+        {
+          "slug": "sage",
+          "strength": 3
+        },
+        {
+          "slug": "brown-butter",
+          "strength": 3
+        },
+        {
+          "slug": "nutmeg",
+          "strength": 2
+        },
+        {
+          "slug": "cinnamon",
+          "strength": 2
+        },
+        {
+          "slug": "maple-syrup",
+          "strength": 2
+        },
+        {
+          "slug": "parmesan",
+          "strength": 3
+        },
+        {
+          "slug": "pecan",
+          "strength": 2
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "ricotta",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        }
       ]
     },
     {
@@ -359,19 +1026,58 @@
       "name": "Mushroom",
       "category": "vegetable",
       "pairings": [
-        { "slug": "thyme", "strength": 3 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "butter", "strength": 3 },
-        { "slug": "parsley", "strength": 3 },
-        { "slug": "shallot", "strength": 3 },
-        { "slug": "wine-white", "strength": 2 },
-        { "slug": "wine-red", "strength": 2 },
-        { "slug": "cream", "strength": 3 },
-        { "slug": "soy-sauce", "strength": 2 },
-        { "slug": "miso", "strength": 2 },
-        { "slug": "tarragon", "strength": 2 },
-        { "slug": "egg", "strength": 2 },
-        { "slug": "polenta", "strength": 2 }
+        {
+          "slug": "thyme",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "parsley",
+          "strength": 3
+        },
+        {
+          "slug": "shallot",
+          "strength": 3
+        },
+        {
+          "slug": "wine-white",
+          "strength": 2
+        },
+        {
+          "slug": "wine-red",
+          "strength": 2
+        },
+        {
+          "slug": "cream",
+          "strength": 3
+        },
+        {
+          "slug": "soy-sauce",
+          "strength": 2
+        },
+        {
+          "slug": "miso",
+          "strength": 2
+        },
+        {
+          "slug": "tarragon",
+          "strength": 2
+        },
+        {
+          "slug": "egg",
+          "strength": 2
+        },
+        {
+          "slug": "polenta",
+          "strength": 2
+        }
       ]
     },
     {
@@ -379,16 +1085,46 @@
       "name": "Spinach",
       "category": "vegetable",
       "pairings": [
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "nutmeg", "strength": 3 },
-        { "slug": "feta", "strength": 3 },
-        { "slug": "ricotta", "strength": 3 },
-        { "slug": "cream", "strength": 2 },
-        { "slug": "egg", "strength": 2 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "pine-nut", "strength": 2 },
-        { "slug": "raisin", "strength": 2 }
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "nutmeg",
+          "strength": 3
+        },
+        {
+          "slug": "feta",
+          "strength": 3
+        },
+        {
+          "slug": "ricotta",
+          "strength": 3
+        },
+        {
+          "slug": "cream",
+          "strength": 2
+        },
+        {
+          "slug": "egg",
+          "strength": 2
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "pine-nut",
+          "strength": 2
+        },
+        {
+          "slug": "raisin",
+          "strength": 2
+        }
       ]
     },
     {
@@ -396,13 +1132,34 @@
       "name": "Broccoli",
       "category": "vegetable",
       "pairings": [
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "anchovy", "strength": 2 },
-        { "slug": "chili", "strength": 2 },
-        { "slug": "parmesan", "strength": 2 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "almond", "strength": 2 }
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "anchovy",
+          "strength": 2
+        },
+        {
+          "slug": "chili",
+          "strength": 2
+        },
+        {
+          "slug": "parmesan",
+          "strength": 2
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "almond",
+          "strength": 2
+        }
       ]
     },
     {
@@ -410,81 +1167,220 @@
       "name": "Cauliflower",
       "category": "vegetable",
       "pairings": [
-        { "slug": "cumin", "strength": 3 },
-        { "slug": "turmeric", "strength": 2 },
-        { "slug": "tahini", "strength": 3 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "parsley", "strength": 2 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "raisin", "strength": 2 },
-        { "slug": "anchovy", "strength": 2 }
+        {
+          "slug": "cumin",
+          "strength": 3
+        },
+        {
+          "slug": "turmeric",
+          "strength": 2
+        },
+        {
+          "slug": "tahini",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "parsley",
+          "strength": 2
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "raisin",
+          "strength": 2
+        },
+        {
+          "slug": "anchovy",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "asparagus",
       "name": "Asparagus",
       "category": "vegetable",
-      "seasons": ["spring"],
+      "seasons": [
+        "spring"
+      ],
       "pairings": [
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "butter", "strength": 3 },
-        { "slug": "parmesan", "strength": 3 },
-        { "slug": "egg", "strength": 3 },
-        { "slug": "prosciutto", "strength": 3 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "tarragon", "strength": 2 },
-        { "slug": "morel", "strength": 2 }
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "parmesan",
+          "strength": 3
+        },
+        {
+          "slug": "egg",
+          "strength": 3
+        },
+        {
+          "slug": "prosciutto",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "tarragon",
+          "strength": 2
+        },
+        {
+          "slug": "morel",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "eggplant",
       "name": "Eggplant",
       "category": "vegetable",
-      "cuisines": ["italian", "middle-eastern", "indian"],
+      "cuisines": [
+        "italian",
+        "middle-eastern",
+        "indian"
+      ],
       "pairings": [
-        { "slug": "tomato", "strength": 3 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "tahini", "strength": 3 },
-        { "slug": "olive-oil", "strength": 3 },
-        { "slug": "basil", "strength": 2 },
-        { "slug": "feta", "strength": 2 },
-        { "slug": "yogurt", "strength": 2 },
-        { "slug": "cumin", "strength": 2 },
-        { "slug": "mint", "strength": 2 },
-        { "slug": "miso", "strength": 2 }
+        {
+          "slug": "tomato",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "tahini",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 3
+        },
+        {
+          "slug": "basil",
+          "strength": 2
+        },
+        {
+          "slug": "feta",
+          "strength": 2
+        },
+        {
+          "slug": "yogurt",
+          "strength": 2
+        },
+        {
+          "slug": "cumin",
+          "strength": 2
+        },
+        {
+          "slug": "mint",
+          "strength": 2
+        },
+        {
+          "slug": "miso",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "zucchini",
       "name": "Zucchini",
       "category": "vegetable",
-      "seasons": ["summer"],
+      "seasons": [
+        "summer"
+      ],
       "pairings": [
-        { "slug": "basil", "strength": 2 },
-        { "slug": "mint", "strength": 2 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "feta", "strength": 2 },
-        { "slug": "parmesan", "strength": 2 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "ricotta", "strength": 2 }
+        {
+          "slug": "basil",
+          "strength": 2
+        },
+        {
+          "slug": "mint",
+          "strength": 2
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "feta",
+          "strength": 2
+        },
+        {
+          "slug": "parmesan",
+          "strength": 2
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "ricotta",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "corn",
       "name": "Corn",
       "category": "vegetable",
-      "seasons": ["summer"],
+      "seasons": [
+        "summer"
+      ],
       "pairings": [
-        { "slug": "butter", "strength": 3 },
-        { "slug": "lime", "strength": 3 },
-        { "slug": "chili", "strength": 3 },
-        { "slug": "cilantro", "strength": 2 },
-        { "slug": "basil", "strength": 2 },
-        { "slug": "feta", "strength": 2 },
-        { "slug": "tomato", "strength": 2 },
-        { "slug": "bacon", "strength": 2 },
-        { "slug": "black-pepper", "strength": 2 }
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "lime",
+          "strength": 3
+        },
+        {
+          "slug": "chili",
+          "strength": 3
+        },
+        {
+          "slug": "cilantro",
+          "strength": 2
+        },
+        {
+          "slug": "basil",
+          "strength": 2
+        },
+        {
+          "slug": "feta",
+          "strength": 2
+        },
+        {
+          "slug": "tomato",
+          "strength": 2
+        },
+        {
+          "slug": "bacon",
+          "strength": 2
+        },
+        {
+          "slug": "black-pepper",
+          "strength": 2
+        }
       ]
     },
     {
@@ -492,14 +1388,38 @@
       "name": "Beet",
       "category": "vegetable",
       "pairings": [
-        { "slug": "goat-cheese", "strength": 3 },
-        { "slug": "walnut", "strength": 3 },
-        { "slug": "orange", "strength": 2 },
-        { "slug": "dill", "strength": 3 },
-        { "slug": "horseradish", "strength": 2 },
-        { "slug": "balsamic-vinegar", "strength": 2 },
-        { "slug": "yogurt", "strength": 2 },
-        { "slug": "arugula", "strength": 2 }
+        {
+          "slug": "goat-cheese",
+          "strength": 3
+        },
+        {
+          "slug": "walnut",
+          "strength": 3
+        },
+        {
+          "slug": "orange",
+          "strength": 2
+        },
+        {
+          "slug": "dill",
+          "strength": 3
+        },
+        {
+          "slug": "horseradish",
+          "strength": 2
+        },
+        {
+          "slug": "balsamic-vinegar",
+          "strength": 2
+        },
+        {
+          "slug": "yogurt",
+          "strength": 2
+        },
+        {
+          "slug": "arugula",
+          "strength": 2
+        }
       ]
     },
     {
@@ -507,14 +1427,38 @@
       "name": "Fennel",
       "category": "vegetable",
       "pairings": [
-        { "slug": "orange", "strength": 3 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "fish-white", "strength": 3 },
-        { "slug": "pork", "strength": 3 },
-        { "slug": "parmesan", "strength": 2 },
-        { "slug": "anise", "strength": 2 },
-        { "slug": "arugula", "strength": 2 }
+        {
+          "slug": "orange",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "fish-white",
+          "strength": 3
+        },
+        {
+          "slug": "pork",
+          "strength": 3
+        },
+        {
+          "slug": "parmesan",
+          "strength": 2
+        },
+        {
+          "slug": "anise",
+          "strength": 2
+        },
+        {
+          "slug": "arugula",
+          "strength": 2
+        }
       ]
     },
     {
@@ -522,13 +1466,34 @@
       "name": "Arugula",
       "category": "vegetable",
       "pairings": [
-        { "slug": "parmesan", "strength": 3 },
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "olive-oil", "strength": 3 },
-        { "slug": "prosciutto", "strength": 2 },
-        { "slug": "balsamic-vinegar", "strength": 2 },
-        { "slug": "pear", "strength": 2 },
-        { "slug": "fig", "strength": 2 }
+        {
+          "slug": "parmesan",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 3
+        },
+        {
+          "slug": "prosciutto",
+          "strength": 2
+        },
+        {
+          "slug": "balsamic-vinegar",
+          "strength": 2
+        },
+        {
+          "slug": "pear",
+          "strength": 2
+        },
+        {
+          "slug": "fig",
+          "strength": 2
+        }
       ]
     },
     {
@@ -536,13 +1501,38 @@
       "name": "Cucumber",
       "category": "vegetable",
       "pairings": [
-        { "slug": "yogurt", "strength": 3 },
-        { "slug": "dill", "strength": 3 },
-        { "slug": "mint", "strength": 3 },
-        { "slug": "feta", "strength": 2 },
-        { "slug": "tomato", "strength": 2 },
-        { "slug": "vinegar-rice", "strength": 2 },
-        { "slug": "sesame-oil", "strength": 2 }
+        {
+          "slug": "yogurt",
+          "strength": 3
+        },
+        {
+          "slug": "dill",
+          "strength": 3
+        },
+        {
+          "slug": "mint",
+          "strength": 3
+        },
+        {
+          "slug": "feta",
+          "strength": 2
+        },
+        {
+          "slug": "tomato",
+          "strength": 2
+        },
+        {
+          "slug": "vinegar-rice",
+          "strength": 2
+        },
+        {
+          "slug": "sesame-oil",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "greek",
+        "middle-eastern"
       ]
     },
     {
@@ -550,13 +1540,34 @@
       "name": "Leek",
       "category": "aromatic",
       "pairings": [
-        { "slug": "potato", "strength": 3 },
-        { "slug": "butter", "strength": 3 },
-        { "slug": "cream", "strength": 3 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "bay-leaf", "strength": 2 },
-        { "slug": "wine-white", "strength": 2 },
-        { "slug": "mustard", "strength": 2 }
+        {
+          "slug": "potato",
+          "strength": 3
+        },
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "cream",
+          "strength": 3
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "bay-leaf",
+          "strength": 2
+        },
+        {
+          "slug": "wine-white",
+          "strength": 2
+        },
+        {
+          "slug": "mustard",
+          "strength": 2
+        }
       ]
     },
     {
@@ -564,22 +1575,70 @@
       "name": "Chicken",
       "category": "protein",
       "pairings": [
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "thyme", "strength": 3 },
-        { "slug": "rosemary", "strength": 3 },
-        { "slug": "tarragon", "strength": 3 },
-        { "slug": "butter", "strength": 3 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "paprika", "strength": 2 },
-        { "slug": "wine-white", "strength": 2 },
-        { "slug": "mushroom", "strength": 3 },
-        { "slug": "parsley", "strength": 2 },
-        { "slug": "sage", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "soy-sauce", "strength": 2 },
-        { "slug": "honey", "strength": 2 },
-        { "slug": "mustard", "strength": 2 }
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "thyme",
+          "strength": 3
+        },
+        {
+          "slug": "rosemary",
+          "strength": 3
+        },
+        {
+          "slug": "tarragon",
+          "strength": 3
+        },
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "paprika",
+          "strength": 2
+        },
+        {
+          "slug": "wine-white",
+          "strength": 2
+        },
+        {
+          "slug": "mushroom",
+          "strength": 3
+        },
+        {
+          "slug": "parsley",
+          "strength": 2
+        },
+        {
+          "slug": "sage",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "soy-sauce",
+          "strength": 2
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        },
+        {
+          "slug": "mustard",
+          "strength": 2
+        }
       ]
     },
     {
@@ -587,19 +1646,58 @@
       "name": "Beef",
       "category": "protein",
       "pairings": [
-        { "slug": "black-pepper", "strength": 3 },
-        { "slug": "rosemary", "strength": 3 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "wine-red", "strength": 3 },
-        { "slug": "mushroom", "strength": 3 },
-        { "slug": "onion", "strength": 3 },
-        { "slug": "blue-cheese", "strength": 3 },
-        { "slug": "horseradish", "strength": 3 },
-        { "slug": "mustard", "strength": 2 },
-        { "slug": "soy-sauce", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "bay-leaf", "strength": 2 }
+        {
+          "slug": "black-pepper",
+          "strength": 3
+        },
+        {
+          "slug": "rosemary",
+          "strength": 3
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "wine-red",
+          "strength": 3
+        },
+        {
+          "slug": "mushroom",
+          "strength": 3
+        },
+        {
+          "slug": "onion",
+          "strength": 3
+        },
+        {
+          "slug": "blue-cheese",
+          "strength": 3
+        },
+        {
+          "slug": "horseradish",
+          "strength": 3
+        },
+        {
+          "slug": "mustard",
+          "strength": 2
+        },
+        {
+          "slug": "soy-sauce",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "bay-leaf",
+          "strength": 2
+        }
       ]
     },
     {
@@ -607,19 +1705,58 @@
       "name": "Pork",
       "category": "protein",
       "pairings": [
-        { "slug": "apple", "strength": 3 },
-        { "slug": "fennel", "strength": 3 },
-        { "slug": "sage", "strength": 3 },
-        { "slug": "rosemary", "strength": 2 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "mustard", "strength": 3 },
-        { "slug": "maple-syrup", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "chili", "strength": 2 },
-        { "slug": "soy-sauce", "strength": 2 },
-        { "slug": "onion", "strength": 2 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "honey", "strength": 2 }
+        {
+          "slug": "apple",
+          "strength": 3
+        },
+        {
+          "slug": "fennel",
+          "strength": 3
+        },
+        {
+          "slug": "sage",
+          "strength": 3
+        },
+        {
+          "slug": "rosemary",
+          "strength": 2
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "mustard",
+          "strength": 3
+        },
+        {
+          "slug": "maple-syrup",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "chili",
+          "strength": 2
+        },
+        {
+          "slug": "soy-sauce",
+          "strength": 2
+        },
+        {
+          "slug": "onion",
+          "strength": 2
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        }
       ]
     },
     {
@@ -627,17 +1764,55 @@
       "name": "Lamb",
       "category": "protein",
       "pairings": [
-        { "slug": "rosemary", "strength": 3 },
-        { "slug": "mint", "strength": 3 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "cumin", "strength": 3 },
-        { "slug": "yogurt", "strength": 3 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "harissa", "strength": 2 },
-        { "slug": "pomegranate", "strength": 2 },
-        { "slug": "feta", "strength": 2 }
+        {
+          "slug": "rosemary",
+          "strength": 3
+        },
+        {
+          "slug": "mint",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "cumin",
+          "strength": 3
+        },
+        {
+          "slug": "yogurt",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "harissa",
+          "strength": 2
+        },
+        {
+          "slug": "pomegranate",
+          "strength": 2
+        },
+        {
+          "slug": "feta",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "greek",
+        "mediterranean",
+        "middle-eastern"
       ]
     },
     {
@@ -645,15 +1820,45 @@
       "name": "Duck",
       "category": "protein",
       "pairings": [
-        { "slug": "orange", "strength": 3 },
-        { "slug": "cherry", "strength": 3 },
-        { "slug": "fig", "strength": 3 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "five-spice", "strength": 3 },
-        { "slug": "soy-sauce", "strength": 2 },
-        { "slug": "honey", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "wine-red", "strength": 2 }
+        {
+          "slug": "orange",
+          "strength": 3
+        },
+        {
+          "slug": "cherry",
+          "strength": 3
+        },
+        {
+          "slug": "fig",
+          "strength": 3
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "five-spice",
+          "strength": 3
+        },
+        {
+          "slug": "soy-sauce",
+          "strength": 2
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "wine-red",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "french"
       ]
     },
     {
@@ -661,34 +1866,103 @@
       "name": "Salmon",
       "category": "protein",
       "pairings": [
-        { "slug": "dill", "strength": 3 },
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "capers", "strength": 3 },
-        { "slug": "horseradish", "strength": 2 },
-        { "slug": "soy-sauce", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "miso", "strength": 3 },
-        { "slug": "mustard", "strength": 2 },
-        { "slug": "maple-syrup", "strength": 2 },
-        { "slug": "avocado", "strength": 2 },
-        { "slug": "cucumber", "strength": 2 }
+        {
+          "slug": "dill",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "capers",
+          "strength": 3
+        },
+        {
+          "slug": "horseradish",
+          "strength": 2
+        },
+        {
+          "slug": "soy-sauce",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "miso",
+          "strength": 3
+        },
+        {
+          "slug": "mustard",
+          "strength": 2
+        },
+        {
+          "slug": "maple-syrup",
+          "strength": 2
+        },
+        {
+          "slug": "avocado",
+          "strength": 2
+        },
+        {
+          "slug": "cucumber",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "japanese",
+        "scandinavian"
       ]
     },
     {
       "slug": "fish-white",
       "name": "White Fish",
       "category": "protein",
-      "aliases": ["cod", "halibut", "sole", "snapper"],
+      "aliases": [
+        "cod",
+        "halibut",
+        "sole",
+        "snapper"
+      ],
       "pairings": [
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "butter", "strength": 3 },
-        { "slug": "parsley", "strength": 3 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "capers", "strength": 2 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "fennel", "strength": 2 },
-        { "slug": "wine-white", "strength": 2 }
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "parsley",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "capers",
+          "strength": 2
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "fennel",
+          "strength": 2
+        },
+        {
+          "slug": "wine-white",
+          "strength": 2
+        }
       ]
     },
     {
@@ -696,16 +1970,46 @@
       "name": "Shrimp",
       "category": "protein",
       "pairings": [
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "butter", "strength": 3 },
-        { "slug": "chili", "strength": 3 },
-        { "slug": "lime", "strength": 3 },
-        { "slug": "cilantro", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "coconut-milk", "strength": 2 },
-        { "slug": "parsley", "strength": 2 },
-        { "slug": "tomato", "strength": 2 }
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "chili",
+          "strength": 3
+        },
+        {
+          "slug": "lime",
+          "strength": 3
+        },
+        {
+          "slug": "cilantro",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "coconut-milk",
+          "strength": 2
+        },
+        {
+          "slug": "parsley",
+          "strength": 2
+        },
+        {
+          "slug": "tomato",
+          "strength": 2
+        }
       ]
     },
     {
@@ -713,13 +2017,34 @@
       "name": "Scallop",
       "category": "protein",
       "pairings": [
-        { "slug": "brown-butter", "strength": 3 },
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "bacon", "strength": 3 },
-        { "slug": "cauliflower", "strength": 2 },
-        { "slug": "pea", "strength": 2 },
-        { "slug": "corn", "strength": 2 },
-        { "slug": "vanilla", "strength": 2 }
+        {
+          "slug": "brown-butter",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "bacon",
+          "strength": 3
+        },
+        {
+          "slug": "cauliflower",
+          "strength": 2
+        },
+        {
+          "slug": "pea",
+          "strength": 2
+        },
+        {
+          "slug": "corn",
+          "strength": 2
+        },
+        {
+          "slug": "vanilla",
+          "strength": 2
+        }
       ]
     },
     {
@@ -727,36 +2052,105 @@
       "name": "Egg",
       "category": "protein",
       "pairings": [
-        { "slug": "butter", "strength": 3 },
-        { "slug": "chive", "strength": 3 },
-        { "slug": "black-pepper", "strength": 3 },
-        { "slug": "bacon", "strength": 3 },
-        { "slug": "cheddar", "strength": 2 },
-        { "slug": "tarragon", "strength": 2 },
-        { "slug": "parsley", "strength": 2 },
-        { "slug": "tomato", "strength": 2 },
-        { "slug": "mushroom", "strength": 2 },
-        { "slug": "spinach", "strength": 2 },
-        { "slug": "asparagus", "strength": 3 }
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "chive",
+          "strength": 3
+        },
+        {
+          "slug": "black-pepper",
+          "strength": 3
+        },
+        {
+          "slug": "bacon",
+          "strength": 3
+        },
+        {
+          "slug": "cheddar",
+          "strength": 2
+        },
+        {
+          "slug": "tarragon",
+          "strength": 2
+        },
+        {
+          "slug": "parsley",
+          "strength": 2
+        },
+        {
+          "slug": "tomato",
+          "strength": 2
+        },
+        {
+          "slug": "mushroom",
+          "strength": 2
+        },
+        {
+          "slug": "spinach",
+          "strength": 2
+        },
+        {
+          "slug": "asparagus",
+          "strength": 3
+        }
       ]
     },
     {
       "slug": "basil",
       "name": "Basil",
       "category": "herb",
-      "cuisines": ["italian", "thai"],
+      "cuisines": [
+        "italian",
+        "thai"
+      ],
       "pairings": [
-        { "slug": "tomato", "strength": 3 },
-        { "slug": "mozzarella", "strength": 3 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "pine-nut", "strength": 3 },
-        { "slug": "olive-oil", "strength": 3 },
-        { "slug": "parmesan", "strength": 3 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "strawberry", "strength": 3 },
-        { "slug": "peach", "strength": 3 },
-        { "slug": "chili", "strength": 2 },
-        { "slug": "coconut-milk", "strength": 2 }
+        {
+          "slug": "tomato",
+          "strength": 3
+        },
+        {
+          "slug": "mozzarella",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "pine-nut",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 3
+        },
+        {
+          "slug": "parmesan",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "strawberry",
+          "strength": 3
+        },
+        {
+          "slug": "peach",
+          "strength": 3
+        },
+        {
+          "slug": "chili",
+          "strength": 2
+        },
+        {
+          "slug": "coconut-milk",
+          "strength": 2
+        }
       ]
     },
     {
@@ -764,28 +2158,75 @@
       "name": "Parsley",
       "category": "herb",
       "pairings": [
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "chive", "strength": 2 },
-        { "slug": "capers", "strength": 2 },
-        { "slug": "anchovy", "strength": 2 },
-        { "slug": "butter", "strength": 2 }
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "chive",
+          "strength": 2
+        },
+        {
+          "slug": "capers",
+          "strength": 2
+        },
+        {
+          "slug": "anchovy",
+          "strength": 2
+        },
+        {
+          "slug": "butter",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "cilantro",
       "name": "Cilantro",
       "category": "herb",
-      "cuisines": ["mexican", "thai", "indian", "vietnamese"],
+      "cuisines": [
+        "mexican",
+        "thai",
+        "indian",
+        "vietnamese"
+      ],
       "pairings": [
-        { "slug": "lime", "strength": 3 },
-        { "slug": "chili", "strength": 3 },
-        { "slug": "cumin", "strength": 3 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "coconut-milk", "strength": 2 },
-        { "slug": "avocado", "strength": 3 }
+        {
+          "slug": "lime",
+          "strength": 3
+        },
+        {
+          "slug": "chili",
+          "strength": 3
+        },
+        {
+          "slug": "cumin",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "coconut-milk",
+          "strength": 2
+        },
+        {
+          "slug": "avocado",
+          "strength": 3
+        }
       ]
     },
     {
@@ -793,15 +2234,46 @@
       "name": "Mint",
       "category": "herb",
       "pairings": [
-        { "slug": "lamb", "strength": 3 },
-        { "slug": "yogurt", "strength": 3 },
-        { "slug": "cucumber", "strength": 3 },
-        { "slug": "pea", "strength": 3 },
-        { "slug": "lime", "strength": 2 },
-        { "slug": "chocolate", "strength": 3 },
-        { "slug": "watermelon", "strength": 3 },
-        { "slug": "feta", "strength": 2 },
-        { "slug": "strawberry", "strength": 2 }
+        {
+          "slug": "lamb",
+          "strength": 3
+        },
+        {
+          "slug": "yogurt",
+          "strength": 3
+        },
+        {
+          "slug": "cucumber",
+          "strength": 3
+        },
+        {
+          "slug": "pea",
+          "strength": 3
+        },
+        {
+          "slug": "lime",
+          "strength": 2
+        },
+        {
+          "slug": "chocolate",
+          "strength": 3
+        },
+        {
+          "slug": "watermelon",
+          "strength": 3
+        },
+        {
+          "slug": "feta",
+          "strength": 2
+        },
+        {
+          "slug": "strawberry",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "greek",
+        "middle-eastern"
       ]
     },
     {
@@ -809,14 +2281,38 @@
       "name": "Rosemary",
       "category": "herb",
       "pairings": [
-        { "slug": "lamb", "strength": 3 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "olive-oil", "strength": 3 },
-        { "slug": "potato", "strength": 3 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "chicken", "strength": 3 },
-        { "slug": "bread", "strength": 2 },
-        { "slug": "honey", "strength": 2 }
+        {
+          "slug": "lamb",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 3
+        },
+        {
+          "slug": "potato",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "chicken",
+          "strength": 3
+        },
+        {
+          "slug": "bread",
+          "strength": 2
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        }
       ]
     },
     {
@@ -824,15 +2320,42 @@
       "name": "Thyme",
       "category": "herb",
       "pairings": [
-        { "slug": "mushroom", "strength": 3 },
-        { "slug": "chicken", "strength": 3 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "tomato", "strength": 2 },
-        { "slug": "onion", "strength": 3 },
-        { "slug": "wine-red", "strength": 2 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "carrot", "strength": 2 }
+        {
+          "slug": "mushroom",
+          "strength": 3
+        },
+        {
+          "slug": "chicken",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "tomato",
+          "strength": 2
+        },
+        {
+          "slug": "onion",
+          "strength": 3
+        },
+        {
+          "slug": "wine-red",
+          "strength": 2
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "carrot",
+          "strength": 2
+        }
       ]
     },
     {
@@ -840,27 +2363,70 @@
       "name": "Sage",
       "category": "herb",
       "pairings": [
-        { "slug": "brown-butter", "strength": 3 },
-        { "slug": "butternut-squash", "strength": 3 },
-        { "slug": "pork", "strength": 3 },
-        { "slug": "apple", "strength": 2 },
-        { "slug": "parmesan", "strength": 2 },
-        { "slug": "onion", "strength": 2 },
-        { "slug": "bean-white", "strength": 2 }
+        {
+          "slug": "brown-butter",
+          "strength": 3
+        },
+        {
+          "slug": "butternut-squash",
+          "strength": 3
+        },
+        {
+          "slug": "pork",
+          "strength": 3
+        },
+        {
+          "slug": "apple",
+          "strength": 2
+        },
+        {
+          "slug": "parmesan",
+          "strength": 2
+        },
+        {
+          "slug": "onion",
+          "strength": 2
+        },
+        {
+          "slug": "bean-white",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "oregano",
       "name": "Oregano",
       "category": "herb",
-      "cuisines": ["italian", "greek", "mexican"],
+      "cuisines": [
+        "italian",
+        "greek",
+        "mexican"
+      ],
       "pairings": [
-        { "slug": "tomato", "strength": 3 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "feta", "strength": 3 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "lamb", "strength": 2 }
+        {
+          "slug": "tomato",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "feta",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "lamb",
+          "strength": 2
+        }
       ]
     },
     {
@@ -868,13 +2434,37 @@
       "name": "Dill",
       "category": "herb",
       "pairings": [
-        { "slug": "salmon", "strength": 3 },
-        { "slug": "cucumber", "strength": 3 },
-        { "slug": "yogurt", "strength": 3 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "potato", "strength": 2 },
-        { "slug": "feta", "strength": 2 },
-        { "slug": "egg", "strength": 2 }
+        {
+          "slug": "salmon",
+          "strength": 3
+        },
+        {
+          "slug": "cucumber",
+          "strength": 3
+        },
+        {
+          "slug": "yogurt",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "potato",
+          "strength": 2
+        },
+        {
+          "slug": "feta",
+          "strength": 2
+        },
+        {
+          "slug": "egg",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "scandinavian"
       ]
     },
     {
@@ -882,12 +2472,33 @@
       "name": "Tarragon",
       "category": "herb",
       "pairings": [
-        { "slug": "chicken", "strength": 3 },
-        { "slug": "egg", "strength": 3 },
-        { "slug": "shallot", "strength": 2 },
-        { "slug": "wine-white", "strength": 2 },
-        { "slug": "mustard", "strength": 2 },
-        { "slug": "asparagus", "strength": 2 }
+        {
+          "slug": "chicken",
+          "strength": 3
+        },
+        {
+          "slug": "egg",
+          "strength": 3
+        },
+        {
+          "slug": "shallot",
+          "strength": 2
+        },
+        {
+          "slug": "wine-white",
+          "strength": 2
+        },
+        {
+          "slug": "mustard",
+          "strength": 2
+        },
+        {
+          "slug": "asparagus",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "french"
       ]
     },
     {
@@ -895,10 +2506,22 @@
       "name": "Chive",
       "category": "herb",
       "pairings": [
-        { "slug": "egg", "strength": 3 },
-        { "slug": "potato", "strength": 3 },
-        { "slug": "sour-cream", "strength": 3 },
-        { "slug": "goat-cheese", "strength": 2 }
+        {
+          "slug": "egg",
+          "strength": 3
+        },
+        {
+          "slug": "potato",
+          "strength": 3
+        },
+        {
+          "slug": "sour-cream",
+          "strength": 3
+        },
+        {
+          "slug": "goat-cheese",
+          "strength": 2
+        }
       ]
     },
     {
@@ -906,11 +2529,26 @@
       "name": "Bay Leaf",
       "category": "herb",
       "pairings": [
-        { "slug": "onion", "strength": 2 },
-        { "slug": "carrot", "strength": 2 },
-        { "slug": "wine-red", "strength": 2 },
-        { "slug": "tomato", "strength": 2 },
-        { "slug": "bean-white", "strength": 2 }
+        {
+          "slug": "onion",
+          "strength": 2
+        },
+        {
+          "slug": "carrot",
+          "strength": 2
+        },
+        {
+          "slug": "wine-red",
+          "strength": 2
+        },
+        {
+          "slug": "tomato",
+          "strength": 2
+        },
+        {
+          "slug": "bean-white",
+          "strength": 2
+        }
       ]
     },
     {
@@ -918,27 +2556,70 @@
       "name": "Black Pepper",
       "category": "spice",
       "pairings": [
-        { "slug": "beef", "strength": 3 },
-        { "slug": "strawberry", "strength": 2 },
-        { "slug": "egg", "strength": 3 },
-        { "slug": "parmesan", "strength": 3 },
-        { "slug": "cream", "strength": 2 }
+        {
+          "slug": "beef",
+          "strength": 3
+        },
+        {
+          "slug": "strawberry",
+          "strength": 2
+        },
+        {
+          "slug": "egg",
+          "strength": 3
+        },
+        {
+          "slug": "parmesan",
+          "strength": 3
+        },
+        {
+          "slug": "cream",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "cumin",
       "name": "Cumin",
       "category": "spice",
-      "cuisines": ["mexican", "indian", "middle-eastern"],
+      "cuisines": [
+        "mexican",
+        "indian",
+        "middle-eastern"
+      ],
       "pairings": [
-        { "slug": "coriander", "strength": 3 },
-        { "slug": "chili", "strength": 3 },
-        { "slug": "lime", "strength": 2 },
-        { "slug": "lamb", "strength": 3 },
-        { "slug": "carrot", "strength": 2 },
-        { "slug": "cauliflower", "strength": 3 },
-        { "slug": "yogurt", "strength": 2 },
-        { "slug": "cilantro", "strength": 3 }
+        {
+          "slug": "coriander",
+          "strength": 3
+        },
+        {
+          "slug": "chili",
+          "strength": 3
+        },
+        {
+          "slug": "lime",
+          "strength": 2
+        },
+        {
+          "slug": "lamb",
+          "strength": 3
+        },
+        {
+          "slug": "carrot",
+          "strength": 2
+        },
+        {
+          "slug": "cauliflower",
+          "strength": 3
+        },
+        {
+          "slug": "yogurt",
+          "strength": 2
+        },
+        {
+          "slug": "cilantro",
+          "strength": 3
+        }
       ]
     },
     {
@@ -946,11 +2627,30 @@
       "name": "Coriander Seed",
       "category": "spice",
       "pairings": [
-        { "slug": "cumin", "strength": 3 },
-        { "slug": "carrot", "strength": 2 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "chicken", "strength": 2 }
+        {
+          "slug": "cumin",
+          "strength": 3
+        },
+        {
+          "slug": "carrot",
+          "strength": 2
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "chicken",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "indian",
+        "middle-eastern"
       ]
     },
     {
@@ -958,11 +2658,26 @@
       "name": "Paprika",
       "category": "spice",
       "pairings": [
-        { "slug": "chicken", "strength": 3 },
-        { "slug": "potato", "strength": 2 },
-        { "slug": "onion", "strength": 2 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "egg", "strength": 2 }
+        {
+          "slug": "chicken",
+          "strength": 3
+        },
+        {
+          "slug": "potato",
+          "strength": 2
+        },
+        {
+          "slug": "onion",
+          "strength": 2
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "egg",
+          "strength": 2
+        }
       ]
     },
     {
@@ -970,14 +2685,38 @@
       "name": "Cinnamon",
       "category": "spice",
       "pairings": [
-        { "slug": "apple", "strength": 3 },
-        { "slug": "sweet-potato", "strength": 3 },
-        { "slug": "chocolate", "strength": 3 },
-        { "slug": "vanilla", "strength": 2 },
-        { "slug": "coffee", "strength": 2 },
-        { "slug": "honey", "strength": 2 },
-        { "slug": "lamb", "strength": 2 },
-        { "slug": "orange", "strength": 2 }
+        {
+          "slug": "apple",
+          "strength": 3
+        },
+        {
+          "slug": "sweet-potato",
+          "strength": 3
+        },
+        {
+          "slug": "chocolate",
+          "strength": 3
+        },
+        {
+          "slug": "vanilla",
+          "strength": 2
+        },
+        {
+          "slug": "coffee",
+          "strength": 2
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        },
+        {
+          "slug": "lamb",
+          "strength": 2
+        },
+        {
+          "slug": "orange",
+          "strength": 2
+        }
       ]
     },
     {
@@ -985,44 +2724,117 @@
       "name": "Nutmeg",
       "category": "spice",
       "pairings": [
-        { "slug": "spinach", "strength": 3 },
-        { "slug": "cream", "strength": 3 },
-        { "slug": "potato", "strength": 2 },
-        { "slug": "butternut-squash", "strength": 2 },
-        { "slug": "egg", "strength": 2 },
-        { "slug": "milk", "strength": 2 }
+        {
+          "slug": "spinach",
+          "strength": 3
+        },
+        {
+          "slug": "cream",
+          "strength": 3
+        },
+        {
+          "slug": "potato",
+          "strength": 2
+        },
+        {
+          "slug": "butternut-squash",
+          "strength": 2
+        },
+        {
+          "slug": "egg",
+          "strength": 2
+        },
+        {
+          "slug": "milk",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "ginger",
       "name": "Ginger",
       "category": "spice",
-      "cuisines": ["chinese", "indian", "japanese"],
+      "cuisines": [
+        "chinese",
+        "indian",
+        "japanese",
+        "thai"
+      ],
       "pairings": [
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "soy-sauce", "strength": 3 },
-        { "slug": "scallion", "strength": 3 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "lime", "strength": 2 },
-        { "slug": "honey", "strength": 2 },
-        { "slug": "carrot", "strength": 3 },
-        { "slug": "chicken", "strength": 2 },
-        { "slug": "salmon", "strength": 2 },
-        { "slug": "pear", "strength": 2 },
-        { "slug": "chocolate", "strength": 2 }
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "soy-sauce",
+          "strength": 3
+        },
+        {
+          "slug": "scallion",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "lime",
+          "strength": 2
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        },
+        {
+          "slug": "carrot",
+          "strength": 3
+        },
+        {
+          "slug": "chicken",
+          "strength": 2
+        },
+        {
+          "slug": "salmon",
+          "strength": 2
+        },
+        {
+          "slug": "pear",
+          "strength": 2
+        },
+        {
+          "slug": "chocolate",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "turmeric",
       "name": "Turmeric",
       "category": "spice",
-      "cuisines": ["indian"],
+      "cuisines": [
+        "indian"
+      ],
       "pairings": [
-        { "slug": "ginger", "strength": 3 },
-        { "slug": "black-pepper", "strength": 2 },
-        { "slug": "coconut-milk", "strength": 3 },
-        { "slug": "cauliflower", "strength": 3 },
-        { "slug": "rice", "strength": 2 }
+        {
+          "slug": "ginger",
+          "strength": 3
+        },
+        {
+          "slug": "black-pepper",
+          "strength": 2
+        },
+        {
+          "slug": "coconut-milk",
+          "strength": 3
+        },
+        {
+          "slug": "cauliflower",
+          "strength": 3
+        },
+        {
+          "slug": "rice",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1030,12 +2842,34 @@
       "name": "Cardamom",
       "category": "spice",
       "pairings": [
-        { "slug": "coffee", "strength": 3 },
-        { "slug": "rose", "strength": 2 },
-        { "slug": "pistachio", "strength": 3 },
-        { "slug": "orange", "strength": 2 },
-        { "slug": "rice", "strength": 2 },
-        { "slug": "chocolate", "strength": 2 }
+        {
+          "slug": "coffee",
+          "strength": 3
+        },
+        {
+          "slug": "rose",
+          "strength": 2
+        },
+        {
+          "slug": "pistachio",
+          "strength": 3
+        },
+        {
+          "slug": "orange",
+          "strength": 2
+        },
+        {
+          "slug": "rice",
+          "strength": 2
+        },
+        {
+          "slug": "chocolate",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "indian",
+        "middle-eastern"
       ]
     },
     {
@@ -1043,28 +2877,77 @@
       "name": "Vanilla",
       "category": "spice",
       "pairings": [
-        { "slug": "chocolate", "strength": 3 },
-        { "slug": "strawberry", "strength": 3 },
-        { "slug": "raspberry", "strength": 3 },
-        { "slug": "cream", "strength": 3 },
-        { "slug": "almond", "strength": 2 },
-        { "slug": "blueberry", "strength": 3 },
-        { "slug": "peach", "strength": 3 }
+        {
+          "slug": "chocolate",
+          "strength": 3
+        },
+        {
+          "slug": "strawberry",
+          "strength": 3
+        },
+        {
+          "slug": "raspberry",
+          "strength": 3
+        },
+        {
+          "slug": "cream",
+          "strength": 3
+        },
+        {
+          "slug": "almond",
+          "strength": 2
+        },
+        {
+          "slug": "blueberry",
+          "strength": 3
+        },
+        {
+          "slug": "peach",
+          "strength": 3
+        }
       ]
     },
     {
       "slug": "chili",
       "name": "Chili",
       "category": "spice",
-      "aliases": ["chile", "chili pepper"],
+      "aliases": [
+        "chile",
+        "chili pepper"
+      ],
       "pairings": [
-        { "slug": "lime", "strength": 3 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "cilantro", "strength": 3 },
-        { "slug": "chocolate", "strength": 2 },
-        { "slug": "shrimp", "strength": 3 },
-        { "slug": "mango", "strength": 3 },
-        { "slug": "corn", "strength": 3 }
+        {
+          "slug": "lime",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "cilantro",
+          "strength": 3
+        },
+        {
+          "slug": "chocolate",
+          "strength": 2
+        },
+        {
+          "slug": "shrimp",
+          "strength": 3
+        },
+        {
+          "slug": "mango",
+          "strength": 3
+        },
+        {
+          "slug": "corn",
+          "strength": 3
+        }
+      ],
+      "cuisines": [
+        "mexican",
+        "thai"
       ]
     },
     {
@@ -1072,12 +2955,30 @@
       "name": "Butter",
       "category": "dairy",
       "pairings": [
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "parsley", "strength": 2 },
-        { "slug": "shallot", "strength": 2 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "potato", "strength": 3 }
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "parsley",
+          "strength": 2
+        },
+        {
+          "slug": "shallot",
+          "strength": 2
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "potato",
+          "strength": 3
+        }
       ]
     },
     {
@@ -1085,11 +2986,29 @@
       "name": "Brown Butter",
       "category": "dairy",
       "pairings": [
-        { "slug": "sage", "strength": 3 },
-        { "slug": "scallop", "strength": 3 },
-        { "slug": "butternut-squash", "strength": 3 },
-        { "slug": "hazelnut", "strength": 3 },
-        { "slug": "lemon", "strength": 2 }
+        {
+          "slug": "sage",
+          "strength": 3
+        },
+        {
+          "slug": "scallop",
+          "strength": 3
+        },
+        {
+          "slug": "butternut-squash",
+          "strength": 3
+        },
+        {
+          "slug": "hazelnut",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "french"
       ]
     },
     {
@@ -1097,11 +3016,26 @@
       "name": "Cream",
       "category": "dairy",
       "pairings": [
-        { "slug": "vanilla", "strength": 3 },
-        { "slug": "mushroom", "strength": 3 },
-        { "slug": "potato", "strength": 3 },
-        { "slug": "nutmeg", "strength": 3 },
-        { "slug": "strawberry", "strength": 2 }
+        {
+          "slug": "vanilla",
+          "strength": 3
+        },
+        {
+          "slug": "mushroom",
+          "strength": 3
+        },
+        {
+          "slug": "potato",
+          "strength": 3
+        },
+        {
+          "slug": "nutmeg",
+          "strength": 3
+        },
+        {
+          "slug": "strawberry",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1109,14 +3043,42 @@
       "name": "Yogurt",
       "category": "dairy",
       "pairings": [
-        { "slug": "cucumber", "strength": 3 },
-        { "slug": "mint", "strength": 3 },
-        { "slug": "dill", "strength": 3 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "lamb", "strength": 3 },
-        { "slug": "cumin", "strength": 2 },
-        { "slug": "honey", "strength": 2 },
-        { "slug": "strawberry", "strength": 2 }
+        {
+          "slug": "cucumber",
+          "strength": 3
+        },
+        {
+          "slug": "mint",
+          "strength": 3
+        },
+        {
+          "slug": "dill",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "lamb",
+          "strength": 3
+        },
+        {
+          "slug": "cumin",
+          "strength": 2
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        },
+        {
+          "slug": "strawberry",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "greek",
+        "middle-eastern"
       ]
     },
     {
@@ -1124,13 +3086,37 @@
       "name": "Parmesan",
       "category": "dairy",
       "pairings": [
-        { "slug": "tomato", "strength": 3 },
-        { "slug": "basil", "strength": 3 },
-        { "slug": "arugula", "strength": 3 },
-        { "slug": "egg", "strength": 2 },
-        { "slug": "asparagus", "strength": 3 },
-        { "slug": "black-pepper", "strength": 3 },
-        { "slug": "butternut-squash", "strength": 3 }
+        {
+          "slug": "tomato",
+          "strength": 3
+        },
+        {
+          "slug": "basil",
+          "strength": 3
+        },
+        {
+          "slug": "arugula",
+          "strength": 3
+        },
+        {
+          "slug": "egg",
+          "strength": 2
+        },
+        {
+          "slug": "asparagus",
+          "strength": 3
+        },
+        {
+          "slug": "black-pepper",
+          "strength": 3
+        },
+        {
+          "slug": "butternut-squash",
+          "strength": 3
+        }
+      ],
+      "cuisines": [
+        "italian"
       ]
     },
     {
@@ -1138,10 +3124,25 @@
       "name": "Mozzarella",
       "category": "dairy",
       "pairings": [
-        { "slug": "tomato", "strength": 3 },
-        { "slug": "basil", "strength": 3 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "prosciutto", "strength": 2 }
+        {
+          "slug": "tomato",
+          "strength": 3
+        },
+        {
+          "slug": "basil",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "prosciutto",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "italian"
       ]
     },
     {
@@ -1149,26 +3150,68 @@
       "name": "Burrata",
       "category": "dairy",
       "pairings": [
-        { "slug": "tomato", "strength": 3 },
-        { "slug": "peach", "strength": 3 },
-        { "slug": "basil", "strength": 3 },
-        { "slug": "olive-oil", "strength": 3 },
-        { "slug": "balsamic-vinegar", "strength": 2 }
+        {
+          "slug": "tomato",
+          "strength": 3
+        },
+        {
+          "slug": "peach",
+          "strength": 3
+        },
+        {
+          "slug": "basil",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 3
+        },
+        {
+          "slug": "balsamic-vinegar",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "italian"
       ]
     },
     {
       "slug": "feta",
       "name": "Feta",
       "category": "dairy",
-      "cuisines": ["greek", "middle-eastern"],
+      "cuisines": [
+        "greek",
+        "middle-eastern"
+      ],
       "pairings": [
-        { "slug": "watermelon", "strength": 3 },
-        { "slug": "tomato", "strength": 3 },
-        { "slug": "cucumber", "strength": 2 },
-        { "slug": "olive", "strength": 3 },
-        { "slug": "mint", "strength": 2 },
-        { "slug": "oregano", "strength": 3 },
-        { "slug": "spinach", "strength": 3 }
+        {
+          "slug": "watermelon",
+          "strength": 3
+        },
+        {
+          "slug": "tomato",
+          "strength": 3
+        },
+        {
+          "slug": "cucumber",
+          "strength": 2
+        },
+        {
+          "slug": "olive",
+          "strength": 3
+        },
+        {
+          "slug": "mint",
+          "strength": 2
+        },
+        {
+          "slug": "oregano",
+          "strength": 3
+        },
+        {
+          "slug": "spinach",
+          "strength": 3
+        }
       ]
     },
     {
@@ -1176,11 +3219,26 @@
       "name": "Goat Cheese",
       "category": "dairy",
       "pairings": [
-        { "slug": "beet", "strength": 3 },
-        { "slug": "honey", "strength": 3 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "fig", "strength": 3 },
-        { "slug": "walnut", "strength": 2 }
+        {
+          "slug": "beet",
+          "strength": 3
+        },
+        {
+          "slug": "honey",
+          "strength": 3
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "fig",
+          "strength": 3
+        },
+        {
+          "slug": "walnut",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1188,24 +3246,60 @@
       "name": "Blue Cheese",
       "category": "dairy",
       "pairings": [
-        { "slug": "pear", "strength": 3 },
-        { "slug": "walnut", "strength": 3 },
-        { "slug": "honey", "strength": 3 },
-        { "slug": "fig", "strength": 3 },
-        { "slug": "beef", "strength": 3 },
-        { "slug": "apple", "strength": 2 }
+        {
+          "slug": "pear",
+          "strength": 3
+        },
+        {
+          "slug": "walnut",
+          "strength": 3
+        },
+        {
+          "slug": "honey",
+          "strength": 3
+        },
+        {
+          "slug": "fig",
+          "strength": 3
+        },
+        {
+          "slug": "beef",
+          "strength": 3
+        },
+        {
+          "slug": "apple",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "cheddar",
       "name": "Cheddar",
       "category": "dairy",
-      "aliases": ["cheese-cheddar"],
+      "aliases": [
+        "cheese-cheddar"
+      ],
       "pairings": [
-        { "slug": "apple", "strength": 3 },
-        { "slug": "egg", "strength": 2 },
-        { "slug": "mustard", "strength": 2 },
-        { "slug": "bread", "strength": 2 }
+        {
+          "slug": "apple",
+          "strength": 3
+        },
+        {
+          "slug": "egg",
+          "strength": 2
+        },
+        {
+          "slug": "mustard",
+          "strength": 2
+        },
+        {
+          "slug": "bread",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "american",
+        "british"
       ]
     },
     {
@@ -1213,11 +3307,29 @@
       "name": "Ricotta",
       "category": "dairy",
       "pairings": [
-        { "slug": "honey", "strength": 3 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "spinach", "strength": 3 },
-        { "slug": "pasta", "strength": 2 },
-        { "slug": "fig", "strength": 2 }
+        {
+          "slug": "honey",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "spinach",
+          "strength": 3
+        },
+        {
+          "slug": "pasta",
+          "strength": 2
+        },
+        {
+          "slug": "fig",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "italian"
       ]
     },
     {
@@ -1225,11 +3337,31 @@
       "name": "Olive Oil",
       "category": "pantry",
       "pairings": [
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "tomato", "strength": 3 },
-        { "slug": "bread", "strength": 3 },
-        { "slug": "basil", "strength": 3 }
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "tomato",
+          "strength": 3
+        },
+        {
+          "slug": "bread",
+          "strength": 3
+        },
+        {
+          "slug": "basil",
+          "strength": 3
+        }
+      ],
+      "cuisines": [
+        "greek",
+        "italian",
+        "mediterranean"
       ]
     },
     {
@@ -1237,10 +3369,25 @@
       "name": "Balsamic Vinegar",
       "category": "pantry",
       "pairings": [
-        { "slug": "tomato", "strength": 3 },
-        { "slug": "strawberry", "strength": 3 },
-        { "slug": "parmesan", "strength": 2 },
-        { "slug": "fig", "strength": 2 }
+        {
+          "slug": "tomato",
+          "strength": 3
+        },
+        {
+          "slug": "strawberry",
+          "strength": 3
+        },
+        {
+          "slug": "parmesan",
+          "strength": 2
+        },
+        {
+          "slug": "fig",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "italian"
       ]
     },
     {
@@ -1248,9 +3395,18 @@
       "name": "Red Wine Vinegar",
       "category": "pantry",
       "pairings": [
-        { "slug": "shallot", "strength": 3 },
-        { "slug": "tomato", "strength": 2 },
-        { "slug": "olive-oil", "strength": 2 }
+        {
+          "slug": "shallot",
+          "strength": 3
+        },
+        {
+          "slug": "tomato",
+          "strength": 2
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1258,64 +3414,157 @@
       "name": "Rice Vinegar",
       "category": "pantry",
       "pairings": [
-        { "slug": "soy-sauce", "strength": 3 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "cucumber", "strength": 2 },
-        { "slug": "sesame-oil", "strength": 2 }
+        {
+          "slug": "soy-sauce",
+          "strength": 3
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "cucumber",
+          "strength": 2
+        },
+        {
+          "slug": "sesame-oil",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "chinese",
+        "japanese"
       ]
     },
     {
       "slug": "soy-sauce",
       "name": "Soy Sauce",
       "category": "pantry",
-      "cuisines": ["japanese", "chinese", "korean"],
+      "cuisines": [
+        "japanese",
+        "chinese",
+        "korean"
+      ],
       "pairings": [
-        { "slug": "ginger", "strength": 3 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "scallion", "strength": 3 },
-        { "slug": "sesame-oil", "strength": 3 },
-        { "slug": "honey", "strength": 2 },
-        { "slug": "salmon", "strength": 2 },
-        { "slug": "mushroom", "strength": 2 }
+        {
+          "slug": "ginger",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "scallion",
+          "strength": 3
+        },
+        {
+          "slug": "sesame-oil",
+          "strength": 3
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        },
+        {
+          "slug": "salmon",
+          "strength": 2
+        },
+        {
+          "slug": "mushroom",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "fish-sauce",
       "name": "Fish Sauce",
       "category": "pantry",
-      "cuisines": ["thai", "vietnamese"],
+      "cuisines": [
+        "thai",
+        "vietnamese"
+      ],
       "pairings": [
-        { "slug": "lime", "strength": 3 },
-        { "slug": "chili", "strength": 3 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "sugar", "strength": 2 }
+        {
+          "slug": "lime",
+          "strength": 3
+        },
+        {
+          "slug": "chili",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "sugar",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "miso",
       "name": "Miso",
       "category": "pantry",
-      "cuisines": ["japanese"],
+      "cuisines": [
+        "japanese"
+      ],
       "pairings": [
-        { "slug": "salmon", "strength": 3 },
-        { "slug": "eggplant", "strength": 3 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "scallion", "strength": 2 },
-        { "slug": "butter", "strength": 2 }
+        {
+          "slug": "salmon",
+          "strength": 3
+        },
+        {
+          "slug": "eggplant",
+          "strength": 3
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "scallion",
+          "strength": 2
+        },
+        {
+          "slug": "butter",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "tahini",
       "name": "Tahini",
       "category": "pantry",
-      "cuisines": ["middle-eastern"],
+      "cuisines": [
+        "middle-eastern"
+      ],
       "pairings": [
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "chickpea", "strength": 3 },
-        { "slug": "cauliflower", "strength": 3 },
-        { "slug": "eggplant", "strength": 3 },
-        { "slug": "honey", "strength": 2 }
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "chickpea",
+          "strength": 3
+        },
+        {
+          "slug": "cauliflower",
+          "strength": 3
+        },
+        {
+          "slug": "eggplant",
+          "strength": 3
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1323,12 +3572,30 @@
       "name": "Honey",
       "category": "pantry",
       "pairings": [
-        { "slug": "goat-cheese", "strength": 3 },
-        { "slug": "ricotta", "strength": 3 },
-        { "slug": "blue-cheese", "strength": 3 },
-        { "slug": "yogurt", "strength": 2 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "thyme", "strength": 2 }
+        {
+          "slug": "goat-cheese",
+          "strength": 3
+        },
+        {
+          "slug": "ricotta",
+          "strength": 3
+        },
+        {
+          "slug": "blue-cheese",
+          "strength": 3
+        },
+        {
+          "slug": "yogurt",
+          "strength": 2
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1336,11 +3603,29 @@
       "name": "Maple Syrup",
       "category": "pantry",
       "pairings": [
-        { "slug": "bacon", "strength": 3 },
-        { "slug": "sweet-potato", "strength": 3 },
-        { "slug": "pecan", "strength": 3 },
-        { "slug": "salmon", "strength": 2 },
-        { "slug": "apple", "strength": 2 }
+        {
+          "slug": "bacon",
+          "strength": 3
+        },
+        {
+          "slug": "sweet-potato",
+          "strength": 3
+        },
+        {
+          "slug": "pecan",
+          "strength": 3
+        },
+        {
+          "slug": "salmon",
+          "strength": 2
+        },
+        {
+          "slug": "apple",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "american"
       ]
     },
     {
@@ -1348,26 +3633,65 @@
       "name": "Mustard",
       "category": "pantry",
       "pairings": [
-        { "slug": "pork", "strength": 3 },
-        { "slug": "honey", "strength": 3 },
-        { "slug": "shallot", "strength": 2 },
-        { "slug": "tarragon", "strength": 2 },
-        { "slug": "beef", "strength": 2 }
+        {
+          "slug": "pork",
+          "strength": 3
+        },
+        {
+          "slug": "honey",
+          "strength": 3
+        },
+        {
+          "slug": "shallot",
+          "strength": 2
+        },
+        {
+          "slug": "tarragon",
+          "strength": 2
+        },
+        {
+          "slug": "beef",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "coconut-milk",
       "name": "Coconut Milk",
       "category": "pantry",
-      "cuisines": ["thai", "indian"],
+      "cuisines": [
+        "thai",
+        "indian"
+      ],
       "pairings": [
-        { "slug": "lime", "strength": 3 },
-        { "slug": "lemongrass", "strength": 3 },
-        { "slug": "ginger", "strength": 3 },
-        { "slug": "chili", "strength": 3 },
-        { "slug": "cilantro", "strength": 2 },
-        { "slug": "turmeric", "strength": 3 },
-        { "slug": "mango", "strength": 3 }
+        {
+          "slug": "lime",
+          "strength": 3
+        },
+        {
+          "slug": "lemongrass",
+          "strength": 3
+        },
+        {
+          "slug": "ginger",
+          "strength": 3
+        },
+        {
+          "slug": "chili",
+          "strength": 3
+        },
+        {
+          "slug": "cilantro",
+          "strength": 2
+        },
+        {
+          "slug": "turmeric",
+          "strength": 3
+        },
+        {
+          "slug": "mango",
+          "strength": 3
+        }
       ]
     },
     {
@@ -1375,11 +3699,26 @@
       "name": "Almond",
       "category": "nut",
       "pairings": [
-        { "slug": "cherry", "strength": 3 },
-        { "slug": "peach", "strength": 3 },
-        { "slug": "vanilla", "strength": 2 },
-        { "slug": "chocolate", "strength": 2 },
-        { "slug": "orange", "strength": 2 }
+        {
+          "slug": "cherry",
+          "strength": 3
+        },
+        {
+          "slug": "peach",
+          "strength": 3
+        },
+        {
+          "slug": "vanilla",
+          "strength": 2
+        },
+        {
+          "slug": "chocolate",
+          "strength": 2
+        },
+        {
+          "slug": "orange",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1387,11 +3726,26 @@
       "name": "Walnut",
       "category": "nut",
       "pairings": [
-        { "slug": "blue-cheese", "strength": 3 },
-        { "slug": "pear", "strength": 3 },
-        { "slug": "beet", "strength": 3 },
-        { "slug": "apple", "strength": 2 },
-        { "slug": "honey", "strength": 2 }
+        {
+          "slug": "blue-cheese",
+          "strength": 3
+        },
+        {
+          "slug": "pear",
+          "strength": 3
+        },
+        {
+          "slug": "beet",
+          "strength": 3
+        },
+        {
+          "slug": "apple",
+          "strength": 2
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1399,10 +3753,22 @@
       "name": "Pecan",
       "category": "nut",
       "pairings": [
-        { "slug": "maple-syrup", "strength": 3 },
-        { "slug": "sweet-potato", "strength": 2 },
-        { "slug": "bourbon", "strength": 2 },
-        { "slug": "chocolate", "strength": 2 }
+        {
+          "slug": "maple-syrup",
+          "strength": 3
+        },
+        {
+          "slug": "sweet-potato",
+          "strength": 2
+        },
+        {
+          "slug": "bourbon",
+          "strength": 2
+        },
+        {
+          "slug": "chocolate",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1410,10 +3776,22 @@
       "name": "Hazelnut",
       "category": "nut",
       "pairings": [
-        { "slug": "chocolate", "strength": 3 },
-        { "slug": "brown-butter", "strength": 3 },
-        { "slug": "coffee", "strength": 2 },
-        { "slug": "pear", "strength": 2 }
+        {
+          "slug": "chocolate",
+          "strength": 3
+        },
+        {
+          "slug": "brown-butter",
+          "strength": 3
+        },
+        {
+          "slug": "coffee",
+          "strength": 2
+        },
+        {
+          "slug": "pear",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1421,11 +3799,30 @@
       "name": "Pine Nut",
       "category": "nut",
       "pairings": [
-        { "slug": "basil", "strength": 3 },
-        { "slug": "parmesan", "strength": 2 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "raisin", "strength": 2 },
-        { "slug": "spinach", "strength": 2 }
+        {
+          "slug": "basil",
+          "strength": 3
+        },
+        {
+          "slug": "parmesan",
+          "strength": 2
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "raisin",
+          "strength": 2
+        },
+        {
+          "slug": "spinach",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "italian",
+        "middle-eastern"
       ]
     },
     {
@@ -1433,11 +3830,26 @@
       "name": "Pistachio",
       "category": "nut",
       "pairings": [
-        { "slug": "cardamom", "strength": 3 },
-        { "slug": "rose", "strength": 3 },
-        { "slug": "honey", "strength": 2 },
-        { "slug": "chocolate", "strength": 2 },
-        { "slug": "lamb", "strength": 2 }
+        {
+          "slug": "cardamom",
+          "strength": 3
+        },
+        {
+          "slug": "rose",
+          "strength": 3
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        },
+        {
+          "slug": "chocolate",
+          "strength": 2
+        },
+        {
+          "slug": "lamb",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1445,11 +3857,26 @@
       "name": "Rice",
       "category": "grain",
       "pairings": [
-        { "slug": "soy-sauce", "strength": 2 },
-        { "slug": "butter", "strength": 2 },
-        { "slug": "saffron", "strength": 2 },
-        { "slug": "coconut-milk", "strength": 2 },
-        { "slug": "cardamom", "strength": 2 }
+        {
+          "slug": "soy-sauce",
+          "strength": 2
+        },
+        {
+          "slug": "butter",
+          "strength": 2
+        },
+        {
+          "slug": "saffron",
+          "strength": 2
+        },
+        {
+          "slug": "coconut-milk",
+          "strength": 2
+        },
+        {
+          "slug": "cardamom",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1457,13 +3884,37 @@
       "name": "Pasta",
       "category": "grain",
       "pairings": [
-        { "slug": "tomato", "strength": 3 },
-        { "slug": "basil", "strength": 3 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "olive-oil", "strength": 3 },
-        { "slug": "parmesan", "strength": 3 },
-        { "slug": "ricotta", "strength": 2 },
-        { "slug": "anchovy", "strength": 2 }
+        {
+          "slug": "tomato",
+          "strength": 3
+        },
+        {
+          "slug": "basil",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 3
+        },
+        {
+          "slug": "parmesan",
+          "strength": 3
+        },
+        {
+          "slug": "ricotta",
+          "strength": 2
+        },
+        {
+          "slug": "anchovy",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "italian"
       ]
     },
     {
@@ -1471,11 +3922,26 @@
       "name": "Bread",
       "category": "grain",
       "pairings": [
-        { "slug": "olive-oil", "strength": 3 },
-        { "slug": "tomato", "strength": 2 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "butter", "strength": 3 },
-        { "slug": "rosemary", "strength": 2 }
+        {
+          "slug": "olive-oil",
+          "strength": 3
+        },
+        {
+          "slug": "tomato",
+          "strength": 2
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "butter",
+          "strength": 3
+        },
+        {
+          "slug": "rosemary",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1483,10 +3949,25 @@
       "name": "Polenta",
       "category": "grain",
       "pairings": [
-        { "slug": "mushroom", "strength": 3 },
-        { "slug": "parmesan", "strength": 3 },
-        { "slug": "rosemary", "strength": 2 },
-        { "slug": "butter", "strength": 2 }
+        {
+          "slug": "mushroom",
+          "strength": 3
+        },
+        {
+          "slug": "parmesan",
+          "strength": 3
+        },
+        {
+          "slug": "rosemary",
+          "strength": 2
+        },
+        {
+          "slug": "butter",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "italian"
       ]
     },
     {
@@ -1494,11 +3975,29 @@
       "name": "Chickpea",
       "category": "protein",
       "pairings": [
-        { "slug": "tahini", "strength": 3 },
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "cumin", "strength": 3 },
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "olive-oil", "strength": 2 }
+        {
+          "slug": "tahini",
+          "strength": 3
+        },
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "cumin",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "middle-eastern"
       ]
     },
     {
@@ -1506,11 +4005,26 @@
       "name": "Lentil",
       "category": "protein",
       "pairings": [
-        { "slug": "cumin", "strength": 3 },
-        { "slug": "carrot", "strength": 2 },
-        { "slug": "onion", "strength": 2 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "yogurt", "strength": 2 }
+        {
+          "slug": "cumin",
+          "strength": 3
+        },
+        {
+          "slug": "carrot",
+          "strength": 2
+        },
+        {
+          "slug": "onion",
+          "strength": 2
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "yogurt",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1518,12 +4032,34 @@
       "name": "Bacon",
       "category": "protein",
       "pairings": [
-        { "slug": "egg", "strength": 3 },
-        { "slug": "maple-syrup", "strength": 3 },
-        { "slug": "scallop", "strength": 3 },
-        { "slug": "potato", "strength": 3 },
-        { "slug": "apple", "strength": 2 },
-        { "slug": "brussels-sprout", "strength": 3 }
+        {
+          "slug": "egg",
+          "strength": 3
+        },
+        {
+          "slug": "maple-syrup",
+          "strength": 3
+        },
+        {
+          "slug": "scallop",
+          "strength": 3
+        },
+        {
+          "slug": "potato",
+          "strength": 3
+        },
+        {
+          "slug": "apple",
+          "strength": 2
+        },
+        {
+          "slug": "brussels-sprout",
+          "strength": 3
+        }
+      ],
+      "cuisines": [
+        "american",
+        "british"
       ]
     },
     {
@@ -1531,11 +4067,29 @@
       "name": "Prosciutto",
       "category": "protein",
       "pairings": [
-        { "slug": "melon", "strength": 3 },
-        { "slug": "fig", "strength": 3 },
-        { "slug": "peach", "strength": 2 },
-        { "slug": "asparagus", "strength": 3 },
-        { "slug": "mozzarella", "strength": 2 }
+        {
+          "slug": "melon",
+          "strength": 3
+        },
+        {
+          "slug": "fig",
+          "strength": 3
+        },
+        {
+          "slug": "peach",
+          "strength": 2
+        },
+        {
+          "slug": "asparagus",
+          "strength": 3
+        },
+        {
+          "slug": "mozzarella",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "italian"
       ]
     },
     {
@@ -1543,12 +4097,33 @@
       "name": "Anchovy",
       "category": "pantry",
       "pairings": [
-        { "slug": "garlic", "strength": 3 },
-        { "slug": "tomato", "strength": 2 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "parsley", "strength": 2 },
-        { "slug": "broccoli", "strength": 2 }
+        {
+          "slug": "garlic",
+          "strength": 3
+        },
+        {
+          "slug": "tomato",
+          "strength": 2
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "parsley",
+          "strength": 2
+        },
+        {
+          "slug": "broccoli",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "italian"
       ]
     },
     {
@@ -1556,11 +4131,29 @@
       "name": "Capers",
       "category": "pantry",
       "pairings": [
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "fish-white", "strength": 3 },
-        { "slug": "salmon", "strength": 3 },
-        { "slug": "parsley", "strength": 2 },
-        { "slug": "tomato", "strength": 2 }
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "fish-white",
+          "strength": 3
+        },
+        {
+          "slug": "salmon",
+          "strength": 3
+        },
+        {
+          "slug": "parsley",
+          "strength": 2
+        },
+        {
+          "slug": "tomato",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "italian"
       ]
     },
     {
@@ -1568,23 +4161,58 @@
       "name": "Scallion",
       "category": "aromatic",
       "pairings": [
-        { "slug": "ginger", "strength": 3 },
-        { "slug": "soy-sauce", "strength": 3 },
-        { "slug": "sesame-oil", "strength": 3 },
-        { "slug": "egg", "strength": 2 }
+        {
+          "slug": "ginger",
+          "strength": 3
+        },
+        {
+          "slug": "soy-sauce",
+          "strength": 3
+        },
+        {
+          "slug": "sesame-oil",
+          "strength": 3
+        },
+        {
+          "slug": "egg",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "chinese",
+        "japanese",
+        "korean"
       ]
     },
     {
       "slug": "lemongrass",
       "name": "Lemongrass",
       "category": "aromatic",
-      "cuisines": ["thai", "vietnamese"],
+      "cuisines": [
+        "thai",
+        "vietnamese"
+      ],
       "pairings": [
-        { "slug": "coconut-milk", "strength": 3 },
-        { "slug": "lime", "strength": 3 },
-        { "slug": "ginger", "strength": 3 },
-        { "slug": "chili", "strength": 2 },
-        { "slug": "cilantro", "strength": 2 }
+        {
+          "slug": "coconut-milk",
+          "strength": 3
+        },
+        {
+          "slug": "lime",
+          "strength": 3
+        },
+        {
+          "slug": "ginger",
+          "strength": 3
+        },
+        {
+          "slug": "chili",
+          "strength": 2
+        },
+        {
+          "slug": "cilantro",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1592,49 +4220,118 @@
       "name": "Sesame Oil",
       "category": "pantry",
       "pairings": [
-        { "slug": "soy-sauce", "strength": 3 },
-        { "slug": "scallion", "strength": 3 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "cucumber", "strength": 2 }
+        {
+          "slug": "soy-sauce",
+          "strength": 3
+        },
+        {
+          "slug": "scallion",
+          "strength": 3
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "cucumber",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "chinese",
+        "japanese",
+        "korean"
       ]
     },
     {
       "slug": "fig",
       "name": "Fig",
       "category": "fruit",
-      "seasons": ["summer", "fall"],
+      "seasons": [
+        "summer",
+        "fall"
+      ],
       "pairings": [
-        { "slug": "prosciutto", "strength": 3 },
-        { "slug": "blue-cheese", "strength": 3 },
-        { "slug": "goat-cheese", "strength": 3 },
-        { "slug": "honey", "strength": 3 },
-        { "slug": "balsamic-vinegar", "strength": 2 },
-        { "slug": "walnut", "strength": 2 },
-        { "slug": "duck", "strength": 2 }
+        {
+          "slug": "prosciutto",
+          "strength": 3
+        },
+        {
+          "slug": "blue-cheese",
+          "strength": 3
+        },
+        {
+          "slug": "goat-cheese",
+          "strength": 3
+        },
+        {
+          "slug": "honey",
+          "strength": 3
+        },
+        {
+          "slug": "balsamic-vinegar",
+          "strength": 2
+        },
+        {
+          "slug": "walnut",
+          "strength": 2
+        },
+        {
+          "slug": "duck",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "cherry",
       "name": "Cherry",
       "category": "fruit",
-      "seasons": ["summer"],
+      "seasons": [
+        "summer"
+      ],
       "pairings": [
-        { "slug": "almond", "strength": 3 },
-        { "slug": "chocolate", "strength": 3 },
-        { "slug": "duck", "strength": 3 },
-        { "slug": "vanilla", "strength": 2 }
+        {
+          "slug": "almond",
+          "strength": 3
+        },
+        {
+          "slug": "chocolate",
+          "strength": 3
+        },
+        {
+          "slug": "duck",
+          "strength": 3
+        },
+        {
+          "slug": "vanilla",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "watermelon",
       "name": "Watermelon",
       "category": "fruit",
-      "seasons": ["summer"],
+      "seasons": [
+        "summer"
+      ],
       "pairings": [
-        { "slug": "feta", "strength": 3 },
-        { "slug": "mint", "strength": 3 },
-        { "slug": "lime", "strength": 2 },
-        { "slug": "basil", "strength": 2 }
+        {
+          "slug": "feta",
+          "strength": 3
+        },
+        {
+          "slug": "mint",
+          "strength": 3
+        },
+        {
+          "slug": "lime",
+          "strength": 2
+        },
+        {
+          "slug": "basil",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1642,11 +4339,29 @@
       "name": "Pomegranate",
       "category": "fruit",
       "pairings": [
-        { "slug": "lamb", "strength": 2 },
-        { "slug": "yogurt", "strength": 2 },
-        { "slug": "feta", "strength": 2 },
-        { "slug": "walnut", "strength": 2 },
-        { "slug": "mint", "strength": 2 }
+        {
+          "slug": "lamb",
+          "strength": 2
+        },
+        {
+          "slug": "yogurt",
+          "strength": 2
+        },
+        {
+          "slug": "feta",
+          "strength": 2
+        },
+        {
+          "slug": "walnut",
+          "strength": 2
+        },
+        {
+          "slug": "mint",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "middle-eastern"
       ]
     },
     {
@@ -1654,14 +4369,38 @@
       "name": "Chocolate",
       "category": "pantry",
       "pairings": [
-        { "slug": "vanilla", "strength": 3 },
-        { "slug": "raspberry", "strength": 3 },
-        { "slug": "orange", "strength": 3 },
-        { "slug": "hazelnut", "strength": 3 },
-        { "slug": "coffee", "strength": 3 },
-        { "slug": "mint", "strength": 3 },
-        { "slug": "chili", "strength": 2 },
-        { "slug": "cherry", "strength": 3 }
+        {
+          "slug": "vanilla",
+          "strength": 3
+        },
+        {
+          "slug": "raspberry",
+          "strength": 3
+        },
+        {
+          "slug": "orange",
+          "strength": 3
+        },
+        {
+          "slug": "hazelnut",
+          "strength": 3
+        },
+        {
+          "slug": "coffee",
+          "strength": 3
+        },
+        {
+          "slug": "mint",
+          "strength": 3
+        },
+        {
+          "slug": "chili",
+          "strength": 2
+        },
+        {
+          "slug": "cherry",
+          "strength": 3
+        }
       ]
     },
     {
@@ -1669,11 +4408,26 @@
       "name": "Coffee",
       "category": "pantry",
       "pairings": [
-        { "slug": "chocolate", "strength": 3 },
-        { "slug": "cardamom", "strength": 3 },
-        { "slug": "vanilla", "strength": 2 },
-        { "slug": "hazelnut", "strength": 2 },
-        { "slug": "cinnamon", "strength": 2 }
+        {
+          "slug": "chocolate",
+          "strength": 3
+        },
+        {
+          "slug": "cardamom",
+          "strength": 3
+        },
+        {
+          "slug": "vanilla",
+          "strength": 2
+        },
+        {
+          "slug": "hazelnut",
+          "strength": 2
+        },
+        {
+          "slug": "cinnamon",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1681,24 +4435,56 @@
       "name": "Brussels Sprout",
       "category": "vegetable",
       "pairings": [
-        { "slug": "bacon", "strength": 3 },
-        { "slug": "balsamic-vinegar", "strength": 2 },
-        { "slug": "parmesan", "strength": 2 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "maple-syrup", "strength": 2 }
+        {
+          "slug": "bacon",
+          "strength": 3
+        },
+        {
+          "slug": "balsamic-vinegar",
+          "strength": 2
+        },
+        {
+          "slug": "parmesan",
+          "strength": 2
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "maple-syrup",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "pea",
       "name": "Pea",
       "category": "vegetable",
-      "seasons": ["spring"],
+      "seasons": [
+        "spring"
+      ],
       "pairings": [
-        { "slug": "mint", "strength": 3 },
-        { "slug": "butter", "strength": 2 },
-        { "slug": "parmesan", "strength": 2 },
-        { "slug": "prosciutto", "strength": 2 },
-        { "slug": "lemon", "strength": 2 }
+        {
+          "slug": "mint",
+          "strength": 3
+        },
+        {
+          "slug": "butter",
+          "strength": 2
+        },
+        {
+          "slug": "parmesan",
+          "strength": 2
+        },
+        {
+          "slug": "prosciutto",
+          "strength": 2
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1706,46 +4492,103 @@
       "name": "Horseradish",
       "category": "spice",
       "pairings": [
-        { "slug": "beef", "strength": 3 },
-        { "slug": "salmon", "strength": 2 },
-        { "slug": "beet", "strength": 2 }
+        {
+          "slug": "beef",
+          "strength": 3
+        },
+        {
+          "slug": "salmon",
+          "strength": 2
+        },
+        {
+          "slug": "beet",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "harissa",
       "name": "Harissa",
       "category": "spice",
-      "cuisines": ["north-african"],
+      "cuisines": [
+        "north-african"
+      ],
       "pairings": [
-        { "slug": "lamb", "strength": 3 },
-        { "slug": "yogurt", "strength": 2 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "carrot", "strength": 2 }
+        {
+          "slug": "lamb",
+          "strength": 3
+        },
+        {
+          "slug": "yogurt",
+          "strength": 2
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "carrot",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "five-spice",
       "name": "Five-Spice",
       "category": "spice",
-      "cuisines": ["chinese"],
+      "cuisines": [
+        "chinese"
+      ],
       "pairings": [
-        { "slug": "duck", "strength": 3 },
-        { "slug": "pork", "strength": 2 },
-        { "slug": "soy-sauce", "strength": 2 }
+        {
+          "slug": "duck",
+          "strength": 3
+        },
+        {
+          "slug": "pork",
+          "strength": 2
+        },
+        {
+          "slug": "soy-sauce",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "gruyere",
       "name": "Gruyère",
       "category": "dairy",
-      "aliases": ["cheese-gruyere"],
+      "aliases": [
+        "cheese-gruyere"
+      ],
       "pairings": [
-        { "slug": "potato", "strength": 3 },
-        { "slug": "onion", "strength": 3 },
-        { "slug": "egg", "strength": 2 },
-        { "slug": "ham", "strength": 2 },
-        { "slug": "wine-white", "strength": 2 },
-        { "slug": "bread", "strength": 2 }
+        {
+          "slug": "potato",
+          "strength": 3
+        },
+        {
+          "slug": "onion",
+          "strength": 3
+        },
+        {
+          "slug": "egg",
+          "strength": 2
+        },
+        {
+          "slug": "ham",
+          "strength": 2
+        },
+        {
+          "slug": "wine-white",
+          "strength": 2
+        },
+        {
+          "slug": "bread",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "french"
       ]
     },
     {
@@ -1753,13 +4596,37 @@
       "name": "White Wine",
       "category": "pantry",
       "pairings": [
-        { "slug": "shallot", "strength": 2 },
-        { "slug": "chicken", "strength": 2 },
-        { "slug": "fish-white", "strength": 2 },
-        { "slug": "mushroom", "strength": 2 },
-        { "slug": "leek", "strength": 2 },
-        { "slug": "tarragon", "strength": 2 },
-        { "slug": "gruyere", "strength": 2 }
+        {
+          "slug": "shallot",
+          "strength": 2
+        },
+        {
+          "slug": "chicken",
+          "strength": 2
+        },
+        {
+          "slug": "fish-white",
+          "strength": 2
+        },
+        {
+          "slug": "mushroom",
+          "strength": 2
+        },
+        {
+          "slug": "leek",
+          "strength": 2
+        },
+        {
+          "slug": "tarragon",
+          "strength": 2
+        },
+        {
+          "slug": "gruyere",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "french"
       ]
     },
     {
@@ -1767,39 +4634,97 @@
       "name": "Red Wine",
       "category": "pantry",
       "pairings": [
-        { "slug": "beef", "strength": 3 },
-        { "slug": "duck", "strength": 2 },
-        { "slug": "mushroom", "strength": 2 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "bay-leaf", "strength": 2 },
-        { "slug": "shallot", "strength": 2 }
+        {
+          "slug": "beef",
+          "strength": 3
+        },
+        {
+          "slug": "duck",
+          "strength": 2
+        },
+        {
+          "slug": "mushroom",
+          "strength": 2
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "bay-leaf",
+          "strength": 2
+        },
+        {
+          "slug": "shallot",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "french"
       ]
     },
     {
       "slug": "artichoke",
       "name": "Artichoke",
       "category": "vegetable",
-      "seasons": ["spring"],
+      "seasons": [
+        "spring"
+      ],
       "pairings": [
-        { "slug": "lemon", "strength": 3 },
-        { "slug": "olive-oil", "strength": 3 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "parmesan", "strength": 2 },
-        { "slug": "parsley", "strength": 2 },
-        { "slug": "mint", "strength": 2 }
+        {
+          "slug": "lemon",
+          "strength": 3
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 3
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "parmesan",
+          "strength": 2
+        },
+        {
+          "slug": "parsley",
+          "strength": 2
+        },
+        {
+          "slug": "mint",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "rhubarb",
       "name": "Rhubarb",
       "category": "vegetable",
-      "seasons": ["spring"],
+      "seasons": [
+        "spring"
+      ],
       "pairings": [
-        { "slug": "strawberry", "strength": 3 },
-        { "slug": "ginger", "strength": 2 },
-        { "slug": "vanilla", "strength": 2 },
-        { "slug": "orange", "strength": 2 },
-        { "slug": "honey", "strength": 2 }
+        {
+          "slug": "strawberry",
+          "strength": 3
+        },
+        {
+          "slug": "ginger",
+          "strength": 2
+        },
+        {
+          "slug": "vanilla",
+          "strength": 2
+        },
+        {
+          "slug": "orange",
+          "strength": 2
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1807,11 +4732,26 @@
       "name": "Raisin",
       "category": "fruit",
       "pairings": [
-        { "slug": "pine-nut", "strength": 2 },
-        { "slug": "cauliflower", "strength": 2 },
-        { "slug": "spinach", "strength": 2 },
-        { "slug": "cinnamon", "strength": 2 },
-        { "slug": "almond", "strength": 2 }
+        {
+          "slug": "pine-nut",
+          "strength": 2
+        },
+        {
+          "slug": "cauliflower",
+          "strength": 2
+        },
+        {
+          "slug": "spinach",
+          "strength": 2
+        },
+        {
+          "slug": "cinnamon",
+          "strength": 2
+        },
+        {
+          "slug": "almond",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1819,9 +4759,18 @@
       "name": "Anise",
       "category": "spice",
       "pairings": [
-        { "slug": "fennel", "strength": 2 },
-        { "slug": "orange", "strength": 2 },
-        { "slug": "fish-white", "strength": 2 }
+        {
+          "slug": "fennel",
+          "strength": 2
+        },
+        {
+          "slug": "orange",
+          "strength": 2
+        },
+        {
+          "slug": "fish-white",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1829,12 +4778,30 @@
       "name": "White Bean",
       "category": "protein",
       "pairings": [
-        { "slug": "sage", "strength": 2 },
-        { "slug": "rosemary", "strength": 2 },
-        { "slug": "garlic", "strength": 2 },
-        { "slug": "olive-oil", "strength": 2 },
-        { "slug": "tomato", "strength": 2 },
-        { "slug": "bay-leaf", "strength": 2 }
+        {
+          "slug": "sage",
+          "strength": 2
+        },
+        {
+          "slug": "rosemary",
+          "strength": 2
+        },
+        {
+          "slug": "garlic",
+          "strength": 2
+        },
+        {
+          "slug": "olive-oil",
+          "strength": 2
+        },
+        {
+          "slug": "tomato",
+          "strength": 2
+        },
+        {
+          "slug": "bay-leaf",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1842,9 +4809,18 @@
       "name": "Sour Cream",
       "category": "dairy",
       "pairings": [
-        { "slug": "chive", "strength": 3 },
-        { "slug": "potato", "strength": 3 },
-        { "slug": "dill", "strength": 2 }
+        {
+          "slug": "chive",
+          "strength": 3
+        },
+        {
+          "slug": "potato",
+          "strength": 3
+        },
+        {
+          "slug": "dill",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1852,9 +4828,18 @@
       "name": "Milk",
       "category": "dairy",
       "pairings": [
-        { "slug": "vanilla", "strength": 2 },
-        { "slug": "nutmeg", "strength": 2 },
-        { "slug": "honey", "strength": 2 }
+        {
+          "slug": "vanilla",
+          "strength": 2
+        },
+        {
+          "slug": "nutmeg",
+          "strength": 2
+        },
+        {
+          "slug": "honey",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1862,11 +4847,30 @@
       "name": "Olive",
       "category": "pantry",
       "pairings": [
-        { "slug": "feta", "strength": 3 },
-        { "slug": "tomato", "strength": 2 },
-        { "slug": "lemon", "strength": 2 },
-        { "slug": "anchovy", "strength": 2 },
-        { "slug": "thyme", "strength": 2 }
+        {
+          "slug": "feta",
+          "strength": 3
+        },
+        {
+          "slug": "tomato",
+          "strength": 2
+        },
+        {
+          "slug": "lemon",
+          "strength": 2
+        },
+        {
+          "slug": "anchovy",
+          "strength": 2
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "greek",
+        "mediterranean"
       ]
     },
     {
@@ -1874,22 +4878,53 @@
       "name": "Saffron",
       "category": "spice",
       "pairings": [
-        { "slug": "rice", "strength": 3 },
-        { "slug": "fish-white", "strength": 2 },
-        { "slug": "shrimp", "strength": 2 },
-        { "slug": "chicken", "strength": 2 }
+        {
+          "slug": "rice",
+          "strength": 3
+        },
+        {
+          "slug": "fish-white",
+          "strength": 2
+        },
+        {
+          "slug": "shrimp",
+          "strength": 2
+        },
+        {
+          "slug": "chicken",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "indian",
+        "middle-eastern",
+        "spanish"
       ]
     },
     {
       "slug": "melon",
       "name": "Melon",
       "category": "fruit",
-      "seasons": ["summer"],
+      "seasons": [
+        "summer"
+      ],
       "pairings": [
-        { "slug": "prosciutto", "strength": 3 },
-        { "slug": "mint", "strength": 2 },
-        { "slug": "lime", "strength": 2 },
-        { "slug": "feta", "strength": 2 }
+        {
+          "slug": "prosciutto",
+          "strength": 3
+        },
+        {
+          "slug": "mint",
+          "strength": 2
+        },
+        {
+          "slug": "lime",
+          "strength": 2
+        },
+        {
+          "slug": "feta",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1897,9 +4932,21 @@
       "name": "Rose",
       "category": "spice",
       "pairings": [
-        { "slug": "raspberry", "strength": 2 },
-        { "slug": "pistachio", "strength": 3 },
-        { "slug": "cardamom", "strength": 2 }
+        {
+          "slug": "raspberry",
+          "strength": 2
+        },
+        {
+          "slug": "pistachio",
+          "strength": 3
+        },
+        {
+          "slug": "cardamom",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "middle-eastern"
       ]
     },
     {
@@ -1907,10 +4954,25 @@
       "name": "Caramel",
       "category": "pantry",
       "pairings": [
-        { "slug": "apple", "strength": 3 },
-        { "slug": "chocolate", "strength": 2 },
-        { "slug": "vanilla", "strength": 2 },
-        { "slug": "pecan", "strength": 2 }
+        {
+          "slug": "apple",
+          "strength": 3
+        },
+        {
+          "slug": "chocolate",
+          "strength": 2
+        },
+        {
+          "slug": "vanilla",
+          "strength": 2
+        },
+        {
+          "slug": "pecan",
+          "strength": 2
+        }
+      ],
+      "cuisines": [
+        "american"
       ]
     },
     {
@@ -1918,7 +4980,10 @@
       "name": "Sugar",
       "category": "pantry",
       "pairings": [
-        { "slug": "fish-sauce", "strength": 2 }
+        {
+          "slug": "fish-sauce",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1926,30 +4991,58 @@
       "name": "Bourbon",
       "category": "pantry",
       "pairings": [
-        { "slug": "pecan", "strength": 2 },
-        { "slug": "maple-syrup", "strength": 2 },
-        { "slug": "vanilla", "strength": 2 }
+        {
+          "slug": "pecan",
+          "strength": 2
+        },
+        {
+          "slug": "maple-syrup",
+          "strength": 2
+        },
+        {
+          "slug": "vanilla",
+          "strength": 2
+        }
       ]
     },
     {
       "slug": "tequila",
       "name": "Tequila",
       "category": "pantry",
-      "cuisines": ["mexican"],
+      "cuisines": [
+        "mexican"
+      ],
       "pairings": [
-        { "slug": "lime", "strength": 3 }
+        {
+          "slug": "lime",
+          "strength": 3
+        }
       ]
     },
     {
       "slug": "morel",
       "name": "Morel",
       "category": "vegetable",
-      "seasons": ["spring"],
+      "seasons": [
+        "spring"
+      ],
       "pairings": [
-        { "slug": "asparagus", "strength": 2 },
-        { "slug": "butter", "strength": 2 },
-        { "slug": "thyme", "strength": 2 },
-        { "slug": "cream", "strength": 2 }
+        {
+          "slug": "asparagus",
+          "strength": 2
+        },
+        {
+          "slug": "butter",
+          "strength": 2
+        },
+        {
+          "slug": "thyme",
+          "strength": 2
+        },
+        {
+          "slug": "cream",
+          "strength": 2
+        }
       ]
     },
     {
@@ -1957,8 +5050,14 @@
       "name": "Ham",
       "category": "protein",
       "pairings": [
-        { "slug": "gruyere", "strength": 2 },
-        { "slug": "mustard", "strength": 2 }
+        {
+          "slug": "gruyere",
+          "strength": 2
+        },
+        {
+          "slug": "mustard",
+          "strength": 2
+        }
       ]
     }
   ]
