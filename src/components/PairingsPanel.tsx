@@ -56,7 +56,19 @@ export function PairingsPanel({ selected, onAdd, clusterFilter }: Props) {
       fetch(`/api/chemistry?slugs=${encodeURIComponent(slugs)}&limit=10`).then((r) => r.json()),
     ])
       .then(([p, c]) => {
-        setPairings(p.results as ScoredPairing[]);
+        const ranked = p.results as ScoredPairing[];
+        // Strict-pairing filter: when 2+ ingredients are selected, single-hit
+        // candidates are usually noise. Keep them only as fallback when there
+        // aren't enough multi-hit picks to fill the panel.
+        const multi = ranked.filter((x) => x.hits >= 2);
+        const single = ranked.filter((x) => x.hits === 1);
+        const useStrict = effectiveSelected.length >= 2;
+        const finalPairings = useStrict
+          ? multi.length >= 8
+            ? multi
+            : [...multi, ...single.slice(0, 8 - multi.length)]
+          : ranked;
+        setPairings(finalPairings);
         setChemistry(c.results as ChemistryHit[]);
       })
       .finally(() => setLoading(false));

@@ -861,8 +861,18 @@ function refreshDropdown() {
     state.items = getStarterSummaries(excludedSet);
     state.mode = "starters";
   } else {
-    const ranked = pairingsFor(selectedSlugs(), 10);
-    state.items = ranked.map(p => ({
+    // Strict-pairing filter when 2+ selected: single-hit pairings (e.g. peach
+    // for tomato+basil — peach pairs with basil but not tomato) get filtered
+    // out so the dropdown only surfaces ingredients that pair with ≥2 of the
+    // selection. Fallback adds back single-hit ones if too few multi-hit.
+    const ranked = pairingsFor(selectedSlugs(), 15);
+    const multi = ranked.filter(p => p.hits >= 2);
+    const single = ranked.filter(p => p.hits === 1);
+    const useStrict = selectedSlugs().length >= 2;
+    const final = useStrict
+      ? [...multi, ...(multi.length < 3 ? single.slice(0, 3 - multi.length) : [])]
+      : ranked;
+    state.items = final.slice(0, 10).map(p => ({
       slug: p.ingredient.slug, name: p.ingredient.name, category: p.ingredient.category,
       dots: Math.min(3, Math.round(p.averageStrength)),
       hits: p.hits,
@@ -958,7 +968,15 @@ function renderPanel() {
     panelEl.innerHTML = `<div class="empty-panel"><div class="small">No ingredients in this direction.</div></div>`;
     return;
   }
-  const all = pairingsFor(slugsForPanel, 60);
+  const rawAll = pairingsFor(slugsForPanel, 60);
+  // Strict-pairings: with 2+ ingredients in scope, drop single-hit noise unless
+  // we'd otherwise have too little to show.
+  const useStrict = slugsForPanel.length >= 2;
+  const multi = rawAll.filter(p => p.hits >= 2);
+  const single = rawAll.filter(p => p.hits === 1);
+  const all = useStrict
+    ? (multi.length >= 8 ? multi : [...multi, ...single.slice(0, 8 - multi.length)])
+    : rawAll;
   const present = CATS.filter(c => all.some(p => p.ingredient.category === c));
   const filtered = state.filter === "all" ? all : all.filter(p => p.ingredient.category === state.filter);
   const grouped = new Map();

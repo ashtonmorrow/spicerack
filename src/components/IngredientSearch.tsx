@@ -85,11 +85,25 @@ export function IngredientSearch({ onPick, excludeSlugs }: Props) {
 
     // Pairings mode — fetch and decorate with affinity hints
     const slugs = encodeURIComponent(excludeSlugs.join(","));
-    fetch(`/api/pairings?slugs=${slugs}&limit=10`)
+    fetch(`/api/pairings?slugs=${slugs}&limit=15`)
       .then((r) => r.json())
       .then((d) => {
         if (cancelled) return;
-        const arr: Item[] = (d.results as ScoredPairing[]).map((p) => ({
+        const ranked = d.results as ScoredPairing[];
+        // Strict mode: with 2+ ingredients selected, single-hit pairings are
+        // long-tail noise (e.g. peach for tomato+basil — peach pairs with basil
+        // but not tomato). Filter them out so the dropdown only suggests
+        // ingredients that pair with at least 2 of the user's selections.
+        // Fall back to single-hit only if there are too few multi-hit picks.
+        const multi = ranked.filter((p) => p.hits >= 2);
+        const single = ranked.filter((p) => p.hits === 1);
+        const STRICT_THRESHOLD = 2;
+        const FALLBACK_MIN = 3;
+        const useStrict = excludeSlugs.length >= STRICT_THRESHOLD;
+        const final = useStrict
+          ? [...multi, ...(multi.length < FALLBACK_MIN ? single.slice(0, FALLBACK_MIN - multi.length) : [])]
+          : ranked;
+        const arr: Item[] = final.slice(0, 10).map((p) => ({
           slug: p.ingredient.slug,
           name: p.ingredient.name,
           category: p.ingredient.category,
