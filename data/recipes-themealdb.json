@@ -2,7 +2,7 @@
   "$schema_version": 1,
   "source": "TheMealDB (https://www.themealdb.com/) — community-contributed recipes",
   "fetched_at": "2026-04-26T16:37:22.797Z",
-  "notes": "Auto-imported from TheMealDB and ingredient-mapped to Flavor Pear's slug system. The 'about' field is a generic factual one-liner; for the actual cooking method, the recipe's sourceUrl links back to the original page on TheMealDB.",
+  "notes": "Auto-imported from TheMealDB and ingredient-mapped to Flavor Pare's slug system. The 'about' field is a generic factual one-liner; for the actual cooking method, the recipe's sourceUrl links back to the original page on TheMealDB.",
   "recipes": [
     {
       "id": "mdb-52770",

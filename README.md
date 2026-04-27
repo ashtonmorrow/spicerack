@@ -1,4 +1,4 @@
-# Flavor Pear
+# Flavor Pare
 
 (repo: `spicerack`) — Type an ingredient, get pairings. Add another, get the intersection. The dropdown always has a suggestion for you, so chaining 4-5 ingredients takes seconds.
 
@@ -36,7 +36,7 @@ src/
     IngredientSearch.tsx    ← smart type-ahead: starters → pairings → search
     SelectedChips.tsx       ← removable chips for the current selection
     PairingsPanel.tsx       ← grouped, filterable pairings with affinity dots
-    PearLogo.tsx            ← outline-only green pear (uses currentColor)
+    PearLetter.tsx          ← inline filled pear used as the "o" in the wordmark
   lib/
     types.ts                ← shared domain types
     repository.ts           ← Repository interface + singleton accessor

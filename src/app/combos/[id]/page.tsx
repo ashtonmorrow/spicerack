@@ -44,7 +44,7 @@ export default function ComboPage({ params }: { params: { id: string } | Promise
             href="/"
             className="inline-flex items-center gap-2 text-2xl font-semibold tracking-tight text-ink hover:opacity-80"
           >
-            Flav<span className="text-pear"><PearLetter /></span>r Pear
+            Flav<span className="text-pear"><PearLetter /></span>r Pare
           </Link>
         </header>
         <h1 className="text-xl font-semibold mb-2">Combo not found</h1>
@@ -53,7 +53,7 @@ export default function ComboPage({ params }: { params: { id: string } | Promise
           localStorage — they don't sync across devices yet. Open on the device
           where you saved it.
         </p>
-        <Footer backLink={{ href: "/", label: "← Back to Flavor Pear" }} />
+        <Footer backLink={{ href: "/", label: "← Back to Flavor Pare" }} />
       </main>
     );
   }
@@ -81,7 +81,7 @@ function ComboDetail({
           href="/"
           className="inline-flex items-center gap-2 text-2xl font-semibold tracking-tight text-ink hover:opacity-80"
         >
-          Flav<span className="text-pear"><PearLetter /></span>r Pear
+          Flav<span className="text-pear"><PearLetter /></span>r Pare
         </Link>
         <p className="text-xs text-muted mt-1">
           <Link href="/" className="hover:text-ink transition">
@@ -141,7 +141,7 @@ function ComboDetail({
         </div>
       </article>
 
-      <Footer backLink={{ href: "/", label: "← Back to Flavor Pear" }} />
+      <Footer backLink={{ href: "/", label: "← Back to Flavor Pare" }} />
     </main>
   );
 }

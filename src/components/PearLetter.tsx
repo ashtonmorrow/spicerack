@@ -1,10 +1,11 @@
-// A filled pear sized to substitute for a letter (the "o" in "Flavor").
-// Uses currentColor so consumers can recolor with text-* classes.
-// Includes a leaf for visual recognition; stem is implied by the silhouette.
+// A solid filled pear, tight bounding box so it renders at letter-width with
+// no left/right padding. Body + visible stem + leaf so the silhouette reads
+// unambiguously as a pear, not a teardrop or avocado. Uses currentColor so
+// consumers control the green via text-* classes.
 export function PearLetter({ className = "" }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 64 64"
+      viewBox="0 0 28 40"
       fill="currentColor"
       className={className}
       role="img"
@@ -13,22 +14,22 @@ export function PearLetter({ className = "" }: { className?: string }) {
         height: "0.85em",
         width: "auto",
         display: "inline-block",
-        verticalAlign: "-0.06em",
-        marginInline: "0.02em",
+        verticalAlign: "-0.08em",
       }}
     >
-      {/* pear body */}
-      <path d="M 32 16
-               C 35.5 16 36.5 18.5 35.5 21
-               C 34.5 23.5 35.5 25.5 38 27
-               C 45 31 50 39 50 47
-               C 50 56 42 60 32 60
-               C 22 60 14 56 14 47
-               C 14 39 19 31 26 27
-               C 28.5 25.5 29.5 23.5 28.5 21
-               C 27.5 18.5 28.5 16 32 16 Z" />
-      {/* leaf */}
-      <path d="M 33 16 C 38 11.5 44.5 13 43.5 18.5 C 38.5 18.5 35 17.5 33 16 Z" />
+      {/* stem — short vertical bar, slightly off-center to give the pear character */}
+      <rect x="12" y="3" width="3.2" height="7" rx="1.4" />
+      {/* leaf — small drop attached to upper right of the stem */}
+      <path d="M 15.2 4.5 C 19.5 1.5 24 3 23 7.5 C 19.5 7.5 17 6.2 15.2 4.5 Z" />
+      {/* body — narrow neck at top that flares into a wide bulbous bottom */}
+      <path d="M 10 10
+               C 7 11 5.5 13 4.5 15
+               C 1.5 18.5 0 23 0 28.5
+               C 0 34.5 5.2 39 14 39
+               C 22.8 39 28 34.5 28 28.5
+               C 28 23 26.5 18.5 23.5 15
+               C 22.5 13 21 11 18 10
+               L 10 10 Z" />
     </svg>
   );
 }

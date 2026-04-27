@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Flavor Pear — Preview</title>
+<title>Flavor Pare — Preview</title>
 <style>
   :root {
     --bg: #FFFFFF;
@@ -36,7 +36,10 @@
 
   header { margin-bottom: 2.5rem; }
   h1 { font-size: 2.25rem; margin: 0; letter-spacing: -.015em; font-weight: 600; line-height: 1.1; }
-  h1 .pear-letter { color: var(--pear); display: inline-block; vertical-align: -0.06em; margin-inline: 0.02em; }
+  /* Pear-as-letter: tight viewBox (28x40) so the rendered width is letter-like
+     and there's no internal padding. Sits on the baseline like other lowercase
+     letters via the small negative vertical-align. */
+  h1 .pear-letter { color: var(--pear); display: inline-block; vertical-align: -0.08em; }
   h1 .pear-letter svg { height: 0.85em; width: auto; display: block; }
   .sub { color: var(--muted); margin: .25rem 0 0; font-size: .95rem; }
 
@@ -400,8 +403,8 @@
 <body>
 <main>
   <header>
-    <h1>Flav<span class="pear-letter" aria-label="o"><svg viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M 32 16 C 35.5 16 36.5 18.5 35.5 21 C 34.5 23.5 35.5 25.5 38 27 C 45 31 50 39 50 47 C 50 56 42 60 32 60 C 22 60 14 56 14 47 C 14 39 19 31 26 27 C 28.5 25.5 29.5 23.5 28.5 21 C 27.5 18.5 28.5 16 32 16 Z"/><path d="M 33 16 C 38 11.5 44.5 13 43.5 18.5 C 38.5 18.5 35 17.5 33 16 Z"/></svg></span>r Pear</h1>
-    <p class="sub">Add ingredients. Get suggestions and recipes, fast.</p>
+    <h1>Flav<span class="pear-letter" aria-label="o"><svg viewBox="0 0 28 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><rect x="12" y="3" width="3.2" height="7" rx="1.4"/><path d="M 15.2 4.5 C 19.5 1.5 24 3 23 7.5 C 19.5 7.5 17 6.2 15.2 4.5 Z"/><path d="M 10 10 C 7 11 5.5 13 4.5 15 C 1.5 18.5 0 23 0 28.5 C 0 34.5 5.2 39 14 39 C 22.8 39 28 34.5 28 28.5 C 28 23 26.5 18.5 23.5 15 C 22.5 13 21 11 18 10 L 10 10 Z"/></svg></span>r Pare</h1>
+    <p class="sub">Pare down what you have to figure out what to cook quickly.</p>
   </header>
 
   <div class="search-wrap">
@@ -1503,10 +1506,10 @@ function openPrivacyModal() {
         <button class="close-x" id="modal-close" aria-label="Close">×</button>
       </div>
       <p class="updated">Last updated: April 26, 2026</p>
-      <p>Flavor Pear is a small web tool for discovering ingredient pairings and recipes. This page explains exactly what data the app handles — there isn't much.</p>
+      <p>Flavor Pare is a small web tool for discovering ingredient pairings and recipes. This page explains exactly what data the app handles — there isn't much.</p>
 
       <h3>What the app does not collect</h3>
-      <p>Flavor Pear has no user accounts, no analytics, and no advertising trackers. The app does not collect, store, or transmit your usage data to any server we control. There is no "us" tracking what you do.</p>
+      <p>Flavor Pare has no user accounts, no analytics, and no advertising trackers. The app does not collect, store, or transmit your usage data to any server we control. There is no "us" tracking what you do.</p>
 
       <h3>What is stored on your device</h3>
       <p>When you save a combo, save a recipe, pin a saved item, or add personal notes to a recipe, that information is written to your browser's <code>localStorage</code> under the keys <code>flavor-pear:combos</code> and <code>flavor-pear:saved-recipes</code>.</p>
@@ -1519,7 +1522,7 @@ function openPrivacyModal() {
       <p>When you click <em>Find recipe online</em> on a recipe, the app opens a Google search in a new tab. Anything you do on Google after that is governed by Google's terms.</p>
 
       <h3>Children</h3>
-      <p>Flavor Pear is not directed at children under 13. The app does not knowingly collect data from children, and since it does not collect data from anyone, this is straightforward.</p>
+      <p>Flavor Pare is not directed at children under 13. The app does not knowingly collect data from children, and since it does not collect data from anyone, this is straightforward.</p>
 
       <h3>Changes</h3>
       <p>If the way the app handles data changes — for example, if it later adds accounts or remote storage — this page will be updated and the date at the top will move forward. The change will be visible in the public commit history of the GitHub repository.</p>

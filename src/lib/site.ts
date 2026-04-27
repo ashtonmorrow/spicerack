@@ -5,10 +5,13 @@
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://pear.mike-lee.me";
 
-export const SITE_NAME = "Flavor Pear";
+export const SITE_NAME = "Flavor Pare";
 
 export const SITE_DESCRIPTION =
-  "Type an ingredient. Get pairings, recipes, and dish directions, fast.";
+  "Pare down what you have to figure out what to cook quickly.";
+
+export const SITE_TAGLINE =
+  "Pare down what you have to figure out what to cook quickly.";
 
 export const AUTHOR = {
   name: "Mike Lee",

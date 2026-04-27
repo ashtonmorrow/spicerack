@@ -1,4 +1,4 @@
-// Fetches every meal in TheMealDB, maps each one to the Flavor Pear Recipe
+// Fetches every meal in TheMealDB, maps each one to the Flavor Pare Recipe
 // shape, and writes data/recipes-themealdb.json. Run once and commit the
 // output — this is a build-time script, not a runtime fetch.
 //
@@ -478,7 +478,7 @@ async function main() {
     source: "TheMealDB (https://www.themealdb.com/) — community-contributed recipes",
     fetched_at: new Date().toISOString(),
     notes:
-      "Auto-imported from TheMealDB and ingredient-mapped to Flavor Pear's slug system. The 'about' field is a generic factual one-liner; for the actual cooking method, the recipe's sourceUrl links back to the original page on TheMealDB.",
+      "Auto-imported from TheMealDB and ingredient-mapped to Flavor Pare's slug system. The 'about' field is a generic factual one-liner; for the actual cooking method, the recipe's sourceUrl links back to the original page on TheMealDB.",
     recipes,
   };
 

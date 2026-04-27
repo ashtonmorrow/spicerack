@@ -6,11 +6,11 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How Flavor Pear handles your data — short version: we don't collect any.",
+    "How Flavor Pare handles your data — short version: we don't collect any.",
   alternates: { canonical: "/privacy" },
   openGraph: {
-    title: "Privacy Policy — Flavor Pear",
-    description: "Flavor Pear collects nothing. Everything you save lives in your browser.",
+    title: "Privacy Policy — Flavor Pare",
+    description: "Flavor Pare collects nothing. Everything you save lives in your browser.",
     url: "/privacy",
     type: "article",
   },
@@ -31,7 +31,7 @@ export default function PrivacyPolicy() {
           <span className="text-pear">
             <PearLetter />
           </span>
-          r Pear
+          r Pare
         </Link>
       </header>
 
@@ -40,14 +40,14 @@ export default function PrivacyPolicy() {
         <p className="text-sm text-muted mb-8">Last updated: April 26, 2026</p>
 
         <p className="mb-6 leading-relaxed">
-          Flavor Pear is a small web tool for discovering ingredient pairings
+          Flavor Pare is a small web tool for discovering ingredient pairings
           and recipes. This page explains exactly what data the app handles —
           there isn&apos;t much.
         </p>
 
         <Section title="What the app does not collect">
           <p>
-            Flavor Pear has no user accounts, no analytics, and no advertising
+            Flavor Pare has no user accounts, no analytics, and no advertising
             trackers. The app does not collect, store, or transmit your usage
             data to any server we control. There is no &ldquo;us&rdquo; tracking what
             you do.
@@ -96,7 +96,7 @@ export default function PrivacyPolicy() {
 
         <Section title="Children">
           <p>
-            Flavor Pear is not directed at children under 13. The app does not
+            Flavor Pare is not directed at children under 13. The app does not
             knowingly collect data from children, and since it does not collect
             data from anyone, this is straightforward.
           </p>
@@ -127,7 +127,7 @@ export default function PrivacyPolicy() {
         </Section>
       </article>
 
-      <Footer backLink={{ href: "/", label: "← Back to Flavor Pear" }} />
+      <Footer backLink={{ href: "/", label: "← Back to Flavor Pare" }} />
     </main>
   );
 }

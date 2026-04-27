@@ -123,7 +123,7 @@ export default async function RecipePage({
           <span className="text-pear">
             <PearLetter />
           </span>
-          r Pear
+          r Pare
         </Link>
         <p className="text-xs text-muted mt-1">
           <Link href="/" className="hover:text-ink transition">
@@ -231,7 +231,7 @@ export default async function RecipePage({
         </div>
       </article>
 
-      <Footer backLink={{ href: "/", label: "← Back to Flavor Pear" }} />
+      <Footer backLink={{ href: "/", label: "← Back to Flavor Pare" }} />
     </main>
   );
 }
