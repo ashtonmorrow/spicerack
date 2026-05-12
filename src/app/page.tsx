@@ -15,7 +15,7 @@ import { ClusterStrip } from "@/components/ClusterStrip";
 import { AlternateDirections } from "@/components/AlternateDirections";
 import { MergeBanner } from "@/components/MergeBanner";
 import { Footer } from "@/components/Footer";
-import { analyzeSelection, findAlternates } from "@/lib/clusters";
+import { analyzeSelection, clusterColor, findAlternates } from "@/lib/clusters";
 import type { IngredientSummary, ScoredRecipe } from "@/lib/types";
 
 export default function HomePage() {
@@ -159,6 +159,25 @@ function Home() {
     return new Set(selected.map((s) => s.slug).filter((s) => !cluster.has(s)));
   }, [clusterFilter, selected]);
 
+  // Per-cluster color hint shown as a chip underline. Only fires when there
+  // are 2+ clusters — with one cluster, every chip would have the same color
+  // which adds noise without signal. Cluster cards in ClusterStrip use the
+  // same palette via clusterColor(index) for visual consistency.
+  const { clusterColorBySlug, clusterLabelBySlug } = useMemo(() => {
+    const colors = new Map<string, string>();
+    const labels = new Map<string, string>();
+    if (analysis.clusters.length >= 2) {
+      analysis.clusters.forEach((c, i) => {
+        const color = clusterColor(i);
+        for (const slug of c.ingredients) {
+          colors.set(slug, color);
+          labels.set(slug, c.label);
+        }
+      });
+    }
+    return { clusterColorBySlug: colors, clusterLabelBySlug: labels };
+  }, [analysis.clusters]);
+
   function add(ing: IngredientSummary) {
     setSelected((cur) =>
       cur.some((c) => c.slug === ing.slug) ? cur : [...cur, ing]
@@ -197,6 +216,8 @@ function Home() {
           onClear={() => setSelected([])}
           outlierSlugs={outlierSet}
           dimmedSlugs={dimmedSet}
+          clusterColorBySlug={clusterColorBySlug}
+          clusterLabelBySlug={clusterLabelBySlug}
         />
         <ComboActions
           selected={selected}

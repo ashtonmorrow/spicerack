@@ -94,6 +94,52 @@ const TAGS = {
   "maple-syrup": ["american"],
   caramel: ["american"],
   "sweet-potato": ["american"],
+
+  // --- Round 2 additions ----------------------------------------------------
+  // Picked because each has a clearly dominant cuisine association so tagging
+  // strengthens inference rather than diluting it. Skipping intentionally:
+  // onion, garlic, butter, cream, sugar, salt, pepper, chicken, beef, pork —
+  // all too universal to bias inference usefully.
+
+  // Mediterranean / French / Italian
+  fennel: ["italian", "mediterranean"],
+  arugula: ["italian"],
+  rosemary: ["italian", "mediterranean", "french"],
+  thyme: ["french", "mediterranean"],
+  sage: ["italian", "french"],
+  "bay-leaf": ["french", "mediterranean", "indian"],
+  artichoke: ["italian", "mediterranean"],
+  chive: ["french"],
+  "goat-cheese": ["french", "mediterranean"],
+  "blue-cheese": ["french", "british", "italian"],
+  pear: ["french", "italian"],
+  fig: ["mediterranean", "italian", "middle-eastern"],
+
+  // Spanish / Hungarian / Moroccan
+  paprika: ["spanish", "hungarian", "moroccan"],
+
+  // Indian / Middle Eastern / Moroccan crossovers
+  cinnamon: ["indian", "middle-eastern", "moroccan", "mexican"],
+  nutmeg: ["indian", "european"],
+  cardamom: ["indian", "middle-eastern"],
+  anise: ["mediterranean", "indian", "chinese"],
+
+  // East Asian
+  horseradish: ["japanese", "eastern-european"],
+
+  // American (regional)
+  pecan: ["american"],
+  bourbon: ["american"],
+  "butternut-squash": ["american"],
+  cornbread: ["american"],
+  grits: ["american"],
+
+  // British / Northern European
+  rhubarb: ["british", "scandinavian"],
+  "brussels-sprout": ["european", "british"],
+
+  // Mexican / Latin American (chocolate's origin is Mesoamerican)
+  chocolate: ["mexican", "french", "italian"],
 };
 
 const data = JSON.parse(fs.readFileSync(file, "utf8"));

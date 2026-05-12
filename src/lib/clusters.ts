@@ -27,6 +27,22 @@ const ingredientBySlug = new Map<string, Ingredient>(
 
 export type LabelKind = "cuisine" | "category" | "anchor" | "mixed";
 
+/** Shared color palette for cluster identity. Used to underline chips and
+ *  outline cluster cards so the user can visually connect them. Limited to 6
+ *  hues — a 7th cluster wraps. The first (pear green) matches the brand. */
+export const CLUSTER_PALETTE = [
+  "#1A7F37", // pear green
+  "#B45309", // amber
+  "#2563EB", // blue
+  "#BE185D", // rose
+  "#7C3AED", // violet
+  "#0F766E", // teal
+];
+
+export function clusterColor(index: number): string {
+  return CLUSTER_PALETTE[index % CLUSTER_PALETTE.length];
+}
+
 export interface IngredientCluster {
   id: string;
   /** Selected slugs that anchor this direction. */
@@ -418,16 +434,19 @@ export function analyzeSelection(
 ): SelectionAnalysis {
   if (selectedSlugs.length === 0) return { clusters: [], outliers: [] };
 
-  // Compute outliers BEFORE clustering: an ingredient with no strong edge to
-  // anything else is an outlier regardless of grouping outcome.
+  // Outliers are defined relative to OTHER ingredients in the selection — a
+  // lone ingredient has nothing to be out of place against, so skip detection
+  // when there's only one.
   const outliers: string[] = [];
-  for (const s of selectedSlugs) {
-    let maxEdge = 0;
-    for (const o of selectedSlugs) {
-      if (o === s) continue;
-      maxEdge = Math.max(maxEdge, edgeWeight(s, o));
+  if (selectedSlugs.length >= 2) {
+    for (const s of selectedSlugs) {
+      let maxEdge = 0;
+      for (const o of selectedSlugs) {
+        if (o === s) continue;
+        maxEdge = Math.max(maxEdge, edgeWeight(s, o));
+      }
+      if (maxEdge < OUTLIER_THRESHOLD) outliers.push(s);
     }
-    if (maxEdge < OUTLIER_THRESHOLD) outliers.push(s);
   }
 
   // Cluster the non-outliers. Outliers don't participate; that keeps weak

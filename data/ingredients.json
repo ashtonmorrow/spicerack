@@ -142,6 +142,10 @@
           "slug": "arugula",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "french",
+        "italian"
       ]
     },
     {
@@ -1019,6 +1023,9 @@
           "slug": "ginger",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "american"
       ]
     },
     {
@@ -1459,6 +1466,10 @@
           "slug": "arugula",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "italian",
+        "mediterranean"
       ]
     },
     {
@@ -1494,6 +1505,9 @@
           "slug": "fig",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "italian"
       ]
     },
     {
@@ -2313,6 +2327,11 @@
           "slug": "honey",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "french",
+        "italian",
+        "mediterranean"
       ]
     },
     {
@@ -2356,6 +2375,10 @@
           "slug": "carrot",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "french",
+        "mediterranean"
       ]
     },
     {
@@ -2391,6 +2414,10 @@
           "slug": "bean-white",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "french",
+        "italian"
       ]
     },
     {
@@ -2522,6 +2549,9 @@
           "slug": "goat-cheese",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "french"
       ]
     },
     {
@@ -2549,6 +2579,11 @@
           "slug": "bean-white",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "french",
+        "indian",
+        "mediterranean"
       ]
     },
     {
@@ -2678,6 +2713,11 @@
           "slug": "egg",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "hungarian",
+        "moroccan",
+        "spanish"
       ]
     },
     {
@@ -2717,6 +2757,12 @@
           "slug": "orange",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "indian",
+        "mexican",
+        "middle-eastern",
+        "moroccan"
       ]
     },
     {
@@ -2748,6 +2794,10 @@
           "slug": "milk",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "european",
+        "indian"
       ]
     },
     {
@@ -3239,6 +3289,10 @@
           "slug": "walnut",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "french",
+        "mediterranean"
       ]
     },
     {
@@ -3270,6 +3324,11 @@
           "slug": "apple",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "british",
+        "french",
+        "italian"
       ]
     },
     {
@@ -3769,6 +3828,9 @@
           "slug": "chocolate",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "american"
       ]
     },
     {
@@ -4280,6 +4342,11 @@
           "slug": "duck",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "italian",
+        "mediterranean",
+        "middle-eastern"
       ]
     },
     {
@@ -4401,6 +4468,11 @@
           "slug": "cherry",
           "strength": 3
         }
+      ],
+      "cuisines": [
+        "french",
+        "italian",
+        "mexican"
       ]
     },
     {
@@ -4455,6 +4527,10 @@
           "slug": "maple-syrup",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "british",
+        "european"
       ]
     },
     {
@@ -4504,6 +4580,10 @@
           "slug": "beet",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "eastern-european",
+        "japanese"
       ]
     },
     {
@@ -4695,6 +4775,10 @@
           "slug": "mint",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "italian",
+        "mediterranean"
       ]
     },
     {
@@ -4725,6 +4809,10 @@
           "slug": "honey",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "british",
+        "scandinavian"
       ]
     },
     {
@@ -4771,6 +4859,11 @@
           "slug": "fish-white",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "chinese",
+        "indian",
+        "mediterranean"
       ]
     },
     {
@@ -5003,6 +5096,9 @@
           "slug": "vanilla",
           "strength": 2
         }
+      ],
+      "cuisines": [
+        "american"
       ]
     },
     {

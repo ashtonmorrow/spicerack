@@ -2,6 +2,7 @@
 // Loads the seed once, builds in-memory indexes for fast prefix search.
 
 import seed from "../../data/ingredients.json";
+import { sharedCompounds, hasCompoundProfile } from "./compounds";
 import type {
   AnchorSuggestion,
   Ingredient,
@@ -127,10 +128,12 @@ export class JsonIngredientRepository implements IngredientRepository {
     exclude.add(outlierSlug);
 
     const out: AnchorSuggestion[] = [];
+    const seen = new Set<string>();
     for (const p of outlier.pairings) {
-      if (exclude.has(p.slug)) continue;
+      if (exclude.has(p.slug) || seen.has(p.slug)) continue;
       const cand = this.bySlug.get(p.slug);
       if (!cand) continue;
+      seen.add(p.slug);
       // Bridge strength: how much does this candidate also pair with other
       // ingredients the user has? Higher = more cohesive merge.
       let bridge = 0;
@@ -144,6 +147,47 @@ export class JsonIngredientRepository implements IngredientRepository {
         bridgeStrength: bridge,
         score: p.strength + 0.5 * bridge,
       });
+    }
+
+    // Chemistry fallback: when the outlier has few hand-curated pairings
+    // (caramel, harissa, miso, etc.), supplement with high shared-compound
+    // candidates so anchor suggestions don't go empty. Each chemistry-derived
+    // anchor is scored at 80% of an equivalent curated pairing — the curated
+    // graph is the more reliable signal but chemistry is meaningful when the
+    // graph is thin.
+    if (out.length < limit && hasCompoundProfile(outlierSlug)) {
+      const CHEM_MIN_SHARED = 8; // need at least 8 shared compounds to surface
+      const chemCandidates: { slug: string; shared: number }[] = [];
+      for (const cand of this.all) {
+        if (exclude.has(cand.slug) || seen.has(cand.slug)) continue;
+        if (!hasCompoundProfile(cand.slug)) continue;
+        const shared = sharedCompounds(outlierSlug, cand.slug);
+        if (shared >= CHEM_MIN_SHARED) {
+          chemCandidates.push({ slug: cand.slug, shared });
+        }
+      }
+      chemCandidates.sort((a, b) => b.shared - a.shared);
+      for (const c of chemCandidates) {
+        if (out.length >= limit * 2) break;
+        const cand = this.bySlug.get(c.slug);
+        if (!cand) continue;
+        // Bridge strength via curated pairings still helps.
+        let bridge = 0;
+        for (const cp of cand.pairings) {
+          if (cp.slug === outlierSlug) continue;
+          if (exclude.has(cp.slug)) bridge += cp.strength;
+        }
+        // Map shared-compound count onto the same 1–3 strength scale used by
+        // curated pairings: 8–14 ≈ 1, 15–24 ≈ 2, 25+ ≈ 3. Then discount 20%
+        // for being chemistry-only.
+        const strengthEquiv = c.shared >= 25 ? 3 : c.shared >= 15 ? 2 : 1;
+        out.push({
+          ingredient: toSummary(cand),
+          baseStrength: strengthEquiv * 0.8,
+          bridgeStrength: bridge,
+          score: strengthEquiv * 0.8 + 0.5 * bridge,
+        });
+      }
     }
 
     return out

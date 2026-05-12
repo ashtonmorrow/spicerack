@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { AnchorSuggestion, IngredientSummary } from "@/lib/types";
 import type { IngredientCluster, SelectionAnalysis } from "@/lib/clusters";
-import { shouldShowClusters } from "@/lib/clusters";
+import { clusterColor, shouldShowClusters } from "@/lib/clusters";
 
 interface Props {
   analysis: SelectionAnalysis;
@@ -88,10 +88,13 @@ export function ClusterStrip({
       </header>
 
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {clusters.map((c) => (
+        {clusters.map((c, i) => (
           <ClusterCard
             key={c.id}
             cluster={c}
+            // Show colored accent only when there are 2+ clusters — matches
+            // the chip-underline rule so the visual cues agree.
+            accentColor={clusters.length >= 2 ? clusterColor(i) : undefined}
             ingredientLookup={ingredientLookup}
             active={activeClusterId === c.id}
             onClick={() =>
@@ -171,18 +174,26 @@ export function ClusterStrip({
 function ClusterCard({
   cluster,
   ingredientLookup,
+  accentColor,
   active,
   onClick,
 }: {
   cluster: IngredientCluster;
   ingredientLookup: Map<string, IngredientSummary>;
+  accentColor?: string;
   active: boolean;
   onClick: () => void;
 }) {
   const recipeCount = cluster.recipes.length;
+  // Active state takes pear-green border; inactive takes the cluster accent
+  // as a left border so the card visually mirrors the chip underline color.
+  const style = !active && accentColor
+    ? { borderLeft: `3px solid ${accentColor}`, paddingLeft: "calc(0.75rem - 2px)" }
+    : undefined;
   return (
     <button
       onClick={onClick}
+      style={style}
       className={`text-left rounded-md p-3 transition w-full ${
         active
           ? "border-2 border-pear bg-pear/5"

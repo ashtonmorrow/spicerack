@@ -15,8 +15,11 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "validate": "node scripts/validate.mjs",
+    "test": "node scripts/test-clusters.mjs",
     "preview": "node scripts/build-preview.mjs",
-    "fetch:themealdb": "node scripts/fetch-themealdb.mjs"
+    "fetch:themealdb": "node scripts/fetch-themealdb.mjs",
+    "fetch:themealdb-courses": "node scripts/fetch-themealdb-courses.mjs",
+    "retag:courses": "node scripts/retag-courses.mjs"
   },
   "dependencies": {
     "next": "14.2.5",

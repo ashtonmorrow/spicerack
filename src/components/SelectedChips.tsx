@@ -12,6 +12,11 @@ interface Props {
   /** Slugs that aren't part of the active cluster filter. Rendered dimmed so
    *  the user can see what's outside their current focus. */
   dimmedSlugs?: Set<string>;
+  /** slug → CSS color for the cluster the slug belongs to. Renders as a thin
+   *  underline so the user can see the partition at chip level. */
+  clusterColorBySlug?: Map<string, string>;
+  /** slug → label of its cluster — used as part of the chip tooltip. */
+  clusterLabelBySlug?: Map<string, string>;
 }
 
 // Renders chips inline (no outer wrapper) so it can share a flex row with
@@ -23,6 +28,8 @@ export function SelectedChips({
   onClear,
   outlierSlugs,
   dimmedSlugs,
+  clusterColorBySlug,
+  clusterLabelBySlug,
 }: Props) {
   if (selected.length === 0) {
     return (
@@ -36,18 +43,29 @@ export function SelectedChips({
       {selected.map((s) => {
         const isOutlier = outlierSlugs?.has(s.slug);
         const isDimmed = dimmedSlugs?.has(s.slug);
+        const clusterColor = clusterColorBySlug?.get(s.slug);
+        const clusterLabel = clusterLabelBySlug?.get(s.slug);
         const base = `group flex items-center gap-1.5 px-2.5 py-1 rounded text-sm transition`;
         const cls = isOutlier
           ? `${base} border border-dashed border-muted/50 bg-bg text-muted hover:bg-hover`
           : `${base} cat-${s.category} hover:brightness-95 ${isDimmed ? "opacity-40" : ""}`;
         const title = isOutlier
           ? "Doesn't fit any current dish direction — try removing or adding more anchor ingredients"
-          : "Remove";
+          : clusterLabel
+            ? `In direction: ${clusterLabel} — click to remove`
+            : "Remove";
+        // Underline keyed to cluster color, via inset shadow so it doesn't
+        // disturb the chip's rounded geometry.
+        const style =
+          clusterColor && !isOutlier
+            ? { boxShadow: `inset 0 -2px 0 ${clusterColor}` }
+            : undefined;
         return (
           <button
             key={s.slug}
             onClick={() => onRemove(s.slug)}
             className={cls}
+            style={style}
             title={title}
           >
             <span>{s.name}</span>
