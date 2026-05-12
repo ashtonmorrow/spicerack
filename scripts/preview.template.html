@@ -307,6 +307,22 @@
   .modal .pin-action.pinned { color: var(--pear); background: rgba(26, 127, 55, .1); }
   .modal .pin-action.pinned:hover { background: rgba(26, 127, 55, .15); }
 
+  /* Seasonal nudge (in-season ingredients) */
+  .seasonal-nudge { margin: 1.5rem 0 .5rem; }
+  .seasonal-head { display: flex; align-items: baseline; gap: .5rem; margin-bottom: .5rem; flex-wrap: wrap; }
+  .seasonal-head h2 {
+    text-transform: uppercase; font-size: .68rem; letter-spacing: .08em;
+    color: var(--muted); margin: 0; font-weight: 500;
+  }
+  .seasonal-hint { font-size: .68rem; color: rgba(120, 119, 116, .8); }
+  .seasonal-chips { display: flex; flex-wrap: wrap; gap: .375rem; }
+  .seasonal-chips button {
+    border: none; cursor: pointer; font-family: inherit;
+    font-size: .72rem; padding: .15rem .5rem; border-radius: .2rem;
+    transition: filter .12s;
+  }
+  .seasonal-chips button:hover { filter: brightness(.95); }
+
   /* Quick-start (empty-state seed combos) */
   .quick-start { margin: 1.5rem 0 2.5rem; }
   .qs-head h2 {
@@ -469,6 +485,14 @@
            autocomplete="off" spellcheck="false" autofocus />
     <div id="dropdown" class="dropdown hidden"></div>
   </div>
+
+  <section id="seasonal-nudge" class="seasonal-nudge hidden">
+    <header class="seasonal-head">
+      <h2 id="seasonal-title"></h2>
+      <span class="seasonal-hint">click to start with one</span>
+    </header>
+    <div id="seasonal-chips" class="seasonal-chips"></div>
+  </section>
 
   <section id="quick-start" class="quick-start hidden">
     <header class="qs-head">
@@ -1135,6 +1159,9 @@ const panelEl = document.getElementById("panel");
 const mainAreaEl = document.getElementById("main-area");
 const quickStartEl = document.getElementById("quick-start");
 const quickStartGridEl = document.getElementById("qs-grid");
+const seasonalNudgeEl = document.getElementById("seasonal-nudge");
+const seasonalTitleEl = document.getElementById("seasonal-title");
+const seasonalChipsEl = document.getElementById("seasonal-chips");
 const clusterStripEl = document.getElementById("cluster-strip");
 const clusterTitleEl = document.getElementById("cluster-title");
 const clusterClearEl = document.getElementById("cluster-clear");
@@ -1248,6 +1275,52 @@ const STARTERS = [
   { id: "cheese-board", name: "Cheese board", note: "Sweet + savory pairing",
     slugs: ["pear","blue-cheese","walnut","honey","arugula"] },
 ];
+
+// --- Seasonal nudge ---------------------------------------------------------
+// Surface ingredients tagged with the current Northern-hemisphere season.
+const SEASON_COPY = {
+  spring: { label: "In season this spring", glyph: "🌱" },
+  summer: { label: "In season this summer", glyph: "☀️" },
+  fall:   { label: "In season this fall",   glyph: "🍂" },
+  winter: { label: "In season this winter", glyph: "❄️" },
+};
+function currentSeason(now = new Date()) {
+  const m = now.getMonth() + 1;
+  if (m >= 3 && m <= 5) return "spring";
+  if (m >= 6 && m <= 8) return "summer";
+  if (m >= 9 && m <= 11) return "fall";
+  return "winter";
+}
+function renderSeasonalNudge() {
+  if (state.selected.length > 0) {
+    seasonalNudgeEl.classList.add("hidden");
+    return;
+  }
+  const season = currentSeason();
+  const items = INGREDIENTS.ingredients
+    .filter(i => i.seasons && i.seasons.includes(season))
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .slice(0, 10);
+  if (items.length === 0) {
+    seasonalNudgeEl.classList.add("hidden");
+    return;
+  }
+  const copy = SEASON_COPY[season] || { label: "In season now", glyph: "🌱" };
+  seasonalNudgeEl.classList.remove("hidden");
+  seasonalTitleEl.innerHTML = `<span aria-hidden="true">${copy.glyph}</span> ${escape(copy.label)}`;
+  seasonalChipsEl.innerHTML = items.map(i =>
+    `<button class="cat-${i.category}" data-slug="${i.slug}" title="Add ${escape(i.name)} — peaks ${season}">${escape(i.name)}</button>`
+  ).join("");
+  seasonalChipsEl.querySelectorAll("button").forEach(b => {
+    b.onclick = () => {
+      const ing = bySlug.get(b.dataset.slug);
+      if (ing) {
+        state.selected.push({ slug: ing.slug, name: ing.name, category: ing.category });
+        renderAll();
+      }
+    };
+  });
+}
 
 function renderQuickStart() {
   // Show only at empty-state — disappears the moment the user adds anything.
@@ -2188,6 +2261,7 @@ function renderAll() {
   renderClusterStrip();
   renderAlternates();
   renderSelected();
+  renderSeasonalNudge();
   renderQuickStart();
   renderPanel();
   renderSavedCombos();

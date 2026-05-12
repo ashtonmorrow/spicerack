@@ -10,7 +10,7 @@ import type {
   PairingStrength,
   ScoredPairing,
 } from "./types";
-import type { IngredientRepository } from "./repository";
+import type { IngredientRepository, Season } from "./repository";
 
 interface SeedShape {
   ingredients: Ingredient[];
@@ -198,6 +198,14 @@ export class JsonIngredientRepository implements IngredientRepository {
           b.baseStrength - a.baseStrength
       )
       .slice(0, limit);
+  }
+
+  async inSeason(season: Season, limit = 12): Promise<IngredientSummary[]> {
+    return this.all
+      .filter((i) => i.seasons?.includes(season))
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .slice(0, limit)
+      .map((i) => toSummary(i));
   }
 }
 

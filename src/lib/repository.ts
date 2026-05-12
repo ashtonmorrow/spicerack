@@ -9,6 +9,8 @@ import type {
   ScoredPairing,
 } from "./types";
 
+export type Season = "spring" | "summer" | "fall" | "winter";
+
 export interface IngredientRepository {
   getBySlug(slug: string): Promise<Ingredient | null>;
   search(query: string, limit?: number): Promise<IngredientSummary[]>;
@@ -21,6 +23,10 @@ export interface IngredientRepository {
     selectionSlugs: string[],
     limit?: number
   ): Promise<AnchorSuggestion[]>;
+  /** Ingredients that peak in the given season. Ordered by name for stable
+   *  display. Tagging is sparse — only ingredients with clear seasonal peaks
+   *  are tagged; pantry staples (onion, garlic, butter) intentionally aren't. */
+  inSeason(season: Season, limit?: number): Promise<IngredientSummary[]>;
 }
 
 // Singleton accessor — swap implementations here.

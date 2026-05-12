@@ -19,7 +19,9 @@
     "preview": "node scripts/build-preview.mjs",
     "fetch:themealdb": "node scripts/fetch-themealdb.mjs",
     "fetch:themealdb-courses": "node scripts/fetch-themealdb-courses.mjs",
-    "retag:courses": "node scripts/retag-courses.mjs"
+    "retag:courses": "node scripts/retag-courses.mjs",
+    "tag:cuisines": "node scripts/tag-cuisines.mjs",
+    "tag:seasons": "node scripts/tag-seasons.mjs"
   },
   "dependencies": {
     "next": "14.2.5",

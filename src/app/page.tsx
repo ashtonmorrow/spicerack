@@ -15,6 +15,7 @@ import { ClusterStrip } from "@/components/ClusterStrip";
 import { AlternateDirections } from "@/components/AlternateDirections";
 import { MergeBanner } from "@/components/MergeBanner";
 import { QuickStart } from "@/components/QuickStart";
+import { SeasonalNudge } from "@/components/SeasonalNudge";
 import { Footer } from "@/components/Footer";
 import { analyzeSelection, clusterColor, findAlternates } from "@/lib/clusters";
 import type { IngredientSummary, ScoredRecipe } from "@/lib/types";
@@ -210,9 +211,15 @@ function Home() {
         />
       </div>
 
-      {/* Empty state: curated quick-start cards. Hidden the moment the user
-          adds anything so it doesn't compete with the main panels. */}
-      {!hasSelection && <QuickStart onLoad={loadIngredients} />}
+      {/* Empty state: in-season nudge + curated quick-start cards. Hidden
+          the moment the user adds anything so they don't compete with the
+          main panels. */}
+      {!hasSelection && (
+        <>
+          <SeasonalNudge onAdd={add} />
+          <QuickStart onLoad={loadIngredients} />
+        </>
+      )}
 
       <div className="mb-6 min-h-[2rem] flex flex-wrap items-center gap-1.5">
         <SelectedChips

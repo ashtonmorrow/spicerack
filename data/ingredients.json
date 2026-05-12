@@ -217,6 +217,9 @@
           "slug": "artichoke",
           "strength": 2
         }
+      ],
+      "seasons": [
+        "winter"
       ]
     },
     {
@@ -320,6 +323,9 @@
           "slug": "beet",
           "strength": 2
         }
+      ],
+      "seasons": [
+        "winter"
       ]
     },
     {
@@ -456,6 +462,9 @@
           "slug": "mint",
           "strength": 2
         }
+      ],
+      "seasons": [
+        "summer"
       ]
     },
     {
@@ -867,6 +876,10 @@
           "slug": "maple-syrup",
           "strength": 2
         }
+      ],
+      "seasons": [
+        "fall",
+        "winter"
       ]
     },
     {
@@ -926,6 +939,10 @@
           "slug": "dill",
           "strength": 2
         }
+      ],
+      "seasons": [
+        "fall",
+        "winter"
       ]
     },
     {
@@ -972,6 +989,10 @@
       ],
       "cuisines": [
         "american"
+      ],
+      "seasons": [
+        "fall",
+        "winter"
       ]
     },
     {
@@ -1167,6 +1188,10 @@
           "slug": "almond",
           "strength": 2
         }
+      ],
+      "seasons": [
+        "fall",
+        "winter"
       ]
     },
     {
@@ -1206,6 +1231,10 @@
           "slug": "anchovy",
           "strength": 2
         }
+      ],
+      "seasons": [
+        "fall",
+        "winter"
       ]
     },
     {
@@ -1300,6 +1329,9 @@
           "slug": "miso",
           "strength": 2
         }
+      ],
+      "seasons": [
+        "summer"
       ]
     },
     {
@@ -1427,6 +1459,9 @@
           "slug": "arugula",
           "strength": 2
         }
+      ],
+      "seasons": [
+        "fall"
       ]
     },
     {
@@ -1470,6 +1505,10 @@
       "cuisines": [
         "italian",
         "mediterranean"
+      ],
+      "seasons": [
+        "fall",
+        "winter"
       ]
     },
     {
@@ -1547,6 +1586,9 @@
       "cuisines": [
         "greek",
         "middle-eastern"
+      ],
+      "seasons": [
+        "summer"
       ]
     },
     {
@@ -1582,6 +1624,10 @@
           "slug": "mustard",
           "strength": 2
         }
+      ],
+      "seasons": [
+        "fall",
+        "winter"
       ]
     },
     {
@@ -2165,6 +2211,9 @@
           "slug": "coconut-milk",
           "strength": 2
         }
+      ],
+      "seasons": [
+        "summer"
       ]
     },
     {
@@ -2288,6 +2337,10 @@
       "cuisines": [
         "greek",
         "middle-eastern"
+      ],
+      "seasons": [
+        "spring",
+        "summer"
       ]
     },
     {
@@ -4429,6 +4482,10 @@
       ],
       "cuisines": [
         "middle-eastern"
+      ],
+      "seasons": [
+        "fall",
+        "winter"
       ]
     },
     {
@@ -4531,6 +4588,10 @@
       "cuisines": [
         "british",
         "european"
+      ],
+      "seasons": [
+        "fall",
+        "winter"
       ]
     },
     {
