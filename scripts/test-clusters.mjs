@@ -334,6 +334,99 @@ test("unrelated ingredients give low edge weight", () => {
   assert.ok(w < OUTLIER_THRESHOLD, `tomato↔caramel should be below outlier threshold (${OUTLIER_THRESHOLD}); got ${w.toFixed(3)}`);
 });
 
+// --- findAlternates tests ----------------------------------------------------
+// findAlternates needs the actual recipe data and matcher logic; we mirror
+// the minimum needed to exercise its behavior on real selections.
+const recipesCurated = JSON.parse(
+  fs.readFileSync(path.join(root, "data", "recipes.json"), "utf8")
+).recipes;
+const recipesMdb = JSON.parse(
+  fs.readFileSync(path.join(root, "data", "recipes-themealdb.json"), "utf8")
+).recipes;
+const ALL_RECIPES = [...recipesCurated, ...recipesMdb];
+
+function matchRecipes(slugs, opts = {}) {
+  if (!slugs.length) return [];
+  const sel = new Set(slugs);
+  const minMatched = opts.minMatched ?? (slugs.length >= 6 ? 3 : slugs.length >= 3 ? 2 : 1);
+  const scored = [];
+  for (const r of ALL_RECIPES) {
+    const matchedRequired = r.required.filter((s) => sel.has(s));
+    if (matchedRequired.length < minMatched) continue;
+    const missingRequired = r.required.filter((s) => !sel.has(s));
+    const matchedOptional = (r.optional || []).filter((s) => sel.has(s));
+    const coverage = matchedRequired.length / r.required.length;
+    const score = coverage * coverage * matchedRequired.length + 0.15 * matchedOptional.length;
+    scored.push({ recipe: r, score, matchedRequired, missingRequired, matchedOptional, coverage });
+  }
+  scored.sort((a, b) => b.score - a.score);
+  return scored;
+}
+
+// Mirror of lib/clusters.ts findAlternates.
+function findAlternates(broadMatches, clusters, limit = 4) {
+  if (!broadMatches.length) return [];
+  const clusterSets = clusters.map((c) => new Set(c));
+  function isCovered(m) {
+    const matchSet = new Set(m.matchedRequired);
+    for (const cs of clusterSets) {
+      let inter = 0;
+      for (const s of matchSet) if (cs.has(s)) inter++;
+      const union = matchSet.size + cs.size - inter;
+      const sim = union > 0 ? inter / union : 0;
+      if (sim >= 0.4) return true;
+    }
+    return false;
+  }
+  const candidates = broadMatches.filter(
+    (m) => m.missingRequired.length >= 1 && m.missingRequired.length <= 4 && !isCovered(m)
+  );
+  candidates.sort((a, b) => {
+    const sa = a.coverage * a.matchedRequired.length - 0.15 * a.missingRequired.length;
+    const sb = b.coverage * b.matchedRequired.length - 0.15 * b.missingRequired.length;
+    return sb - sa || b.score - a.score;
+  });
+  return candidates.slice(0, limit);
+}
+
+console.log("\nfindAlternates:");
+test("empty broad matches → empty result", () => {
+  assert.deepEqual(findAlternates([], []), []);
+});
+test("returns recipes not already represented by existing clusters", () => {
+  // A coherent Italian selection where the recipe corpus has things like
+  // Aglio e Olio (pasta + garlic + olive oil + chili) the user is partway to.
+  const sel = ["pasta", "garlic", "olive-oil", "chili"];
+  const broad = matchRecipes(sel, { minMatched: 2 });
+  const analysis = analyzeSelection(sel);
+  const alts = findAlternates(broad, analysis.clusters, 4);
+  // Should not crash; should return some candidates.
+  assert.ok(Array.isArray(alts), "should return an array");
+  for (const a of alts) {
+    assert.ok(a.missingRequired.length >= 1, "each alternate should have at least one missing ingredient");
+    assert.ok(a.missingRequired.length <= 4, "each alternate should be ≤4 ingredients away");
+  }
+});
+test("respects the 4-missing cap", () => {
+  const sel = ["chicken"];
+  const broad = matchRecipes(sel, { minMatched: 1 });
+  const analysis = analyzeSelection(sel);
+  const alts = findAlternates(broad, analysis.clusters, 10);
+  for (const a of alts) {
+    assert.ok(
+      a.missingRequired.length <= 4,
+      `alternate ${a.recipe.name} has ${a.missingRequired.length} missing — should be ≤4`
+    );
+  }
+});
+test("limit parameter is respected", () => {
+  const sel = ["chicken", "garlic"];
+  const broad = matchRecipes(sel, { minMatched: 1 });
+  const analysis = analyzeSelection(sel);
+  const alts = findAlternates(broad, analysis.clusters, 3);
+  assert.ok(alts.length <= 3, `requested limit 3, got ${alts.length}`);
+});
+
 console.log(`\n${passed} passed · ${failed} failed`);
 if (failed > 0) {
   console.log("\nFailures:");

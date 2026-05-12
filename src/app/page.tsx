@@ -14,6 +14,7 @@ import { SavedRecipes } from "@/components/SavedRecipes";
 import { ClusterStrip } from "@/components/ClusterStrip";
 import { AlternateDirections } from "@/components/AlternateDirections";
 import { MergeBanner } from "@/components/MergeBanner";
+import { QuickStart } from "@/components/QuickStart";
 import { Footer } from "@/components/Footer";
 import { analyzeSelection, clusterColor, findAlternates } from "@/lib/clusters";
 import type { IngredientSummary, ScoredRecipe } from "@/lib/types";
@@ -208,6 +209,10 @@ function Home() {
           excludeSlugs={selected.map((s) => s.slug)}
         />
       </div>
+
+      {/* Empty state: curated quick-start cards. Hidden the moment the user
+          adds anything so it doesn't compete with the main panels. */}
+      {!hasSelection && <QuickStart onLoad={loadIngredients} />}
 
       <div className="mb-6 min-h-[2rem] flex flex-wrap items-center gap-1.5">
         <SelectedChips

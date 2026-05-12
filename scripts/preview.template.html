@@ -307,6 +307,29 @@
   .modal .pin-action.pinned { color: var(--pear); background: rgba(26, 127, 55, .1); }
   .modal .pin-action.pinned:hover { background: rgba(26, 127, 55, .15); }
 
+  /* Quick-start (empty-state seed combos) */
+  .quick-start { margin: 1.5rem 0 2.5rem; }
+  .qs-head h2 {
+    text-transform: uppercase; font-size: .68rem; letter-spacing: .08em;
+    color: var(--muted); margin: 0 0 .5rem; font-weight: 500;
+  }
+  .qs-grid { display: grid; gap: .5rem; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .qs-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .qs-grid { grid-template-columns: repeat(4, 1fr); } }
+  .qs-card {
+    text-align: left; background: none; border: 1px solid var(--border);
+    border-radius: .375rem; padding: .75rem; cursor: pointer; font-family: inherit;
+    transition: background .12s, border-color .12s;
+  }
+  .qs-card:hover { background: rgba(247, 246, 243, 0.6); border-color: rgba(120, 119, 116, .3); }
+  .qs-card:disabled { opacity: .5; cursor: progress; }
+  .qs-card .qs-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; margin-bottom: .25rem; }
+  .qs-card .qs-name { font-weight: 500; font-size: .85rem; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .qs-card .qs-count { font-size: .65rem; color: var(--muted); flex-shrink: 0; }
+  .qs-card .qs-note { font-size: .68rem; color: var(--muted); margin-bottom: .5rem; }
+  .qs-card .qs-chips { display: flex; flex-wrap: wrap; gap: .25rem; }
+  .qs-card .qs-chips .cat-label { font-size: .65rem; padding: .075rem .375rem; border-radius: .2rem; }
+
   /* Cluster strip */
   .cluster-strip { margin: 0 0 1.5rem; }
   .cluster-head { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; margin-bottom: .5rem; }
@@ -446,6 +469,13 @@
            autocomplete="off" spellcheck="false" autofocus />
     <div id="dropdown" class="dropdown hidden"></div>
   </div>
+
+  <section id="quick-start" class="quick-start hidden">
+    <header class="qs-head">
+      <h2>Or pick a starting point</h2>
+    </header>
+    <div id="qs-grid" class="qs-grid"></div>
+  </section>
 
   <div id="selected" class="selected">
     <span class="empty">Pick an ingredient to begin — the more you add, the smarter the suggestions.</span>
@@ -1103,6 +1133,8 @@ const ddEl = document.getElementById("dropdown");
 const selectedEl = document.getElementById("selected");
 const panelEl = document.getElementById("panel");
 const mainAreaEl = document.getElementById("main-area");
+const quickStartEl = document.getElementById("quick-start");
+const quickStartGridEl = document.getElementById("qs-grid");
 const clusterStripEl = document.getElementById("cluster-strip");
 const clusterTitleEl = document.getElementById("cluster-title");
 const clusterClearEl = document.getElementById("cluster-clear");
@@ -1191,6 +1223,71 @@ function renderDropdown() {
   ddEl.querySelectorAll("li").forEach(li => {
     li.onmouseenter = () => { state.highlight = +li.dataset.i; renderDropdown(); };
     li.onmousedown = e => { e.preventDefault(); pick(state.items[+li.dataset.i]); };
+  });
+}
+
+// --- Quick-start (empty-state seed combos) -----------------------------------
+// Hand-curated starting points spanning cuisines. Each one is a 4–5 ingredient
+// seed that's a real dish so the app's intelligence (clusters, pairings,
+// recipes) reveals itself immediately on click.
+const STARTERS = [
+  { id: "caprese", name: "Caprese", note: "Italian summer classic",
+    slugs: ["tomato","basil","mozzarella","olive-oil"] },
+  { id: "scandi-salmon", name: "Scandi salmon", note: "Nordic plate",
+    slugs: ["salmon","dill","lemon","butter"] },
+  { id: "thai-shrimp", name: "Thai shrimp", note: "Lemongrass-lime base",
+    slugs: ["shrimp","lemongrass","lime","chili","garlic"] },
+  { id: "apple-pie", name: "Apple pie", note: "Sweet pantry pull",
+    slugs: ["apple","cinnamon","butter","sugar","nutmeg"] },
+  { id: "japanese-base", name: "Japanese base", note: "Umami foundation",
+    slugs: ["miso","ginger","scallion","sesame-oil","soy-sauce"] },
+  { id: "med-lamb", name: "Mediterranean lamb", note: "Greek leaning",
+    slugs: ["lamb","yogurt","mint","cumin","lemon"] },
+  { id: "french-chicken", name: "French roast chicken", note: "Herb butter plate",
+    slugs: ["chicken","thyme","garlic","butter","lemon"] },
+  { id: "cheese-board", name: "Cheese board", note: "Sweet + savory pairing",
+    slugs: ["pear","blue-cheese","walnut","honey","arugula"] },
+];
+
+function renderQuickStart() {
+  // Show only at empty-state — disappears the moment the user adds anything.
+  if (state.selected.length > 0) {
+    quickStartEl.classList.add("hidden");
+    return;
+  }
+  quickStartEl.classList.remove("hidden");
+  quickStartGridEl.innerHTML = STARTERS.map(s => {
+    const chips = s.slugs.map(slug => {
+      const ing = bySlug.get(slug);
+      const cat = ing ? ing.category : "pantry";
+      const name = ing ? ing.name : prettySlug(slug);
+      return `<span class="cat-label cat-${cat}">${escape(name)}</span>`;
+    }).join("");
+    return `<button class="qs-card" data-id="${s.id}" title="Load ${s.slugs.length} ingredients — ${escape(s.note)}">
+      <div class="qs-title-row">
+        <span class="qs-name">${escape(s.name)}</span>
+        <span class="qs-count">${s.slugs.length}</span>
+      </div>
+      <div class="qs-note">${escape(s.note)}</div>
+      <div class="qs-chips">${chips}</div>
+    </button>`;
+  }).join("");
+  quickStartGridEl.querySelectorAll(".qs-card").forEach(btn => {
+    btn.onclick = () => {
+      const id = btn.dataset.id;
+      const starter = STARTERS.find(s => s.id === id);
+      if (!starter) return;
+      const loaded = [];
+      for (const slug of starter.slugs) {
+        const ing = bySlug.get(slug);
+        if (ing) loaded.push({ slug: ing.slug, name: ing.name, category: ing.category });
+      }
+      if (loaded.length) {
+        state.selected = loaded;
+        state.activeClusterId = null;
+        renderAll();
+      }
+    };
   });
 }
 
@@ -2091,6 +2188,7 @@ function renderAll() {
   renderClusterStrip();
   renderAlternates();
   renderSelected();
+  renderQuickStart();
   renderPanel();
   renderSavedCombos();
   renderSavedRecipes();
