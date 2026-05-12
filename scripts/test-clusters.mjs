@@ -23,6 +23,9 @@ const seed = JSON.parse(
 const compoundData = JSON.parse(
   fs.readFileSync(path.join(root, "data", "compound-data.json"), "utf8")
 );
+const cooccData = JSON.parse(
+  fs.readFileSync(path.join(root, "data", "cooccurrence.json"), "utf8")
+);
 const bySlug = new Map(seed.ingredients.map((i) => [i.slug, i]));
 
 // --- Replicate the algorithm. Kept in sync with src/lib/clusters.ts manually;
@@ -44,10 +47,15 @@ function compoundJaccard(a, b) {
   return inter / (sa.size + sb.size - inter);
 }
 
-const W_PAIR = 1.0, W_CHEM = 0.6, W_CUISINE = 0.3;
+const W_PAIR = 1.0, W_CHEM = 0.6, W_COOC = 0.5, W_CUISINE = 0.3;
 const MERGE_THRESHOLD = 0.34;
 const OUTLIER_THRESHOLD = 0.18;
 const REFINE_EPSILON = 0.05;
+
+function cooccurrenceScore(a, b) {
+  if (a === b) return 0;
+  return cooccData.byIngredient[a]?.[b] ?? 0;
+}
 
 function pairingStrength(a, b) {
   const ia = bySlug.get(a);
@@ -66,7 +74,10 @@ function cuisineOverlap(a, b) {
 function edgeWeight(a, b) {
   if (a === b) return 0;
   const pair = Math.max(pairingStrength(a, b), pairingStrength(b, a));
-  return W_PAIR * pair + W_CHEM * compoundJaccard(a, b) + W_CUISINE * cuisineOverlap(a, b);
+  return W_PAIR * pair
+    + W_CHEM * compoundJaccard(a, b)
+    + W_COOC * cooccurrenceScore(a, b)
+    + W_CUISINE * cuisineOverlap(a, b);
 }
 function ek(a, b) { return a < b ? `${a}|${b}` : `${b}|${a}`; }
 function clusterIngredients(slugs) {
@@ -332,6 +343,13 @@ test("classic pairings give high edge weight", () => {
 test("unrelated ingredients give low edge weight", () => {
   const w = edgeWeight("tomato", "caramel");
   assert.ok(w < OUTLIER_THRESHOLD, `tomato↔caramel should be below outlier threshold (${OUTLIER_THRESHOLD}); got ${w.toFixed(3)}`);
+});
+test("recipe co-occurrence boosts dish-friends with no curated edge", () => {
+  // chicken + garlic appear together constantly in our recipe corpus but
+  // don't share many compounds. The co-occurrence signal should give them a
+  // measurable boost.
+  const cooc = cooccurrenceScore("chicken", "garlic");
+  assert.ok(cooc > 0.2, `chicken↔garlic co-occurrence should be > 0.2; got ${cooc.toFixed(3)}`);
 });
 
 // --- findAlternates tests ----------------------------------------------------

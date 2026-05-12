@@ -18,7 +18,10 @@
   html, body { margin: 0; background: var(--bg); color: var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased; }
-  main { max-width: 64rem; margin: 0 auto; padding: 2.5rem 1.5rem; }
+  main { max-width: 64rem; margin: 0 auto; padding: 1.5rem 1rem; }
+  @media (min-width: 640px) {
+    main { padding: 2.5rem 1.5rem; }
+  }
   .two-col {
     display: grid; gap: 1rem; grid-template-columns: 1fr;
     align-items: start;
@@ -65,6 +68,7 @@
     border: 1px solid var(--border); border-radius: .375rem;
     box-shadow: 0 4px 16px rgba(15, 15, 15, .08);
     overflow: hidden;
+    max-height: 60vh; overflow-y: auto;
   }
   .dropdown .header {
     padding: .5rem 1rem; font-size: .68rem; text-transform: uppercase;
@@ -223,14 +227,17 @@
   /* Modal */
   .overlay {
     position: fixed; inset: 0; background: rgba(0,0,0,.3);
-    display: flex; align-items: center; justify-content: center;
-    padding: 1rem; z-index: 50;
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 1rem; z-index: 50; overflow-y: auto;
   }
+  @media (min-width: 640px) { .overlay { align-items: center; } }
   .modal {
     background: var(--bg); border: 1px solid var(--border);
-    border-radius: .5rem; max-width: 28rem; width: 100%; padding: 1.5rem;
+    border-radius: .5rem; max-width: 28rem; width: 100%; padding: 1.25rem;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .25);
+    margin: 2rem 0;
   }
+  @media (min-width: 640px) { .modal { padding: 1.5rem; } }
   .modal { max-width: 36rem; }
   .modal h2 { font-size: 1.05rem; margin: 0 0 .25rem; font-weight: 600; }
   .modal .desc { font-size: .875rem; color: var(--muted); margin: 0 0 1rem; line-height: 1.4; }
@@ -588,6 +595,7 @@ const DATA = /*__INGREDIENTS_JSON__*/null;
 const RECIPES_CURATED = /*__RECIPES_JSON__*/null;
 const RECIPES_IMPORTED = /*__RECIPES_IMPORTED_JSON__*/null;
 const COMPOUND_DATA = /*__COMPOUND_JSON__*/null;
+const COOCCURRENCE_DATA = /*__COOCCURRENCE_JSON__*/null;
 // Merge: curated comes first; both sets coexist by id.
 const RECIPES = {
   recipes: [
@@ -703,7 +711,14 @@ function matchRecipes(slugs, limit = 20, opts) {
 const CLUSTER_PALETTE = ["#1A7F37", "#B45309", "#2563EB", "#BE185D", "#7C3AED", "#0F766E"];
 const _W_PAIR = 1.0;
 const _W_CHEM = 0.6;
+const _W_COOC = 0.5;
 const _W_CUISINE = 0.3;
+
+function _cooccurrenceScore(a, b) {
+  if (a === b) return 0;
+  const data = (COOCCURRENCE_DATA && COOCCURRENCE_DATA.byIngredient) || {};
+  return data[a]?.[b] ?? 0;
+}
 const _MERGE_THRESHOLD = 0.34;
 const _OUTLIER_THRESHOLD = 0.18;
 const _REFINE_EPSILON = 0.05;
@@ -727,8 +742,9 @@ function _edgeWeight(a, b) {
   if (a === b) return 0;
   const pair = Math.max(_pairingStrength(a, b), _pairingStrength(b, a));
   const chem = compoundJaccard(a, b);
+  const cooc = _cooccurrenceScore(a, b);
   const cui = _cuisineOverlap(a, b);
-  return _W_PAIR * pair + _W_CHEM * chem + _W_CUISINE * cui;
+  return _W_PAIR * pair + _W_CHEM * chem + _W_COOC * cooc + _W_CUISINE * cui;
 }
 function _ek(a, b) { return a < b ? a + "|" + b : b + "|" + a; }
 function _clusterIngredients(slugs) {

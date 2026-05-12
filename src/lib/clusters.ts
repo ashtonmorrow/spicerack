@@ -14,6 +14,7 @@
 
 import seed from "../../data/ingredients.json";
 import { compoundSimilarity } from "./compounds";
+import { cooccurrenceScore } from "./cooccurrence";
 import type { Category, Ingredient, ScoredRecipe } from "./types";
 
 interface SeedShape {
@@ -69,9 +70,13 @@ export interface SelectionAnalysis {
 // Weights are tuned so that:
 //  - a single classic curated pairing (strength=3) alone clears the merge bar
 //  - chemistry alone (no curated link) can still merge if similarity is real
+//  - recipe co-occurrence captures "dish friends" that share dishes but not
+//    necessarily compounds — chicken+garlic show up together constantly but
+//    don't share many volatile compounds
 //  - cuisine alone doesn't merge — it reinforces other signals
 const W_PAIR = 1.0;
 const W_CHEM = 0.6;
+const W_COOC = 0.5;
 const W_CUISINE = 0.3;
 
 // Merge threshold: average-link edge strength required to merge two clusters.
@@ -109,8 +114,9 @@ export function edgeWeight(a: string, b: string): number {
   if (a === b) return 0;
   const pair = Math.max(pairingStrength(a, b), pairingStrength(b, a));
   const chem = compoundSimilarity(a, b);
+  const cooc = cooccurrenceScore(a, b);
   const cui = cuisineOverlap(a, b);
-  return W_PAIR * pair + W_CHEM * chem + W_CUISINE * cui;
+  return W_PAIR * pair + W_CHEM * chem + W_COOC * cooc + W_CUISINE * cui;
 }
 
 // --- Clustering --------------------------------------------------------------

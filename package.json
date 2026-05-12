@@ -21,7 +21,8 @@
     "fetch:themealdb-courses": "node scripts/fetch-themealdb-courses.mjs",
     "retag:courses": "node scripts/retag-courses.mjs",
     "tag:cuisines": "node scripts/tag-cuisines.mjs",
-    "tag:seasons": "node scripts/tag-seasons.mjs"
+    "tag:seasons": "node scripts/tag-seasons.mjs",
+    "build:cooccurrence": "node scripts/build-cooccurrence.mjs"
   },
   "dependencies": {
     "next": "14.2.5",

@@ -24,6 +24,10 @@ const compoundPath = path.join(root, "data", "compound-data.json");
 const compounds = fs.existsSync(compoundPath)
   ? fs.readFileSync(compoundPath, "utf8")
   : '{"compounds":{},"byIngredient":{}}';
+const cooccurrencePath = path.join(root, "data", "cooccurrence.json");
+const cooccurrence = fs.existsSync(cooccurrencePath)
+  ? fs.readFileSync(cooccurrencePath, "utf8")
+  : '{"byIngredient":{}}';
 
 const tmpl = fs.readFileSync(
   path.join(root, "scripts", "preview.template.html"),
@@ -33,7 +37,8 @@ const out = tmpl
   .replace("/*__INGREDIENTS_JSON__*/null", ingredients)
   .replace("/*__RECIPES_JSON__*/null", recipesCurated)
   .replace("/*__RECIPES_IMPORTED_JSON__*/null", recipesImported)
-  .replace("/*__COMPOUND_JSON__*/null", compounds);
+  .replace("/*__COMPOUND_JSON__*/null", compounds)
+  .replace("/*__COOCCURRENCE_JSON__*/null", cooccurrence);
 const outPath = path.join(root, "preview.html");
 fs.writeFileSync(outPath, out);
 
