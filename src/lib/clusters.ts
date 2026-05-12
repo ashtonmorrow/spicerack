@@ -134,3 +134,79 @@ export function shouldShowClusters(analysis: SelectionAnalysis): boolean {
   if (analysis.clusters.length >= 1 && analysis.outliers.length > 0) return true;
   return false;
 }
+
+/**
+ * "Alternate directions" — recipes the user is partway to that aren't already
+ * represented by the main clusters. Surfaces, for example, Thai recipes when
+ * shrimp + chili + onion are present in a chicken-leaning selection.
+ *
+ * Inputs:
+ *   - broadMatches: recipes matched with a *relaxed* threshold (hits >= 2),
+ *     not the strict default.
+ *   - clusters: the existing clusters (from analyzeSelection of the strict set).
+ *
+ * Filters:
+ *   - matched-ingredient signature isn't a subset of any existing cluster's
+ *     ingredient set (otherwise it's already represented)
+ *   - missing.length is between 1 and 4 (achievable to complete; >4 is too far)
+ *   - apply diversity penalty so we don't show 4 near-identical alternates
+ */
+export function findAlternates(
+  broadMatches: ScoredRecipe[],
+  clusters: RecipeCluster[],
+  limit = 4
+): ScoredRecipe[] {
+  if (broadMatches.length === 0) return [];
+
+  const clusterSets = clusters.map((c) => new Set(c.ingredients));
+
+  function isCovered(match: ScoredRecipe): boolean {
+    // A match is "covered" by a cluster iff its matched signature would merge
+    // INTO that cluster under the same Jaccard threshold the clusterer uses
+    // (0.4). Using subset-containment instead is too aggressive — the cluster
+    // union absorbs most slugs, hiding legitimate alternate dish vectors.
+    const matchSet = new Set(match.matchedRequired);
+    for (const clusterSet of clusterSets) {
+      let inter = 0;
+      for (const s of matchSet) if (clusterSet.has(s)) inter++;
+      const union = matchSet.size + clusterSet.size - inter;
+      const sim = union > 0 ? inter / union : 0;
+      if (sim >= 0.4) return true;
+    }
+    return false;
+  }
+
+  const candidates = broadMatches.filter(
+    (m) =>
+      m.missingRequired.length >= 1 &&
+      m.missingRequired.length <= 4 &&
+      !isCovered(m)
+  );
+
+  // Sort by completability: weight matched count by coverage, penalize
+  // missing count slightly so easier-to-complete recipes float up.
+  const sorted = [...candidates].sort((a, b) => {
+    const sa = a.coverage * a.matchedRequired.length - 0.15 * a.missingRequired.length;
+    const sb = b.coverage * b.matchedRequired.length - 0.15 * b.missingRequired.length;
+    if (sb !== sa) return sb - sa;
+    return b.score - a.score;
+  });
+
+  // Diversity penalty against signature duplication, same as primary matches.
+  const seen = new Map<string, number>();
+  for (const s of sorted) {
+    const sig = [...s.matchedRequired].sort().join(",");
+    const c = seen.get(sig) ?? 0;
+    if (c > 0) s.score *= Math.pow(0.7, c);
+    seen.set(sig, c + 1);
+  }
+  // One more sort pass after the penalty.
+  sorted.sort((a, b) => {
+    const sa = a.coverage * a.matchedRequired.length - 0.15 * a.missingRequired.length;
+    const sb = b.coverage * b.matchedRequired.length - 0.15 * b.missingRequired.length;
+    if (sb !== sa) return sb - sa;
+    return b.score - a.score;
+  });
+
+  return sorted.slice(0, limit);
+}

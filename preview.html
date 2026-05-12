@@ -358,6 +358,39 @@
   }
   .chip.dimmed { opacity: .4; }
 
+  /* Alternate directions */
+  .alternates { margin: 0 0 1.5rem; }
+  .alt-head { display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap; margin-bottom: .5rem; }
+  .alt-head h2 {
+    text-transform: uppercase; font-size: .68rem; letter-spacing: .08em;
+    color: var(--muted); margin: 0; font-weight: 500;
+  }
+  .alt-sub { font-size: .68rem; color: rgba(120,119,116,.85); }
+  .alt-grid { display: grid; gap: .5rem; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .alt-grid { grid-template-columns: 1fr 1fr; } }
+  .alt-card {
+    border: 1px solid var(--border); border-radius: .375rem; padding: .65rem .75rem;
+    transition: background .15s;
+  }
+  .alt-card:hover { background: rgba(247, 246, 243, 0.4); }
+  .alt-card .name {
+    font-weight: 500; font-size: .8rem; color: var(--ink);
+    text-decoration: none; cursor: default;
+  }
+  .alt-card .meta { font-size: .65rem; color: var(--muted); }
+  .alt-card .head { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; flex-wrap: wrap; margin-bottom: .375rem; }
+  .alt-card .have-row, .alt-card .need-row { display: flex; flex-wrap: wrap; gap: .25rem; align-items: center; }
+  .alt-card .have-row { margin-bottom: .25rem; }
+  .alt-card .ing-have, .alt-card .ing-need {
+    font-size: .68rem; padding: .075rem .375rem; border-radius: .2rem;
+  }
+  .alt-card .ing-need { cursor: pointer; border: none; font-family: inherit; transition: filter .15s; }
+  .alt-card .ing-need:hover { filter: brightness(.95); }
+  .alt-card .need-label {
+    font-size: .58rem; text-transform: uppercase; letter-spacing: .08em;
+    color: rgba(120,119,116,.7); margin-right: .25rem;
+  }
+
   /* Privacy modal long-form content */
   .privacy-modal { max-width: 36rem; max-height: 85vh; overflow-y: auto; }
   .privacy-modal h2 { font-size: 1.25rem; }
@@ -424,6 +457,14 @@
     </header>
     <div id="cluster-grid" class="cluster-grid"></div>
     <div id="outlier-row" class="outlier-row hidden"></div>
+  </section>
+
+  <section id="alternates" class="alternates hidden">
+    <header class="alt-head">
+      <h2>Alternate directions</h2>
+      <span class="alt-sub">recipes you're partway to — add what's missing to get there</span>
+    </header>
+    <div id="alternates-grid" class="alt-grid"></div>
   </section>
 
   <div id="main-area" class="">
@@ -8212,10 +8253,12 @@ function pairingsFor(slugs, limit = 60) {
   return results.slice(0, limit);
 }
 
-function matchRecipes(slugs, limit = 20) {
+function matchRecipes(slugs, limit = 20, opts) {
   if (!slugs.length) return [];
   const sel = new Set(slugs);
-  const minMatched = slugs.length >= 6 ? 3 : (slugs.length >= 3 ? 2 : 1);
+  const minMatched = (opts && opts.minMatched != null)
+    ? opts.minMatched
+    : (slugs.length >= 6 ? 3 : (slugs.length >= 3 ? 2 : 1));
   const scored = [];
   for (const r of RECIPES.recipes) {
     const matchedRequired = r.required.filter(s => sel.has(s));
@@ -8305,6 +8348,44 @@ function shouldShowClusters(a) {
   if (a.clusters.length >= 2) return true;
   if (a.clusters.length >= 1 && a.outliers.length > 0) return true;
   return false;
+}
+
+// Mirror of lib/clusters.ts findAlternates — recipes the user is partway to
+// that aren't already represented by a current cluster.
+function findAlternates(broadMatches, clusters, limit) {
+  if (!broadMatches.length) return [];
+  limit = limit || 4;
+  const clusterSets = clusters.map(c => new Set(c.ingredients));
+  function isCovered(m) {
+    // Same Jaccard-based test as the clusterer — a match is covered if it
+    // would merge into an existing cluster under the 0.4 threshold.
+    const matchSet = new Set(m.matchedRequired);
+    for (const cs of clusterSets) {
+      let inter = 0;
+      for (const s of matchSet) if (cs.has(s)) inter++;
+      const union = matchSet.size + cs.size - inter;
+      const sim = union > 0 ? inter / union : 0;
+      if (sim >= 0.4) return true;
+    }
+    return false;
+  }
+  const candidates = broadMatches.filter(m =>
+    m.missingRequired.length >= 1 && m.missingRequired.length <= 4 && !isCovered(m)
+  );
+  function rank(m) {
+    return m.coverage * m.matchedRequired.length - 0.15 * m.missingRequired.length;
+  }
+  candidates.sort((a,b) => rank(b) - rank(a) || b.score - a.score);
+  // Diversity penalty
+  const seen = new Map();
+  for (const s of candidates) {
+    const sig = [...s.matchedRequired].sort().join(",");
+    const c = seen.get(sig) || 0;
+    if (c > 0) s.score *= Math.pow(0.7, c);
+    seen.set(sig, c + 1);
+  }
+  candidates.sort((a,b) => rank(b) - rank(a) || b.score - a.score);
+  return candidates.slice(0, limit);
 }
 
 function inferCuisineLabel(matches, selected) {
@@ -8497,6 +8578,8 @@ const clusterTitleEl = document.getElementById("cluster-title");
 const clusterClearEl = document.getElementById("cluster-clear");
 const clusterGridEl = document.getElementById("cluster-grid");
 const outlierRowEl = document.getElementById("outlier-row");
+const alternatesEl = document.getElementById("alternates");
+const alternatesGridEl = document.getElementById("alternates-grid");
 const recipesSectionEl = document.getElementById("recipes-section");
 const recipesListEl = document.getElementById("recipes-list");
 const savedCombosSectionEl = document.getElementById("saved-combos-section");
@@ -9365,11 +9448,61 @@ function renderClusterStrip() {
   }
 }
 
+function renderAlternates() {
+  if (state.selected.length < 2) {
+    alternatesEl.classList.add("hidden");
+    return;
+  }
+  // Broader pool with hits >= 2 always.
+  const broad = matchRecipes(selectedSlugs(), 30, { minMatched: 2 });
+  const alts = findAlternates(broad, state.analysis.clusters, 4);
+  if (alts.length === 0) {
+    alternatesEl.classList.add("hidden");
+    return;
+  }
+  alternatesEl.classList.remove("hidden");
+  alternatesGridEl.innerHTML = alts.map(m => {
+    const r = m.recipe;
+    const meta = [r.cuisine, r.course, r.time ? `${r.time} min` : null].filter(Boolean).join(" · ");
+    const haveChips = m.matchedRequired.map(slug => {
+      const ing = bySlug.get(slug);
+      const cat = ing ? ing.category : "pantry";
+      const name = ing ? ing.name : prettySlug(slug);
+      return `<span class="ing-have cat-${cat}">✓ ${escape(name)}</span>`;
+    }).join("");
+    const needChips = m.missingRequired.map(slug => {
+      const ing = bySlug.get(slug);
+      if (!ing) return "";
+      return `<button class="ing-need cat-${ing.category}" data-slug="${ing.slug}"
+                title="Add ${escape(ing.name)} — completes a step toward ${escape(r.name)}">
+        + ${escape(ing.name)}
+      </button>`;
+    }).join("");
+    return `<article class="alt-card">
+      <div class="head">
+        <a href="/recipes/${r.id}" class="name" onclick="event.preventDefault();">${escape(r.name)}</a>
+        <span class="meta">${m.matchedRequired.length}/${r.required.length}${meta ? " · " + escape(meta) : ""}</span>
+      </div>
+      <div class="have-row">${haveChips}</div>
+      <div class="need-row"><span class="need-label">add to complete:</span>${needChips}</div>
+    </article>`;
+  }).join("");
+  // Wire missing-ingredient buttons to add to selection
+  alternatesGridEl.querySelectorAll(".ing-need").forEach(b => {
+    b.onclick = () => {
+      const ing = bySlug.get(b.dataset.slug);
+      if (ing) add(summary(ing));
+    };
+  });
+}
+
 function renderAll() {
   refreshDropdown();
-  // Order matters: renderRecipes computes state.analysis used by chips + strip.
+  // Order matters: renderRecipes computes state.analysis used by chips,
+  // cluster strip, and alternate directions.
   renderRecipes();
   renderClusterStrip();
+  renderAlternates();
   renderSelected();
   renderPanel();
   renderSavedCombos();

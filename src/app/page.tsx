@@ -12,9 +12,10 @@ import { SavedCombos } from "@/components/SavedCombos";
 import { RecipesPanel } from "@/components/RecipesPanel";
 import { SavedRecipes } from "@/components/SavedRecipes";
 import { ClusterStrip } from "@/components/ClusterStrip";
+import { AlternateDirections } from "@/components/AlternateDirections";
 import { MergeBanner } from "@/components/MergeBanner";
 import { Footer } from "@/components/Footer";
-import { analyzeSelection } from "@/lib/clusters";
+import { analyzeSelection, findAlternates } from "@/lib/clusters";
 import type { IngredientSummary, ScoredRecipe } from "@/lib/types";
 
 export default function HomePage() {
@@ -38,6 +39,9 @@ function Home() {
   // Match list bubbles up from RecipesPanel so the cluster analysis can run
   // on the same source the recipes UI is showing.
   const [matches, setMatches] = useState<ScoredRecipe[]>([]);
+  // Broader pool with hits >= 2 always, used for the "alternate directions"
+  // feature so we can surface dish vectors below the strict main threshold.
+  const [broadMatches, setBroadMatches] = useState<ScoredRecipe[]>([]);
   const [activeClusterId, setActiveClusterId] = useState<string | null>(null);
 
   const hasSelection = selected.length > 0;
@@ -56,6 +60,33 @@ function Home() {
       setActiveClusterId(null);
     }
   }, [activeClusterId, analysis.clusters]);
+
+  // Fetch the broader (hits >= 2) pool for alternate-direction surfacing.
+  useEffect(() => {
+    if (selected.length < 2) {
+      setBroadMatches([]);
+      return;
+    }
+    const slugs = selected.map((s) => s.slug).join(",");
+    let cancelled = false;
+    fetch(
+      `/api/recipes?slugs=${encodeURIComponent(slugs)}&limit=30&min=2`
+    )
+      .then((r) => r.json())
+      .then((d) => {
+        if (cancelled) return;
+        setBroadMatches(d.results as ScoredRecipe[]);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [selected.map((s) => s.slug).join(",")]);
+
+  const alternates = useMemo(
+    () => findAlternates(broadMatches, analysis.clusters, 4),
+    [broadMatches, analysis.clusters]
+  );
 
   // ?use=<recipe-id> deep link: when the home page loads with this param (e.g.
   // user clicked "Use these ingredients" on a recipe page), load the recipe's
@@ -181,6 +212,14 @@ function Home() {
           activeClusterId={activeClusterId}
           onSelectCluster={setActiveClusterId}
           selectedSlugs={selected.map((s) => s.slug)}
+          onAdd={add}
+        />
+      )}
+
+      {hasSelection && alternates.length > 0 && (
+        <AlternateDirections
+          alternates={alternates}
+          selected={selected}
           onAdd={add}
         />
       )}

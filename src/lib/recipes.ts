@@ -52,13 +52,17 @@ function minMatched(selectionSize: number): number {
 // matched item, vs 1.0 per matched item at 100% coverage).
 //
 // Curated source wins ties on the order returned to the API.
+//
+// `opts.minMatched` overrides the default size-aware threshold. The alternate
+// directions feature uses this to widen the pool below the strict filter.
 export function matchRecipes(
   selectedSlugs: string[],
-  limit = 4
+  limit = 4,
+  opts?: { minMatched?: number }
 ): ScoredRecipe[] {
   if (selectedSlugs.length === 0) return [];
   const selected = new Set(selectedSlugs);
-  const threshold = minMatched(selectedSlugs.length);
+  const threshold = opts?.minMatched ?? minMatched(selectedSlugs.length);
 
   const scored: ScoredRecipe[] = [];
 
