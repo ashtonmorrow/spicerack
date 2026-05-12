@@ -339,6 +339,7 @@
     display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; margin-bottom: .375rem;
   }
   .cluster-card .label { font-weight: 500; font-size: .85rem; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cluster-card .cluster-kind { display: inline-block; font-size: .55rem; text-transform: uppercase; letter-spacing: .05em; padding: 1px 5px; border-radius: 3px; border: 1px solid rgba(26, 127, 55, .3); color: var(--pear); background: rgba(26, 127, 55, .05); margin-left: .25rem; vertical-align: middle; font-weight: 400; }
   .cluster-card .meta { font-size: .65rem; color: var(--muted); flex-shrink: 0; }
   .cluster-card .ingredients { display: flex; flex-wrap: wrap; gap: .25rem; }
   .cluster-card .ingredients .cat-label { font-size: .65rem; padding: .075rem .375rem; border-radius: .2rem; }
@@ -630,59 +631,248 @@ function matchRecipes(slugs, limit = 20, opts) {
 }
 
 // --- cluster analysis (mirror of lib/clusters.ts) ---
-function _jaccard(a, b) {
-  if (a.size === 0 && b.size === 0) return 1;
-  let inter = 0;
-  for (const s of a) if (b.has(s)) inter++;
-  const union = a.size + b.size - inter;
-  return union ? inter / union : 0;
+// Ingredient-first multi-signal clustering. Build a weighted graph on the
+// selected ingredients themselves (curated pairings + flavor chemistry +
+// cuisine overlap). Run average-link agglomerative clustering, then a local
+// refinement pass that lets nodes move to their best-fit cluster (fixes
+// order-dependent first-merge bias). Label by dominant shared property.
+const _W_PAIR = 1.0;
+const _W_CHEM = 0.6;
+const _W_CUISINE = 0.3;
+const _MERGE_THRESHOLD = 0.34;
+const _OUTLIER_THRESHOLD = 0.18;
+const _REFINE_EPSILON = 0.05;
+
+function _pairingStrength(a, b) {
+  const ia = bySlug.get(a);
+  if (!ia) return 0;
+  const edge = (ia.pairings || []).find(p => p.slug === b);
+  return edge ? edge.strength / 3 : 0;
 }
-function _unionOf(recipes) {
-  const out = new Set();
-  for (const r of recipes) for (const s of r.matchedRequired) out.add(s);
-  return out;
+function _cuisineOverlap(a, b) {
+  const ia = bySlug.get(a), ib = bySlug.get(b);
+  if (!ia || !ib || !ia.cuisines || !ib.cuisines) return 0;
+  if (!ia.cuisines.length || !ib.cuisines.length) return 0;
+  const setA = new Set(ia.cuisines);
+  let shared = 0;
+  for (const c of ib.cuisines) if (setA.has(c)) shared++;
+  return shared / Math.max(ia.cuisines.length, ib.cuisines.length, 1);
 }
-function _clusterRecipes(matches, threshold) {
-  threshold = threshold === undefined ? 0.4 : threshold;
-  if (matches.length === 0) return [];
-  let clusters = matches.map(m => [m]);
+function _edgeWeight(a, b) {
+  if (a === b) return 0;
+  const pair = Math.max(_pairingStrength(a, b), _pairingStrength(b, a));
+  const chem = compoundJaccard(a, b);
+  const cui = _cuisineOverlap(a, b);
+  return _W_PAIR * pair + _W_CHEM * chem + _W_CUISINE * cui;
+}
+function _ek(a, b) { return a < b ? a + "|" + b : b + "|" + a; }
+function _clusterIngredients(slugs) {
+  if (slugs.length === 0) return [];
+  if (slugs.length === 1) return [[slugs[0]]];
+  const edges = new Map();
+  for (let i = 0; i < slugs.length; i++) {
+    for (let j = i + 1; j < slugs.length; j++) {
+      const w = _edgeWeight(slugs[i], slugs[j]);
+      if (w > 0) edges.set(_ek(slugs[i], slugs[j]), w);
+    }
+  }
+  function avgLink(a, b) {
+    if (a.length === 0 || b.length === 0) return 0;
+    let s = 0;
+    for (const x of a) for (const y of b) s += edges.get(_ek(x, y)) || 0;
+    return s / (a.length * b.length);
+  }
+  let clusters = slugs.map(s => [s]);
+  // Phase 1: agglomerative
   for (let pass = 0; pass < 100; pass++) {
-    let bestI = -1, bestJ = -1, bestSim = threshold;
-    const cache = clusters.map(_unionOf);
+    let bI = -1, bJ = -1, bW = _MERGE_THRESHOLD;
     for (let i = 0; i < clusters.length; i++) {
       for (let j = i + 1; j < clusters.length; j++) {
-        const sim = _jaccard(cache[i], cache[j]);
-        if (sim > bestSim) { bestSim = sim; bestI = i; bestJ = j; }
+        const w = avgLink(clusters[i], clusters[j]);
+        if (w > bW) { bW = w; bI = i; bJ = j; }
       }
     }
-    if (bestI === -1) break;
-    clusters[bestI] = [...clusters[bestI], ...clusters[bestJ]];
-    clusters.splice(bestJ, 1);
+    if (bI === -1) break;
+    clusters[bI] = [...clusters[bI], ...clusters[bJ]];
+    clusters.splice(bJ, 1);
+  }
+  // Phase 2: refinement — move misplaced nodes to their best-fit cluster
+  for (let iter = 0; iter < 20; iter++) {
+    let moved = false;
+    for (const slug of slugs) {
+      let curIdx = -1;
+      for (let i = 0; i < clusters.length; i++) {
+        if (clusters[i].indexOf(slug) !== -1) { curIdx = i; break; }
+      }
+      if (curIdx === -1) continue;
+      const peers = clusters[curIdx].filter(s => s !== slug);
+      const curScore = avgLink([slug], peers);
+      let bestIdx = curIdx, bestScore = curScore;
+      for (let i = 0; i < clusters.length; i++) {
+        if (i === curIdx) continue;
+        const s = avgLink([slug], clusters[i]);
+        if (s > bestScore + _REFINE_EPSILON) { bestScore = s; bestIdx = i; }
+      }
+      if (bestIdx !== curIdx) {
+        clusters[curIdx] = clusters[curIdx].filter(s => s !== slug);
+        clusters[bestIdx] = [...clusters[bestIdx], slug];
+        moved = true;
+      }
+    }
+    clusters = clusters.filter(c => c.length > 0);
+    if (!moved) break;
+  }
+  // Phase 3: rescue singletons that have decent affinity to a cluster
+  for (let iter = 0; iter < 5; iter++) {
+    let changed = false;
+    for (let i = clusters.length - 1; i >= 0; i--) {
+      if (clusters[i].length !== 1) continue;
+      const node = clusters[i][0];
+      let bestIdx = -1, bestScore = _MERGE_THRESHOLD;
+      for (let j = 0; j < clusters.length; j++) {
+        if (j === i) continue;
+        const s = avgLink([node], clusters[j]);
+        if (s > bestScore) { bestScore = s; bestIdx = j; }
+      }
+      if (bestIdx !== -1) {
+        clusters[bestIdx] = [...clusters[bestIdx], node];
+        clusters.splice(i, 1);
+        changed = true;
+      }
+    }
+    if (!changed) break;
   }
   return clusters;
 }
+
+const _CATEGORY_LABELS = {
+  fruit: "Sweet fruit", vegetable: "Vegetable base", protein: "Savory protein",
+  herb: "Aromatic herbs", spice: "Spice-forward", dairy: "Dairy + creamy",
+  pantry: "Pantry build", nut: "Nutty", grain: "Grain-led", aromatic: "Aromatic base",
+};
+function _cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+function _dominantCuisine(slugs) {
+  const tally = new Map();
+  for (const s of slugs) {
+    const ing = bySlug.get(s);
+    if (!ing || !ing.cuisines || !ing.cuisines.length) continue;
+    for (const c of ing.cuisines) tally.set(c, (tally.get(c) || 0) + 1);
+  }
+  let bestC = null, bestN = 0;
+  for (const [k, v] of tally) if (v > bestN) { bestN = v; bestC = k; }
+  if (!bestC || bestN < 2) return null;
+  return { cuisine: bestC, share: bestN / slugs.length };
+}
+function _dominantCategory(slugs) {
+  const tally = new Map();
+  for (const s of slugs) {
+    const ing = bySlug.get(s);
+    if (!ing) continue;
+    tally.set(ing.category, (tally.get(ing.category) || 0) + 1);
+  }
+  let bestK = null, bestN = 0;
+  for (const [k, v] of tally) if (v > bestN) { bestN = v; bestK = k; }
+  if (!bestK) return null;
+  return { category: bestK, share: bestN / slugs.length };
+}
+function _anchorIngredient(slugs) {
+  if (slugs.length === 1) return slugs[0];
+  let bestS = slugs[0], bestW = -1;
+  for (const s of slugs) {
+    let sum = 0;
+    for (const o of slugs) if (o !== s) sum += _edgeWeight(s, o);
+    if (sum > bestW) { bestW = sum; bestS = s; }
+  }
+  return bestS;
+}
+function _labelCluster(slugs) {
+  if (slugs.length === 1) {
+    const ing = bySlug.get(slugs[0]);
+    return { label: ing ? ing.name : prettySlug(slugs[0]), labelKind: "anchor" };
+  }
+  const cuisine = _dominantCuisine(slugs);
+  if (cuisine && cuisine.share >= 0.5) {
+    return { label: _cap(cuisine.cuisine) + "-leaning", labelKind: "cuisine", cuisine: cuisine.cuisine };
+  }
+  const category = _dominantCategory(slugs);
+  if (category && category.share >= 0.6) {
+    return { label: _CATEGORY_LABELS[category.category] || category.category, labelKind: "category" };
+  }
+  const anchorSlug = _anchorIngredient(slugs);
+  const anchor = bySlug.get(anchorSlug);
+  return { label: (anchor ? anchor.name : prettySlug(anchorSlug)) + "-led", labelKind: "anchor" };
+}
+function _cohesionOf(slugs) {
+  if (slugs.length < 2) return 0;
+  let sum = 0;
+  for (let i = 0; i < slugs.length; i++) {
+    for (let j = i + 1; j < slugs.length; j++) sum += _edgeWeight(slugs[i], slugs[j]);
+  }
+  return sum;
+}
+function _attachRecipes(clusters, matches) {
+  const out = new Map();
+  for (const c of clusters) out.set([...c].sort().join("+"), []);
+  if (!matches.length) return out;
+  for (const m of matches) {
+    if (!m.matchedRequired.length) continue;
+    let bestId = null, bestScore = 0.3;
+    const matchSet = new Set(m.matchedRequired);
+    for (const c of clusters) {
+      const cs = new Set(c);
+      let inter = 0;
+      for (const s of matchSet) if (cs.has(s)) inter++;
+      const union = matchSet.size + cs.size - inter;
+      const sim = union > 0 ? inter / union : 0;
+      if (sim > bestScore) { bestScore = sim; bestId = [...c].sort().join("+"); }
+    }
+    if (bestId) {
+      const list = out.get(bestId) || [];
+      list.push(m);
+      out.set(bestId, list);
+    }
+  }
+  for (const [id, list] of out) {
+    list.sort((a, b) => b.score - a.score);
+    out.set(id, list);
+  }
+  return out;
+}
 function analyzeSelection(selectedSlugs, matches) {
-  const used = new Set();
-  for (const m of matches) for (const s of m.matchedRequired) used.add(s);
-  const outliers = selectedSlugs.filter(s => !used.has(s));
-  if (matches.length === 0) return { clusters: [], outliers };
-  const groups = _clusterRecipes(matches);
-  const clusters = groups.map(g => {
-    const ings = [..._unionOf(g)].sort();
-    const sortedRecipes = [...g].sort((a, b) => b.score - a.score);
+  if (selectedSlugs.length === 0) return { clusters: [], outliers: [] };
+  // Outliers: max edge weight to anything else < threshold
+  const outliers = [];
+  for (const s of selectedSlugs) {
+    let max = 0;
+    for (const o of selectedSlugs) if (o !== s) max = Math.max(max, _edgeWeight(s, o));
+    if (max < _OUTLIER_THRESHOLD) outliers.push(s);
+  }
+  const outlierSet = new Set(outliers);
+  const clusterable = selectedSlugs.filter(s => !outlierSet.has(s));
+  const groups = _clusterIngredients(clusterable).filter(g => g.length > 0);
+  const multi = groups.filter(g => g.length > 1);
+  const usedGroups = (multi.length >= 2 || (multi.length === 1 && groups.length > 1))
+    ? multi
+    : groups;
+  const recipeAttachments = _attachRecipes(usedGroups, matches);
+  const clusters = usedGroups.map(g => {
+    const ings = [...g].sort();
+    const labeled = _labelCluster(g);
     return {
       id: ings.join("+"),
       ingredients: ings,
-      recipes: sortedRecipes,
-      label: sortedRecipes[0].recipe.name,
-      totalScore: g.reduce((s, r) => s + r.score, 0),
+      recipes: recipeAttachments.get(ings.join("+")) || [],
+      cohesion: _cohesionOf(g),
+      label: labeled.label,
+      labelKind: labeled.labelKind,
+      cuisine: labeled.cuisine,
     };
-  }).sort((a, b) => b.totalScore - a.totalScore);
+  }).sort((a, b) => b.cohesion - a.cohesion);
   return { clusters, outliers };
 }
 function shouldShowClusters(a) {
   if (a.clusters.length >= 2) return true;
-  if (a.clusters.length >= 1 && a.outliers.length > 0) return true;
+  if (a.outliers.length > 0) return true;
   return false;
 }
 
@@ -1693,10 +1883,13 @@ function renderClusterStrip() {
       const name = ing ? ing.name : prettySlug(slug);
       return `<span class="cat-label cat-${cat}">${escape(name)}</span>`;
     }).join("");
+    const cuisineBadge = c.labelKind === "cuisine"
+      ? ` <span class="cluster-kind" title="Inferred from shared cuisine tags">cuisine</span>`
+      : "";
     return `<button class="cluster-card${active ? " active" : ""}" data-id="${escape(c.id)}">
       <div class="label-row">
-        <span class="label">${escape(c.label)}</span>
-        <span class="meta">${c.ingredients.length} ing${c.recipes.length > 1 ? " · " + c.recipes.length + " recipes" : ""}</span>
+        <span class="label">${escape(c.label)}${cuisineBadge}</span>
+        <span class="meta">${c.ingredients.length} ing${c.recipes.length > 0 ? " · " + c.recipes.length + " recipe" + (c.recipes.length === 1 ? "" : "s") : ""}</span>
       </div>
       <div class="ingredients">${chips}</div>
     </button>`;

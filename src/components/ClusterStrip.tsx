@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { AnchorSuggestion, IngredientSummary } from "@/lib/types";
-import type { RecipeCluster, SelectionAnalysis } from "@/lib/clusters";
+import type { IngredientCluster, SelectionAnalysis } from "@/lib/clusters";
 import { shouldShowClusters } from "@/lib/clusters";
 
 interface Props {
@@ -174,11 +174,12 @@ function ClusterCard({
   active,
   onClick,
 }: {
-  cluster: RecipeCluster;
+  cluster: IngredientCluster;
   ingredientLookup: Map<string, IngredientSummary>;
   active: boolean;
   onClick: () => void;
 }) {
+  const recipeCount = cluster.recipes.length;
   return (
     <button
       onClick={onClick}
@@ -194,13 +195,22 @@ function ClusterCard({
       }
     >
       <div className="flex items-baseline justify-between gap-2 mb-1.5">
-        <span className="font-medium text-sm text-ink truncate">
+        <span className="font-medium text-sm text-ink truncate flex items-center gap-1.5">
           {cluster.label}
+          {cluster.labelKind === "cuisine" && (
+            <span
+              className="text-[9px] uppercase tracking-wider px-1 py-px rounded border border-pear/30 text-pear bg-pear/5"
+              title="Inferred from shared cuisine tags"
+            >
+              cuisine
+            </span>
+          )}
         </span>
         <span className="text-[10px] text-muted shrink-0">
           {cluster.ingredients.length} ingredient
           {cluster.ingredients.length === 1 ? "" : "s"}
-          {cluster.recipes.length > 1 && ` · ${cluster.recipes.length} recipes`}
+          {recipeCount > 0 &&
+            ` · ${recipeCount} recipe${recipeCount === 1 ? "" : "s"}`}
         </span>
       </div>
       <div className="flex flex-wrap gap-1">

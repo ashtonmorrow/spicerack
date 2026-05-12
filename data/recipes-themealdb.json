@@ -1,7 +1,7 @@
 {
   "$schema_version": 1,
   "source": "TheMealDB (https://www.themealdb.com/) — community-contributed recipes",
-  "fetched_at": "2026-04-26T16:37:22.797Z",
+  "fetched_at": "2026-05-12T02:19:12.532Z",
   "notes": "Auto-imported from TheMealDB and ingredient-mapped to Flavor Pare's slug system. The 'about' field is a generic factual one-liner; for the actual cooking method, the recipe's sourceUrl links back to the original page on TheMealDB.",
   "recipes": [
     {
@@ -682,7 +682,7 @@
       "name": "Red Peas Soup",
       "about": "Jamaican beef from TheMealDB.",
       "cuisine": "jamaican",
-      "course": "main",
+      "course": "starter",
       "required": [
         "carrot",
         "scallion",
@@ -985,7 +985,7 @@
       "name": "Chicken Quinoa Greek Salad",
       "about": "Greek chicken from TheMealDB.",
       "cuisine": "greek",
-      "course": "main",
+      "course": "starter",
       "required": [
         "butter",
         "chili",
@@ -2174,6 +2174,1853 @@
       "optional": [],
       "source": "themealdb",
       "sourceUrl": "https://www.simplyrecipes.com/recipes/chicken_fried_rice/"
+    },
+    {
+      "id": "mdb-53120",
+      "name": "Æbleskiver",
+      "about": "Norway dessert from TheMealDB.",
+      "cuisine": "norway",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "cardamom",
+        "egg",
+        "butter"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://scandinaviancookbook.com/aebleskiver-danish-pancake-balls/"
+    },
+    {
+      "id": "mdb-53138",
+      "name": "Alfajores",
+      "about": "Argentina dessert from TheMealDB.",
+      "cuisine": "argentina",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sugar",
+        "egg"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.munchery.com/blog/the-ten-iconic-dishes-of-argentina-and-how-to-cook-them-at-home/"
+    },
+    {
+      "id": "mdb-53049",
+      "name": "Apam balik",
+      "about": "Malaysian dessert from TheMealDB.",
+      "cuisine": "malaysian",
+      "course": "dessert",
+      "required": [
+        "milk",
+        "butter",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.nyonyacooking.com/recipes/apam-balik~SJ5WuvsDf9WQ"
+    },
+    {
+      "id": "mdb-52893",
+      "name": "Apple & Blackberry Crumble",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "butter",
+        "cinnamon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/778642/apple-and-blackberry-crumble"
+    },
+    {
+      "id": "mdb-53380",
+      "name": "Apple cake",
+      "about": "Netherlands dessert from TheMealDB.",
+      "cuisine": "netherlands",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "vanilla",
+        "cinnamon",
+        "apple"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://insimoneskitchen.com/dutch-apple-cake/#recipe"
+    },
+    {
+      "id": "mdb-53392",
+      "name": "Arnhemse meisjes",
+      "about": "dessert from TheMealDB.",
+      "course": "dessert",
+      "required": [
+        "cinnamon",
+        "cardamom",
+        "lime"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://insimoneskitchen.com/making-your-own-arnhemse-meisjes/#recipe"
+    },
+    {
+      "id": "mdb-53279",
+      "name": "Baklava with spiced nuts, ricotta & chocolate",
+      "about": "Turkish dessert from TheMealDB.",
+      "cuisine": "turkish",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "cinnamon",
+        "ricotta",
+        "lemon",
+        "orange",
+        "butter"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/baklava-with-spiced-nuts-ricotta-chocolate"
+    },
+    {
+      "id": "mdb-52894",
+      "name": "Battenberg Cake",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sugar",
+        "vanilla"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/1120657/battenberg-cake"
+    },
+    {
+      "id": "mdb-52928",
+      "name": "BeaverTails",
+      "about": "Canadian dessert from TheMealDB.",
+      "cuisine": "canadian",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "milk",
+        "butter",
+        "lemon",
+        "cinnamon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.tastemade.com/videos/beavertails"
+    },
+    {
+      "id": "mdb-53316",
+      "name": "Beetroot pancakes",
+      "about": "Ukrainian dessert from TheMealDB.",
+      "cuisine": "ukrainian",
+      "course": "dessert",
+      "required": [
+        "milk",
+        "maple-syrup",
+        "vanilla",
+        "egg",
+        "butter"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/beetroot-pancakes"
+    },
+    {
+      "id": "mdb-52891",
+      "name": "Blackberry Fool",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sugar",
+        "lemon",
+        "cream",
+        "yogurt",
+        "mint"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbc.co.uk/food/recipes/blackberry_fool_with_11859"
+    },
+    {
+      "id": "mdb-53100",
+      "name": "Blueberry & lemon friands",
+      "about": "Australian dessert from TheMealDB.",
+      "cuisine": "australian",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sugar",
+        "egg"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/blueberry-lemon-friands"
+    },
+    {
+      "id": "mdb-53385",
+      "name": "Boterkoek (Dutch Butter Cake)",
+      "about": "Netherlands dessert from TheMealDB.",
+      "cuisine": "netherlands",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sugar",
+        "egg"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://insimoneskitchen.com/dutch-butter-cake-with-dulce-de-leche/"
+    },
+    {
+      "id": "mdb-52792",
+      "name": "Bread and Butter Pudding",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "bread",
+        "cinnamon",
+        "milk",
+        "cream",
+        "sugar",
+        "nutmeg"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://cooking.nytimes.com/recipes/1018529-coq-au-vin"
+    },
+    {
+      "id": "mdb-52961",
+      "name": "Budino Di Ricotta",
+      "about": "Italian dessert from TheMealDB.",
+      "cuisine": "italian",
+      "course": "dessert",
+      "required": [
+        "ricotta",
+        "sugar",
+        "cinnamon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://thehappyfoodie.co.uk/recipes/ricotta-cake-budino-di-ricotta"
+    },
+    {
+      "id": "mdb-52923",
+      "name": "Canadian Butter Tarts",
+      "about": "Canadian dessert from TheMealDB.",
+      "cuisine": "canadian",
+      "course": "dessert",
+      "required": [
+        "vanilla",
+        "butter",
+        "cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/1837/canadian-butter-tarts"
+    },
+    {
+      "id": "mdb-52897",
+      "name": "Carrot Cake",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "olive-oil",
+        "sugar",
+        "cinnamon",
+        "butter"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbc.co.uk/food/recipes/classic_carrot_cake_08513"
+    },
+    {
+      "id": "mdb-52898",
+      "name": "Chelsea Buns",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "milk",
+        "butter",
+        "olive-oil",
+        "sugar",
+        "cinnamon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbc.co.uk/food/recipes/chelsea_buns_95015"
+    },
+    {
+      "id": "mdb-52856",
+      "name": "Choc Chip Pecan Pie",
+      "about": "United states dessert from TheMealDB.",
+      "cuisine": "united states",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sugar",
+        "maple-syrup",
+        "vanilla"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/choc-chip-pecan-pie"
+    },
+    {
+      "id": "mdb-53320",
+      "name": "Chocolate alfajores",
+      "about": "Uruguayan dessert from TheMealDB.",
+      "cuisine": "uruguayan",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sugar",
+        "egg",
+        "honey",
+        "orange"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://jennyisbaking.com/2018/07/02/alfajores-the-best-cookies-from-uruguay/#recipe"
+    },
+    {
+      "id": "mdb-52853",
+      "name": "Chocolate Avocado Mousse",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "avocado",
+        "honey",
+        "vanilla"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "http://www.hemsleyandhemsley.com/recipe/chocolate-avocado-mousse/"
+    },
+    {
+      "id": "mdb-53170",
+      "name": "Chocolate churros with chocolate & salted caramel sauce",
+      "about": "Spanish dessert from TheMealDB.",
+      "cuisine": "spanish",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "cream",
+        "cinnamon",
+        "vanilla"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/chocolate-churros-with-chocolate-salted-caramel-sauce"
+    },
+    {
+      "id": "mdb-53101",
+      "name": "Chocolate Coconut Squares",
+      "about": "Australian dessert from TheMealDB.",
+      "cuisine": "australian",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sugar",
+        "egg",
+        "milk"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/isaacs-chocolate-coconut-squares"
+    },
+    {
+      "id": "mdb-53324",
+      "name": "Chocolate empanadas",
+      "about": "Uruguayan dessert from TheMealDB.",
+      "cuisine": "uruguayan",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "egg",
+        "milk",
+        "sugar",
+        "cinnamon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://jennyisbaking.com/2020/05/01/chocolate-empanadas-with-dulce-de-leche/"
+    },
+    {
+      "id": "mdb-52776",
+      "name": "Chocolate Gateau",
+      "about": "France dessert from TheMealDB.",
+      "cuisine": "france",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "milk",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "http://www.goodtoknow.co.uk/recipes/536028/chocolate-gateau"
+    },
+    {
+      "id": "mdb-52905",
+      "name": "Chocolate Souffle",
+      "about": "France dessert from TheMealDB.",
+      "cuisine": "france",
+      "course": "dessert",
+      "required": [
+        "cream",
+        "sugar",
+        "butter",
+        "egg"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/5816/hot-chocolate-souffls-with-chocolate-cream-sauce"
+    },
+    {
+      "id": "mdb-52990",
+      "name": "Christmas cake",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "lemon",
+        "vanilla"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/angela-nilsens-christmas-cake"
+    },
+    {
+      "id": "mdb-53153",
+      "name": "Churros",
+      "about": "Spanish dessert from TheMealDB.",
+      "cuisine": "spanish",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "vanilla",
+        "bread",
+        "cream",
+        "milk",
+        "sugar",
+        "cinnamon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/churros-chocolate-dipping-sauce"
+    },
+    {
+      "id": "mdb-53116",
+      "name": "Cinnamon buns",
+      "about": "Norway dessert from TheMealDB.",
+      "cuisine": "norway",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "milk",
+        "cardamom",
+        "sugar",
+        "egg",
+        "olive-oil",
+        "cinnamon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbc.co.uk/food/recipes/cinnamon_buns_10634"
+    },
+    {
+      "id": "mdb-53291",
+      "name": "Cornes de Gazelle (Gazelle Horns)",
+      "about": "Algerian dessert from TheMealDB.",
+      "cuisine": "algerian",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "cinnamon",
+        "egg",
+        "butter",
+        "olive-oil",
+        "pistachio"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.allrecipes.com/recipe/262056/cornes-de-gazelle-gazelle-horns/"
+    },
+    {
+      "id": "mdb-53148",
+      "name": "Crema Catalana",
+      "about": "Spanish dessert from TheMealDB.",
+      "cuisine": "spanish",
+      "course": "dessert",
+      "required": [
+        "milk",
+        "cream",
+        "egg",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/crema-catalana"
+    },
+    {
+      "id": "mdb-53338",
+      "name": "Date squares",
+      "about": "Canadian dessert from TheMealDB.",
+      "cuisine": "canadian",
+      "course": "dessert",
+      "required": [
+        "vanilla",
+        "sugar",
+        "butter"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://canadianfoodfocus.org/recipes/classic-canadian-dishes-date-squares/"
+    },
+    {
+      "id": "mdb-53137",
+      "name": "Dulce de Leche",
+      "about": "Argentina dessert from TheMealDB.",
+      "cuisine": "argentina",
+      "course": "dessert",
+      "required": [
+        "milk",
+        "sugar",
+        "vanilla"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.munchery.com/blog/the-ten-iconic-dishes-of-argentina-and-how-to-cook-them-at-home/"
+    },
+    {
+      "id": "mdb-52899",
+      "name": "Dundee cake",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "orange",
+        "milk",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/2155640/dundee-cake"
+    },
+    {
+      "id": "mdb-53386",
+      "name": "Dutch Apple Pie",
+      "about": "Netherlands dessert from TheMealDB.",
+      "cuisine": "netherlands",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "egg",
+        "sugar",
+        "cinnamon",
+        "apple"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://insimoneskitchen.com/the-best-ever-apple-pie-recipe/#recipe"
+    },
+    {
+      "id": "mdb-53387",
+      "name": "Dutch Spiced Breakfast Cake (Ontbijtkoek)",
+      "about": "Netherlands dessert from TheMealDB.",
+      "cuisine": "netherlands",
+      "course": "dessert",
+      "required": [
+        "milk",
+        "sugar",
+        "ginger",
+        "cardamom"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://insimoneskitchen.com/dutch-breakfast-cake/#recipe"
+    },
+    {
+      "id": "mdb-53382",
+      "name": "Dutch stroopwafel",
+      "about": "Netherlands dessert from TheMealDB.",
+      "cuisine": "netherlands",
+      "course": "dessert",
+      "required": [
+        "milk",
+        "butter",
+        "sugar",
+        "egg",
+        "cinnamon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.inlaurasbakery.com/dutch-stroopwafels-recipe/"
+    },
+    {
+      "id": "mdb-53285",
+      "name": "Dziriat (Algerian Almond Tarts)",
+      "about": "Algerian dessert from TheMealDB.",
+      "cuisine": "algerian",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "olive-oil",
+        "egg",
+        "vanilla",
+        "lemon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.allrecipes.com/recipe/69501/dziriat-algerian-almond-tarts/"
+    },
+    {
+      "id": "mdb-52888",
+      "name": "Eccles Cakes",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "lemon",
+        "cinnamon",
+        "ginger",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/786659/eccles-cakes"
+    },
+    {
+      "id": "mdb-53149",
+      "name": "Ensaimada",
+      "about": "Spanish dessert from TheMealDB.",
+      "cuisine": "spanish",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "egg",
+        "olive-oil"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/ensaimada"
+    },
+    {
+      "id": "mdb-53342",
+      "name": "Figgy Duff",
+      "about": "Canadian dessert from TheMealDB.",
+      "cuisine": "canadian",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "ginger",
+        "cinnamon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://canadianfoodfocus.org/recipes/classic-canadian-dish-figgy-duff/"
+    },
+    {
+      "id": "mdb-53322",
+      "name": "Flan",
+      "about": "Uruguayan dessert from TheMealDB.",
+      "cuisine": "uruguayan",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "milk",
+        "egg"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://jennyisbaking.com/2019/12/20/uruguayan-flan-and-merry-christmas/"
+    },
+    {
+      "id": "mdb-53341",
+      "name": "Flapper Pie",
+      "about": "Canadian dessert from TheMealDB.",
+      "cuisine": "canadian",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "cinnamon",
+        "milk",
+        "egg",
+        "vanilla"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://canadianfoodfocus.org/recipes/classic-canadian-dish-flapper-pie/"
+    },
+    {
+      "id": "mdb-53131",
+      "name": "Fyrstekake – Norwegian Prince Cake",
+      "about": "Norway dessert from TheMealDB.",
+      "cuisine": "norway",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "vanilla",
+        "butter",
+        "egg"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://scandinaviancookbook.com/fyrstekake-norwegian-prince-cake/"
+    },
+    {
+      "id": "mdb-53381",
+      "name": "Gevulde speculaas",
+      "about": "Netherlands dessert from TheMealDB.",
+      "cuisine": "netherlands",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "butter",
+        "milk",
+        "egg"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.inlaurasbakery.com/gevulde-speculaas-dutch-almond-paste-filled-spiced-cookies/"
+    },
+    {
+      "id": "mdb-53007",
+      "name": "Honey Yogurt Cheesecake",
+      "about": "Greek dessert from TheMealDB.",
+      "cuisine": "greek",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "lemon",
+        "orange",
+        "honey"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/honey-yogurt-cheesecake"
+    },
+    {
+      "id": "mdb-53339",
+      "name": "Jam jam cookies",
+      "about": "Canadian dessert from TheMealDB.",
+      "cuisine": "canadian",
+      "course": "dessert",
+      "required": [
+        "egg",
+        "butter",
+        "sugar",
+        "vanilla",
+        "cinnamon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://canadianfoodfocus.org/recipes/jam-jam-cookies/#recipe"
+    },
+    {
+      "id": "mdb-52890",
+      "name": "Jam Roly-Poly",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "vanilla",
+        "milk"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/13354/jam-rolypoly"
+    },
+    {
+      "id": "mdb-53351",
+      "name": "Jamaican Banana Fritters",
+      "about": "Jamaican dessert from TheMealDB.",
+      "cuisine": "jamaican",
+      "course": "dessert",
+      "required": [
+        "vanilla",
+        "cinnamon",
+        "nutmeg",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.myforkinglife.com/banana-fritters/#recipe"
+    },
+    {
+      "id": "mdb-53348",
+      "name": "Jamaican Spice Bun Recipe",
+      "about": "Jamaican dessert from TheMealDB.",
+      "cuisine": "jamaican",
+      "course": "dessert",
+      "required": [
+        "cinnamon",
+        "egg",
+        "sugar",
+        "milk",
+        "honey",
+        "butter",
+        "vanilla"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.myforkinglife.com/easter-spice-bread-jamaican-style/#recipe"
+    },
+    {
+      "id": "mdb-53344",
+      "name": "Jamaican Sweet Potato Pudding",
+      "about": "Jamaican dessert from TheMealDB.",
+      "cuisine": "jamaican",
+      "course": "dessert",
+      "required": [
+        "coconut-milk",
+        "sugar",
+        "vanilla",
+        "cinnamon",
+        "nutmeg",
+        "ginger"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.myforkinglife.com/jamaican-sweet-potato-pudding/#recipe"
+    },
+    {
+      "id": "mdb-52859",
+      "name": "Key Lime Pie",
+      "about": "United states dessert from TheMealDB.",
+      "cuisine": "united states",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "egg",
+        "lime",
+        "cream",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/2155644/key-lime-pie"
+    },
+    {
+      "id": "mdb-53216",
+      "name": "Knafeh",
+      "about": "Saudi arabian dessert from TheMealDB.",
+      "cuisine": "saudi arabian",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "mozzarella",
+        "milk",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://cookpad.com/eng/recipes/24934496?ref=search&search_term=saudi+arabia"
+    },
+    {
+      "id": "mdb-53015",
+      "name": "Krispy Kreme Donut",
+      "about": "United states dessert from TheMealDB.",
+      "cuisine": "united states",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "milk",
+        "vanilla",
+        "butter"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.mythirtyspot.com/krispy-kreme-copycat-recipe-for/"
+    },
+    {
+      "id": "mdb-53128",
+      "name": "Kvæfjord Cake “Verdens Beste” (World’s Best Cake)",
+      "about": "Norway dessert from TheMealDB.",
+      "cuisine": "norway",
+      "course": "dessert",
+      "required": [
+        "egg",
+        "sugar",
+        "cream",
+        "milk",
+        "butter"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://scandinaviancookbook.com/kvaefjord-cake-verdens-beste-worlds-best-cake/"
+    },
+    {
+      "id": "mdb-53104",
+      "name": "Lamingtons",
+      "about": "Australian dessert from TheMealDB.",
+      "cuisine": "australian",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "egg",
+        "milk",
+        "cream",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/lamingtons"
+    },
+    {
+      "id": "mdb-52900",
+      "name": "Madeira Cake",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sugar",
+        "milk",
+        "lemon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbc.co.uk/food/recipes/madeiracake_73878"
+    },
+    {
+      "id": "mdb-53221",
+      "name": "Mamoul (Eid biscuits)",
+      "about": "Saudi arabian dessert from TheMealDB.",
+      "cuisine": "saudi arabian",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "milk",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://cookpad.com/eng/recipes/16901544?ref=search&search_term=saudi+arabia"
+    },
+    {
+      "id": "mdb-53132",
+      "name": "Mazariner – Scandinavian Almond Tartlets",
+      "about": "Norway dessert from TheMealDB.",
+      "cuisine": "norway",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "butter",
+        "egg",
+        "vanilla",
+        "cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://scandinaviancookbook.com/mazariner-scandinavian-almond-tartlets/"
+    },
+    {
+      "id": "mdb-52991",
+      "name": "Mince Pies",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sugar",
+        "egg"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/2174/unbelievably-easy-mince-pies"
+    },
+    {
+      "id": "mdb-53304",
+      "name": "Mini bundt cakes",
+      "about": "Polish dessert from TheMealDB.",
+      "cuisine": "polish",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sugar",
+        "egg",
+        "milk"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/mini-bundt-cakes"
+    },
+    {
+      "id": "mdb-52924",
+      "name": "Nanaimo Bars",
+      "about": "Canadian dessert from TheMealDB.",
+      "cuisine": "canadian",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "egg",
+        "butter",
+        "cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/nanaimo-bars"
+    },
+    {
+      "id": "mdb-52858",
+      "name": "New York cheesecake",
+      "about": "United states dessert from TheMealDB.",
+      "cuisine": "united states",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sour-cream",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/2869/new-york-cheesecake"
+    },
+    {
+      "id": "mdb-53347",
+      "name": "No-Churn Rum Raisin Ice Cream",
+      "about": "Jamaican dessert from TheMealDB.",
+      "cuisine": "jamaican",
+      "course": "dessert",
+      "required": [
+        "vanilla",
+        "sugar",
+        "cinnamon",
+        "cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.myforkinglife.com/rum-raisin-ice-cream/#recipe"
+    },
+    {
+      "id": "mdb-53129",
+      "name": "Norwegian Krumkake",
+      "about": "Norway dessert from TheMealDB.",
+      "cuisine": "norway",
+      "course": "dessert",
+      "required": [
+        "egg",
+        "sugar",
+        "butter",
+        "cardamom",
+        "nutmeg"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://scandinaviancookbook.com/norwegian-krumkake/"
+    },
+    {
+      "id": "mdb-52902",
+      "name": "Parkin Cake",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "egg",
+        "milk",
+        "sugar",
+        "ginger"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/1940684/parkin"
+    },
+    {
+      "id": "mdb-53333",
+      "name": "Passion fruit mousse",
+      "about": "Venezuela dessert from TheMealDB.",
+      "cuisine": "venezuela",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "egg",
+        "mint"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://goya.es/en/recipes/passion-fruit-mousse"
+    },
+    {
+      "id": "mdb-52862",
+      "name": "Peach & Blueberry Grunt",
+      "about": "United states dessert from TheMealDB.",
+      "cuisine": "united states",
+      "course": "dessert",
+      "required": [
+        "orange",
+        "sugar",
+        "butter",
+        "cinnamon",
+        "milk"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/1553651/peach-and-blueberry-grunt"
+    },
+    {
+      "id": "mdb-52861",
+      "name": "Peanut Butter Cheesecake",
+      "about": "United states dessert from TheMealDB.",
+      "cuisine": "united states",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "ricotta",
+        "milk",
+        "cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/1759649/peanut-butter-cheesecake"
+    },
+    {
+      "id": "mdb-52916",
+      "name": "Pear Tarte Tatin",
+      "about": "France dessert from TheMealDB.",
+      "cuisine": "france",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "butter",
+        "cardamom",
+        "cinnamon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/4778/pear-tarte-tatin"
+    },
+    {
+      "id": "mdb-53292",
+      "name": "Piernik (Polish gingerbread)",
+      "about": "Polish dessert from TheMealDB.",
+      "cuisine": "polish",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sugar",
+        "ginger",
+        "cinnamon",
+        "nutmeg",
+        "black-pepper",
+        "egg",
+        "cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/piernik-polish-gingerbread"
+    },
+    {
+      "id": "mdb-53293",
+      "name": "Pistachio cake",
+      "about": "Polish dessert from TheMealDB.",
+      "cuisine": "polish",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "pistachio",
+        "sugar",
+        "egg",
+        "vanilla",
+        "cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/pistachio-cake"
+    },
+    {
+      "id": "mdb-53295",
+      "name": "Polish chocolate & walnut cake",
+      "about": "Polish dessert from TheMealDB.",
+      "cuisine": "polish",
+      "course": "dessert",
+      "required": [
+        "egg",
+        "sugar",
+        "cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/polish-chocolate-cake"
+    },
+    {
+      "id": "mdb-53298",
+      "name": "Polish doughnuts (Pączki)",
+      "about": "Polish dessert from TheMealDB.",
+      "cuisine": "polish",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "milk",
+        "egg",
+        "vanilla",
+        "cream",
+        "butter",
+        "lemon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/polish-doughnuts"
+    },
+    {
+      "id": "mdb-53022",
+      "name": "Polskie Nalesniki (Polish Pancakes)",
+      "about": "Polish dessert from TheMealDB.",
+      "cuisine": "polish",
+      "course": "dessert",
+      "required": [
+        "milk",
+        "sugar",
+        "butter"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.tasteatlas.com/nalesniki/recipe"
+    },
+    {
+      "id": "mdb-53046",
+      "name": "Portuguese custard tarts",
+      "about": "Portuguese dessert from TheMealDB.",
+      "cuisine": "portuguese",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "cinnamon",
+        "egg",
+        "milk",
+        "vanilla"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.olivemagazine.com/recipes/baking-and-desserts/portuguese-custard-tarts/"
+    },
+    {
+      "id": "mdb-53323",
+      "name": "Postre Chajá",
+      "about": "Uruguayan dessert from TheMealDB.",
+      "cuisine": "uruguayan",
+      "course": "dessert",
+      "required": [
+        "egg",
+        "sugar",
+        "cream",
+        "vanilla"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://jennyisbaking.com/2018/08/31/uruguays-version-of-a-peach-layer-cake-postre-chaja/#recipe"
+    },
+    {
+      "id": "mdb-52932",
+      "name": "Pouding chomeur",
+      "about": "Canadian dessert from TheMealDB.",
+      "cuisine": "canadian",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "sugar",
+        "vanilla",
+        "milk",
+        "maple-syrup",
+        "cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "http://www.geniuskitchen.com/recipe/pouding-chomeur-poor-mans-pudding-with-maple-syrup-sauce-218797"
+    },
+    {
+      "id": "mdb-52857",
+      "name": "Pumpkin Pie",
+      "about": "United states dessert from TheMealDB.",
+      "cuisine": "united states",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "nutmeg",
+        "cinnamon",
+        "butter",
+        "milk"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/1742633/pumpkin-pie"
+    },
+    {
+      "id": "mdb-53303",
+      "name": "Raspberry mousse",
+      "about": "Polish dessert from TheMealDB.",
+      "cuisine": "polish",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "lemon",
+        "cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/raspberry-mousse"
+    },
+    {
+      "id": "mdb-52901",
+      "name": "Rock Cakes",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "butter",
+        "milk",
+        "vanilla"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbc.co.uk/food/recipes/rock_cakes_03094"
+    },
+    {
+      "id": "mdb-52833",
+      "name": "Salted Caramel Cheescake",
+      "about": "United states dessert from TheMealDB.",
+      "cuisine": "united states",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "vanilla",
+        "sugar",
+        "caramel",
+        "cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "http://www.janespatisserie.com/2015/11/09/no-bake-salted-caramel-cheesecake/"
+    },
+    {
+      "id": "mdb-53337",
+      "name": "Saskatoon Pie",
+      "about": "Canadian dessert from TheMealDB.",
+      "cuisine": "canadian",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "egg",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://canadianfoodfocus.org/canadian-food-stories/classic-canadian-recipes-saskatoon-pie/#recipe"
+    },
+    {
+      "id": "mdb-53054",
+      "name": "Seri muka kuih",
+      "about": "Malaysian dessert from TheMealDB.",
+      "cuisine": "malaysian",
+      "course": "dessert",
+      "required": [
+        "rice",
+        "coconut-milk",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://makan.ch/recipe/kuih-seri-muka/"
+    },
+    {
+      "id": "mdb-52886",
+      "name": "Spotted Dick",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "lemon",
+        "orange",
+        "milk"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/2686661/spotted-dick"
+    },
+    {
+      "id": "mdb-52883",
+      "name": "Sticky Toffee Pudding",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "butter",
+        "milk",
+        "cream",
+        "vanilla"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbc.co.uk/food/recipes/marys_sticky_toffee_41970"
+    },
+    {
+      "id": "mdb-52793",
+      "name": "Sticky Toffee Pudding Ultimate",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "vanilla",
+        "butter",
+        "milk",
+        "cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.youtube.com/watch?v=Wytv3bjqJII"
+    },
+    {
+      "id": "mdb-53082",
+      "name": "Strawberries Romanoff",
+      "about": "Russian dessert from TheMealDB.",
+      "cuisine": "russian",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "cream",
+        "sour-cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://natashaskitchen.com/strawberries-romanoff-recipe/"
+    },
+    {
+      "id": "mdb-53005",
+      "name": "Strawberry Rhubarb Pie",
+      "about": "British dessert from TheMealDB.",
+      "cuisine": "british",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "butter",
+        "rhubarb",
+        "cinnamon",
+        "milk"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.joyofbaking.com/StrawberryRhubarbPie.html"
+    },
+    {
+      "id": "mdb-52931",
+      "name": "Sugar Pie",
+      "about": "Canadian dessert from TheMealDB.",
+      "cuisine": "canadian",
+      "course": "dessert",
+      "required": [
+        "sugar",
+        "butter",
+        "vanilla",
+        "milk"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "http://allrecipes.com/recipe/213595/miraculous-canadian-sugar-pie/"
+    },
+    {
+      "id": "mdb-53130",
+      "name": "Suksessterte (Norwegian almond “success cake”)",
+      "about": "Norway dessert from TheMealDB.",
+      "cuisine": "norway",
+      "course": "dessert",
+      "required": [
+        "egg",
+        "sugar",
+        "cream",
+        "vanilla",
+        "butter"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://scandinaviancookbook.com/suksessterte-success-cake/"
+    },
+    {
+      "id": "mdb-53119",
+      "name": "Tall Skoleboller",
+      "about": "Norway dessert from TheMealDB.",
+      "cuisine": "norway",
+      "course": "dessert",
+      "required": [
+        "milk",
+        "sugar",
+        "cardamom",
+        "vanilla",
+        "butter",
+        "egg"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://scandinaviancookbook.com/skoleboller-school-buns-from-lille-betong/"
+    },
+    {
+      "id": "mdb-53286",
+      "name": "Khobz el Dar (Algerian Semolina Bread)",
+      "about": "Algerian side from TheMealDB.",
+      "cuisine": "algerian",
+      "course": "side",
+      "required": [
+        "sugar",
+        "olive-oil",
+        "egg",
+        "milk"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.allrecipes.com/recipe/258887/khobz-el-dar-algerian-semolina-bread/"
+    },
+    {
+      "id": "mdb-53059",
+      "name": "Mushroom soup with buckwheat",
+      "about": "Croatian side from TheMealDB.",
+      "cuisine": "croatian",
+      "course": "side",
+      "required": [
+        "olive-oil",
+        "onion",
+        "garlic",
+        "bay-leaf",
+        "sour-cream",
+        "parsley"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.visit-croatia.co.uk/croatian-cuisine/croatian-recipes/"
+    },
+    {
+      "id": "mdb-53038",
+      "name": "Mustard champ",
+      "about": "Irish side from TheMealDB.",
+      "cuisine": "irish",
+      "course": "side",
+      "required": [
+        "milk",
+        "butter",
+        "mustard"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/mustard-champ"
+    },
+    {
+      "id": "mdb-53121",
+      "name": "Norwegian Potato Lefse",
+      "about": "Norway side from TheMealDB.",
+      "cuisine": "norway",
+      "course": "side",
+      "required": [
+        "sugar",
+        "cream",
+        "butter"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://scandinaviancookbook.com/norwegian-potato-lefse-recipe/"
+    },
+    {
+      "id": "mdb-53019",
+      "name": "Pierogi (Polish Dumplings)",
+      "about": "Polish side from TheMealDB.",
+      "cuisine": "polish",
+      "course": "side",
+      "required": [
+        "butter",
+        "onion",
+        "sour-cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.allrecipes.com/recipe/109914/pierogi-polish-dumplings/"
+    },
+    {
+      "id": "mdb-53299",
+      "name": "Polish patties (kotlety)",
+      "about": "Polish side from TheMealDB.",
+      "cuisine": "polish",
+      "course": "side",
+      "required": [
+        "milk",
+        "onion",
+        "olive-oil",
+        "beef",
+        "egg"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/polish-patties"
+    },
+    {
+      "id": "mdb-52922",
+      "name": "Prawn & Fennel Bisque",
+      "about": "France side from TheMealDB.",
+      "cuisine": "france",
+      "course": "side",
+      "required": [
+        "olive-oil",
+        "onion",
+        "fennel",
+        "wine-white",
+        "paprika",
+        "cream"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/71600/prawn-and-fennel-bisque"
+    },
+    {
+      "id": "mdb-53388",
+      "name": "Runner Bean Mash (Snijbonen Stamppot)",
+      "about": "Netherlands side from TheMealDB.",
+      "cuisine": "netherlands",
+      "course": "side",
+      "required": [
+        "garlic",
+        "onion",
+        "butter",
+        "mustard",
+        "milk",
+        "bacon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://insimoneskitchen.com/runner-bean-mash/#recipe"
+    },
+    {
+      "id": "mdb-53259",
+      "name": "Smoked aubergine purée",
+      "about": "Turkish side from TheMealDB.",
+      "cuisine": "turkish",
+      "course": "side",
+      "required": [
+        "lemon",
+        "garlic",
+        "yogurt",
+        "dill"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/smoked-aubergine-puree"
+    },
+    {
+      "id": "mdb-52981",
+      "name": "Snert (Dutch Split Pea Soup)",
+      "about": "Netherlands side from TheMealDB.",
+      "cuisine": "netherlands",
+      "course": "side",
+      "required": [
+        "pork",
+        "onion",
+        "leek"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.thespruceeats.com/traditional-dutch-split-pea-soup-1129011"
+    },
+    {
+      "id": "mdb-52925",
+      "name": "Split Pea Soup",
+      "about": "Canadian side from TheMealDB.",
+      "cuisine": "canadian",
+      "course": "side",
+      "required": [
+        "ham",
+        "bay-leaf",
+        "bread"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/1022639/split-pea-and-green-pea-smoked-ham-soup"
+    },
+    {
+      "id": "mdb-53332",
+      "name": "Venezuelan turnovers",
+      "about": "Venezuela side from TheMealDB.",
+      "cuisine": "venezuela",
+      "course": "side",
+      "required": [
+        "beef",
+        "black-pepper",
+        "cumin",
+        "olive-oil",
+        "onion",
+        "capers"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://goya.es/en/recipes/venezuelan-turnovers"
+    },
+    {
+      "id": "mdb-53189",
+      "name": "Zemiakové Placky",
+      "about": "Slovakia side from TheMealDB.",
+      "cuisine": "slovakia",
+      "course": "side",
+      "required": [
+        "onion",
+        "garlic",
+        "egg",
+        "black-pepper"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.slovakia-foods.co.uk/blog/post/zemiakove-placky-recipe-how-to-make-authentic-slovak-potato-pancakes.html"
+    },
+    {
+      "id": "mdb-52965",
+      "name": "Breakfast Potatoes",
+      "about": "Canadian breakfast from TheMealDB.",
+      "cuisine": "canadian",
+      "course": "main",
+      "required": [
+        "olive-oil",
+        "bacon",
+        "maple-syrup",
+        "parsley",
+        "black-pepper"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "http://www.vodkaandbiscuits.com/2014/03/06/bangin-breakfast-potatoes/"
+    },
+    {
+      "id": "mdb-53379",
+      "name": "Dutch poffertjes (mini pancakes)",
+      "about": "Netherlands breakfast from TheMealDB.",
+      "cuisine": "netherlands",
+      "course": "main",
+      "required": [
+        "butter",
+        "milk",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://insimoneskitchen.com/old-dutch-poffertjes/#recipe"
+    },
+    {
+      "id": "mdb-53363",
+      "name": "Jamaican Cornmeal Porridge",
+      "about": "Jamaican breakfast from TheMealDB.",
+      "cuisine": "jamaican",
+      "course": "main",
+      "required": [
+        "coconut-milk",
+        "vanilla",
+        "cinnamon",
+        "nutmeg"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.myforkinglife.com/jamaican-cornmeal-porridge/#recipe"
+    },
+    {
+      "id": "mdb-53331",
+      "name": "Oatmeal pancakes",
+      "about": "Venezuela breakfast from TheMealDB.",
+      "cuisine": "venezuela",
+      "course": "main",
+      "required": [
+        "egg",
+        "milk",
+        "sugar",
+        "vanilla",
+        "butter"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://goya.es/en/recipes/oatmeal-pancakes"
+    },
+    {
+      "id": "mdb-53118",
+      "name": "Rømmegrøt – Norwegian Sour Cream Porridge",
+      "about": "Norway breakfast from TheMealDB.",
+      "cuisine": "norway",
+      "course": "main",
+      "required": [
+        "milk",
+        "sugar",
+        "cinnamon",
+        "butter"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://scandinaviancookbook.com/rommegrot-norwegian-sour-cream-porridge/"
+    },
+    {
+      "id": "mdb-52964",
+      "name": "Smoked Haddock Kedgeree",
+      "about": "India breakfast from TheMealDB.",
+      "cuisine": "india",
+      "course": "main",
+      "required": [
+        "butter",
+        "onion",
+        "cardamom",
+        "turmeric",
+        "bay-leaf",
+        "chicken",
+        "parsley",
+        "lemon"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/2256/smoked-haddock-kedgeree"
+    },
+    {
+      "id": "mdb-53165",
+      "name": "Torrijas with sherry",
+      "about": "Spanish breakfast from TheMealDB.",
+      "cuisine": "spanish",
+      "course": "main",
+      "required": [
+        "egg",
+        "cream",
+        "milk",
+        "bread",
+        "olive-oil",
+        "sugar"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://www.bbcgoodfood.com/recipes/torrijas-sherry"
+    },
+    {
+      "id": "mdb-53225",
+      "name": "Yemeni Lahsa (Elite Shakshuka)",
+      "about": "Saudi arabian breakfast from TheMealDB.",
+      "cuisine": "saudi arabian",
+      "course": "main",
+      "required": [
+        "egg",
+        "onion",
+        "tomato",
+        "olive-oil",
+        "black-pepper"
+      ],
+      "optional": [],
+      "source": "themealdb",
+      "sourceUrl": "https://cookpad.com/eng/recipes/24629321?ref=search&search_term=saudi+arabia"
     }
   ]
 }

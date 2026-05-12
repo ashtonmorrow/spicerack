@@ -8,5 +8,8 @@ out
 .vercel
 .turbo
 
+# TypeScript incremental build info
+*.tsbuildinfo
+
 # previous iteration's input file — keep local only
 mvp-data.txt

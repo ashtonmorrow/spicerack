@@ -334,13 +334,41 @@ function normalizeIngredient(raw) {
   return null; // truly unknown
 }
 
-function mapCourse(category) {
-  if (!category) return undefined;
-  const lc = category.toLowerCase();
+function mapCourse(category, name) {
+  // Category from TheMealDB is the dominant signal when it tells us anything
+  // useful. Falls back to a name-pattern heuristic — TheMealDB only labels
+  // ~5 of its ~14 categories as course-bearing ("Dessert", "Starter", "Side",
+  // "Breakfast"); the rest ("Beef", "Pork", "Pasta", "Vegan", etc.) are
+  // protein/diet groupings that don't determine course. For those, we look
+  // at the recipe name itself.
+  const lc = (category ?? "").toLowerCase();
   if (lc.includes("dessert")) return "dessert";
   if (lc.includes("starter")) return "starter";
   if (lc.includes("side")) return "side";
-  if (lc.includes("breakfast")) return "main";
+  // Breakfast is a meal slot, not a course; treat as main unless name says
+  // otherwise (e.g., pancakes / waffles → dessert in our taxonomy since they
+  // overlap with sweet recipes more than with savory mains).
+
+  const n = (name ?? "").toLowerCase();
+  // Dessert by name — strong signal words that aren't ambiguous with savory.
+  if (/\b(brownie|cupcake|cheesecake|cookie|cookies|biscuit|biscuits|tart|tartlet|trifle|mousse|custard|souffl[eé]|tiramisu|baklava|eclair|profiterole|crumble|cobbler|fudge|truffle|sorbet|gelato|ice cream|pancake|waffle|muffin|scone|donut|doughnut|crepe)\b/.test(n)) {
+    return "dessert";
+  }
+  // "Cake" and "pie" need negation — shepherds pie, fish cakes etc. are mains.
+  if (/\b(cake|pie)\b/.test(n) && !/\b(shepherd|cottage|cumberland|chicken|beef|pork|lamb|fish|seafood|vegetable|veg\.?|mince|steak|crab|salmon|tuna|potato|rice)\b/.test(n)) {
+    return "dessert";
+  }
+  // Starter signals (must not have a main-protein word).
+  if (/\b(soup|broth|chowder|bisque|gazpacho|bruschetta|hummus)\b/.test(n) &&
+      !/\b(beef|chicken|pork|lamb|fish|salmon|noodle)\b.*\b(soup|broth|chowder|bisque)\b/.test(n)) {
+    return "starter";
+  }
+  // Salad starter only when there's no grilled/protein modifier
+  if (/\bsalad\b/.test(n) &&
+      !/\b(grilled|seared|roast|roasted|steak|chicken|beef|salmon|tuna|nicoise|niçoise|cobb|caesar)\b/.test(n)) {
+    return "starter";
+  }
+
   return "main";
 }
 
@@ -452,7 +480,7 @@ async function main() {
       name: meal.strMeal,
       about: makeAbout(meal, unique),
       cuisine: mapCuisine(meal.strArea),
-      course: mapCourse(meal.strCategory),
+      course: mapCourse(meal.strCategory, meal.strMeal),
       required: unique.slice(0, 8),
       optional: [],
       source: "themealdb",
