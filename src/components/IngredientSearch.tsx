@@ -179,7 +179,7 @@ export function IngredientSearch({ onPick, excludeSlugs }: Props) {
         autoFocus
       />
       {open && items.length > 0 && (
-        <div className="absolute z-20 left-0 right-0 mt-1 bg-bg rounded-md border border-border shadow-md overflow-hidden">
+        <div className="absolute z-20 left-0 right-0 mt-1 bg-bg rounded-md border border-border shadow-md overflow-hidden max-h-[60vh] overflow-y-auto">
           {headerLabel && (
             <div className="px-4 py-2 text-[11px] uppercase tracking-wider text-muted border-b border-border bg-hover flex items-center justify-between">
               <span>{headerLabel}</span>

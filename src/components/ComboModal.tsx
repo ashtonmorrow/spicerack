@@ -37,13 +37,13 @@ export function ComboModal({ ingredients, onClose, onSaved }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30"
+      className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-4 bg-black/30 overflow-y-auto"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
     >
       <div
-        className="bg-bg rounded-lg border border-border shadow-2xl max-w-md w-full p-6"
+        className="bg-bg rounded-lg border border-border shadow-2xl max-w-md w-full p-5 sm:p-6 my-8"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-base font-semibold text-ink mb-1">

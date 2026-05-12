@@ -194,7 +194,7 @@ function Home() {
   }
 
   return (
-    <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+    <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-14">
       <header className="mb-10">
         <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-ink">
           Flav<span className="text-pear"><PearLetter /></span>r Pare
