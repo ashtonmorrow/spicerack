@@ -325,10 +325,17 @@
 
   /* Quick-start (empty-state seed combos) */
   .quick-start { margin: 1.5rem 0 2.5rem; }
+  .qs-head { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; margin-bottom: .5rem; flex-wrap: wrap; }
   .qs-head h2 {
     text-transform: uppercase; font-size: .68rem; letter-spacing: .08em;
-    color: var(--muted); margin: 0 0 .5rem; font-weight: 500;
+    color: var(--muted); margin: 0; font-weight: 500;
   }
+  .surprise-btn {
+    font-family: inherit; font-size: .68rem; color: var(--muted);
+    background: none; border: none; padding: .25rem .5rem; border-radius: .25rem;
+    cursor: pointer; transition: color .12s, background .12s;
+  }
+  .surprise-btn:hover { color: var(--pear); background: rgba(26, 127, 55, .05); }
   .qs-grid { display: grid; gap: .5rem; grid-template-columns: 1fr; }
   @media (min-width: 640px) { .qs-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 1024px) { .qs-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -497,6 +504,9 @@
   <section id="quick-start" class="quick-start hidden">
     <header class="qs-head">
       <h2>Or pick a starting point</h2>
+      <button id="surprise-btn" class="surprise-btn" title="Load a random coherent selection seeded from a seasonal ingredient">
+        <span aria-hidden="true">🎲</span> Surprise me
+      </button>
     </header>
     <div id="qs-grid" class="qs-grid"></div>
   </section>
@@ -1322,6 +1332,49 @@ function renderSeasonalNudge() {
   });
 }
 
+// --- Surprise Me ------------------------------------------------------------
+// Pick a seasonal anchor with a strong pairing graph, then layer 3-4 of its
+// strongest pairings preferring category variety. Mirrors /api/surprise.
+function buildSurprise() {
+  const season = currentSeason();
+  const seasonal = INGREDIENTS.ingredients.filter(
+    i => i.seasons && i.seasons.includes(season) && (i.pairings || []).length >= 4
+  );
+  const pool = seasonal.length > 0
+    ? seasonal
+    : INGREDIENTS.ingredients.filter(i => (i.pairings || []).length >= 6);
+  const anchor = pool[Math.floor(Math.random() * pool.length)];
+  const sorted = [...(anchor.pairings || [])].sort((a, b) => b.strength - a.strength);
+  const selected = [anchor];
+  const seenCats = new Set([anchor.category]);
+  for (const p of sorted) {
+    if (selected.length >= 5) break;
+    const cand = bySlug.get(p.slug);
+    if (!cand) continue;
+    if (selected.some(s => s.slug === cand.slug)) continue;
+    if (seenCats.has(cand.category)) continue;
+    selected.push(cand);
+    seenCats.add(cand.category);
+  }
+  if (selected.length < 4) {
+    for (const p of sorted) {
+      if (selected.length >= 5) break;
+      const cand = bySlug.get(p.slug);
+      if (!cand) continue;
+      if (selected.some(s => s.slug === cand.slug)) continue;
+      selected.push(cand);
+    }
+  }
+  return selected.map(i => ({ slug: i.slug, name: i.name, category: i.category }));
+}
+function applySurprise() {
+  const items = buildSurprise();
+  if (!items.length) return;
+  state.selected = items;
+  state.activeClusterId = null;
+  renderAll();
+}
+
 function renderQuickStart() {
   // Show only at empty-state — disappears the moment the user adds anything.
   if (state.selected.length > 0) {
@@ -1329,6 +1382,9 @@ function renderQuickStart() {
     return;
   }
   quickStartEl.classList.remove("hidden");
+  // Idempotently rebind the surprise button on each render.
+  const surpriseBtn = document.getElementById("surprise-btn");
+  if (surpriseBtn) surpriseBtn.onclick = applySurprise;
   quickStartGridEl.innerHTML = STARTERS.map(s => {
     const chips = s.slugs.map(slug => {
       const ing = bySlug.get(slug);

@@ -120,12 +120,32 @@ export function QuickStart({ onLoad }: Props) {
     }
   }
 
+  async function surprise() {
+    setLoading("__surprise__");
+    try {
+      const res = await fetch("/api/surprise");
+      const data = await res.json();
+      const ings = data.ingredients as IngredientSummary[];
+      if (ings?.length) onLoad(ings);
+    } finally {
+      setLoading(null);
+    }
+  }
+
   return (
     <section className="mt-6 mb-10">
-      <header className="mb-3">
+      <header className="flex items-baseline justify-between gap-2 mb-3 flex-wrap">
         <h2 className="text-[11px] uppercase tracking-wider text-muted">
           Or pick a starting point
         </h2>
+        <button
+          onClick={surprise}
+          disabled={loading !== null}
+          className="text-[11px] text-muted hover:text-pear hover:bg-pear/5 transition px-2 py-1 rounded disabled:opacity-50"
+          title="Load a random coherent selection seeded from a seasonal ingredient"
+        >
+          <span aria-hidden className="mr-1">🎲</span>Surprise me
+        </button>
       </header>
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
         {STARTERS.map((s) => (
